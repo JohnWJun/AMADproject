@@ -2,8 +2,11 @@ package com.amadProject.amadApp.post.service;
 
 import com.amadProject.amadApp.member.entity.Member;
 import com.amadProject.amadApp.member.repository.MemberRepository;
+import com.amadProject.amadApp.post.entity.BibleChapterVerse;
 import com.amadProject.amadApp.post.entity.Post;
+import com.amadProject.amadApp.post.repository.BibleChapterVerseRepository;
 import com.amadProject.amadApp.post.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,15 +15,15 @@ import java.util.Optional;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
 
     private final MemberRepository memberRepository;
 
-    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
-        this.postRepository = postRepository;
-        this.memberRepository = memberRepository;
-    }
+    private final BibleChapterVerseRepository bibleRepository;
+
+
 
     public Post createPost(Post post){
 
@@ -36,8 +39,14 @@ public class PostService {
     public Post patchPost(Post post){
 
         Post findPost = postRepository.findById(post.getPostId()).get();
-        Optional.ofNullable(post.getBibleChapterVerse())
-                .ifPresent(bibleChapterVerse-> findPost.setBibleChapterVerse(bibleChapterVerse));
+        Optional.ofNullable(post.getBibleChapterVerses())
+                .ifPresent(bibleChapterVerses-> {
+
+                   for (BibleChapterVerse bible : bibleChapterVerses){
+                       bibleRepository.save(bible);
+                   }
+                    findPost.setBibleChapterVerses(bibleChapterVerses);
+                });
         Optional.ofNullable(post.getTitle())
                 .ifPresent(title-> findPost.setTitle(title));
         Optional.ofNullable(post.getContent_1())
@@ -50,7 +59,6 @@ public class PostService {
                 .ifPresent(content-> findPost.setContent_4(content));
         Optional.ofNullable(post.getContent_5())
                 .ifPresent(content-> findPost.setContent_5(content));
-
         return postRepository.save(findPost);
     }
 

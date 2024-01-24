@@ -3,7 +3,9 @@ package com.amadProject.amadApp.post.controller;
 import com.amadProject.amadApp.post.dto.PostDto;
 import com.amadProject.amadApp.post.entity.Post;
 import com.amadProject.amadApp.post.mapper.PostMapper;
+import com.amadProject.amadApp.post.service.BibleVerseApiService;
 import com.amadProject.amadApp.post.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +15,24 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/post")
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostMapper mapper;
 
     private final PostService service;
 
-    public PostController(PostMapper mapper, PostService service) {
-        this.mapper = mapper;
-        this.service = service;
+    private final BibleVerseApiService apiService;
+
+
+    @GetMapping("/api-bible/{bible}/{chapter}/{from}/{to}")
+    public ResponseEntity getBible(@PathVariable("bible") String bible,
+                                   @PathVariable("chapter") String chapter,
+                                   @PathVariable("from") String from,
+                                   @PathVariable("to") String to){
+        String bibleVerse = apiService.getBible(bible, chapter, from, to);
+
+        return new ResponseEntity<>(bibleVerse,HttpStatus.OK);
     }
 
     @PostMapping("/{member-email}/{local-date}")
@@ -39,9 +50,10 @@ public class PostController {
                                     @PathVariable("local-date") String today,
                                     @PathVariable("post-id") long postId,
                                     @RequestBody PostDto.Patch patchDto){
-        Post postToUpdate = mapper.patchDtoToPost(patchDto);
-        postToUpdate.setPostId(postId);
-        PostDto.Response response = mapper.postToResponse(service.patchPost(postToUpdate));
+        Post postToUpdate = mapper.patchDtoToPost(patchDto, postId);
+        System.out.println("in-Controller: "+ postToUpdate.getBibleChapterVerses().toString());
+        Post updatedPost = service.patchPost(postToUpdate);
+        PostDto.Response response = mapper.postToResponse(updatedPost);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 

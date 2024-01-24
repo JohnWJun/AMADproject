@@ -15,7 +15,8 @@ public class BibleChapterVerse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bibleChapterVerseId;
 
-    @OneToOne(mappedBy = "bibleChapterVerse")
+    @ManyToOne
+    @JoinColumn(name = "POST_ID")
     private Post post;
 
     private String bible;

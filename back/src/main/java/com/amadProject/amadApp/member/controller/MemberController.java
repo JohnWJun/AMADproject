@@ -25,7 +25,7 @@ public class MemberController {
 
     @PostMapping("/sign-up")
     public ResponseEntity postMember(@RequestBody MemberDto.Post post){
-        Member member = memberMapper.postToMember(post);
+        Member member = memberMapper.memberPostToMember(post);
         MemberDto.Response response = memberMapper.memeberToMemberResponse(memberService.createMember(member));
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     };
