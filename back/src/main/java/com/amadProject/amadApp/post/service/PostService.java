@@ -2,6 +2,7 @@ package com.amadProject.amadApp.post.service;
 
 import com.amadProject.amadApp.member.entity.Member;
 import com.amadProject.amadApp.member.repository.MemberRepository;
+import com.amadProject.amadApp.post.dto.PostDto;
 import com.amadProject.amadApp.post.entity.BibleChapterVerse;
 import com.amadProject.amadApp.post.entity.Post;
 import com.amadProject.amadApp.post.repository.BibleChapterVerseRepository;
@@ -10,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -23,10 +28,13 @@ public class PostService {
 
     private final BibleChapterVerseRepository bibleRepository;
 
+    private final BibleVerseApiService apiService;
 
 
-    public Post createPost(Post post){
 
+    public Post createPost(Post post, LocalDate date){
+
+        verifyExistPost(post.getMember().getEmail(), date);
         Member member = memberRepository.findByEmail(post.getMember().getEmail()).get();
         member.addPost(post);
         post.setMember(member);
@@ -62,14 +70,37 @@ public class PostService {
         return postRepository.save(findPost);
     }
 
-    public Post findPost(String email, LocalDate date){
-        return postRepository.findByEmailNDate(email,date).get();
-
+    public Post findPost(String email, LocalDate date) {
+        Optional<Post> optionalPost = postRepository.findByEmailNDate(email, date);
+        return optionalPost.orElse(null);
     }
+
 
     public void deletePost(String email, LocalDate date){
         Post postToDelete = postRepository.findByEmailNDate(email,date).get();
         postRepository.delete(postToDelete);
+    }
+
+    public PostDto.BibleResponse getScripture(List<BibleChapterVerse> bibleChapterVerses) {
+        List<String> scriptures = bibleChapterVerses.stream().map(
+                bibleChapterVerse -> {
+                    String scripture = apiService.getBible(bibleChapterVerse.getBible(),
+                            String.valueOf(bibleChapterVerse.getBibleChapter()),
+                            String.valueOf(bibleChapterVerse.getBibleVerseFrom()),
+                            String.valueOf(bibleChapterVerse.getBibleVerseTo()));
+
+                    return scripture;
+                }
+        ).collect(Collectors.toList());
+        PostDto.BibleResponse bibleResponse = new PostDto.BibleResponse();
+        bibleResponse.setScripts(scriptures);
+
+        return bibleResponse;
+    }
+    private void verifyExistPost(String email, LocalDate date) {
+        postRepository.findByEmailNDate(email, date).ifPresent(post -> {
+            throw new RuntimeException("Post already exists for email: " + email + " and date: " + date);
+        });
     }
 
 }

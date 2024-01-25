@@ -102,5 +102,23 @@ public interface PostMapper {
         return response;
 
     }
+
+
+    default PostDto.PostBibleResponse postToPostBibleResponse(Post post, PostDto.BibleResponse bibleResponse){
+        PostDto.PostBibleResponse response = new PostDto.PostBibleResponse();
+
+        response.setScripts(bibleResponse);
+        response.setTitle(post.getTitle());
+        response.setWriter(post.getMember().getEmail());
+        response.setPublishedAt(post.getPublishedAt());
+        response.setContent_1(post.getContent_1());
+        response.setContent_2(post.getContent_2());
+        response.setContent_3(post.getContent_3());
+        response.setContent_4(post.getContent_4());
+        response.setContent_5(post.getContent_5());
+
+        return response;
+
+    }
     List<PostDto.Response> postsToResponses(List<Post> posts);
 }

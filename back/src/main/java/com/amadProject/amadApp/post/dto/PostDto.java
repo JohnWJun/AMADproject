@@ -92,4 +92,29 @@ public class PostDto {
 
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class BibleResponse{
+        private List<String> scripts;
+
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class PostBibleResponse{
+        private String title;
+        private String writer;
+        private LocalDate publishedAt;
+        private BibleResponse scripts;
+
+        private String content_1;
+        private String content_2;
+        private String content_3;
+        private String content_4;
+        private String content_5;
+
+    }
+
 }

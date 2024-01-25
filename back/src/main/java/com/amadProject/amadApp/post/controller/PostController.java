@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping("/post")
@@ -35,13 +36,13 @@ public class PostController {
         return new ResponseEntity<>(bibleVerse,HttpStatus.OK);
     }
 
-    @PostMapping("/{member-email}/{local-date}")
+    @PostMapping("/{member-email}")
     public ResponseEntity postPost(@PathVariable("member-email") String email,
-                                   @PathVariable("local-date") String today,
                                    @RequestBody PostDto.Post postDto){
         Post post = mapper.postDtoToPost(postDto);
+        LocalDate date = LocalDate.now();
         post.getMember().setEmail(email);
-        PostDto.Response response = mapper.postToResponse(service.createPost(post));
+        PostDto.Response response = mapper.postToResponse(service.createPost(post,date));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -51,8 +52,7 @@ public class PostController {
                                     @PathVariable("post-id") long postId,
                                     @RequestBody PostDto.Patch patchDto){
         Post postToUpdate = mapper.patchDtoToPost(patchDto, postId);
-        System.out.println("in-Controller: "+ postToUpdate.getBibleChapterVerses().toString());
-        Post updatedPost = service.patchPost(postToUpdate);
+          Post updatedPost = service.patchPost(postToUpdate);
         PostDto.Response response = mapper.postToResponse(updatedPost);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
@@ -60,15 +60,21 @@ public class PostController {
     @GetMapping("/{member-email}/{local-date}")
     public ResponseEntity getPost(@PathVariable("member-email") String email,
                                   @PathVariable("local-date") String writtenDate){
+
         LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
         Post post = service.findPost(email,date);
-        PostDto.Response response = mapper.postToResponse(post);
+        PostDto.BibleResponse scriptures = service.getScripture(post.getBibleChapterVerses());
+
+
+        PostDto.PostBibleResponse response = mapper.postToPostBibleResponse(post,scriptures);
+
+
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-    // getPost는 미구현 구현여부 타진중
+
 
     @DeleteMapping("/{member-email}/{local-date}")
-    public ResponseEntity deletPost(@PathVariable("member-email") String email,
+    public ResponseEntity deletePost(@PathVariable("member-email") String email,
                                   @PathVariable("local-date") String writtenDate){
         LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
         service.deletePost(email,date);

@@ -18,11 +18,9 @@ public class BibleVerseApiService {
                 .build(true)
                 .toUri();
 
-        System.out.println(uri);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
 
-        System.out.println(responseEntity);
 
         return responseEntity.getBody();
     }
