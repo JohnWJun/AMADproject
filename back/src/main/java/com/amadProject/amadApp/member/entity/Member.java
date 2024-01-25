@@ -34,6 +34,12 @@ public class Member {
     @Column
     private String statusImg;
 
+    @Column
+    private int penaltyPoints = 0;
+
+    @Column
+    private boolean isMadePostToday = false;
+
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();

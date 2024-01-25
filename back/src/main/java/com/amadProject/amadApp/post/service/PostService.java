@@ -1,5 +1,6 @@
 package com.amadProject.amadApp.post.service;
 
+import com.amadProject.amadApp.common.tools.calculator.MemberIntimacyCalculator;
 import com.amadProject.amadApp.member.entity.Member;
 import com.amadProject.amadApp.member.repository.MemberRepository;
 import com.amadProject.amadApp.post.dto.PostDto;
@@ -29,15 +30,20 @@ public class PostService {
     private final BibleChapterVerseRepository bibleRepository;
 
     private final BibleVerseApiService apiService;
+    private final MemberIntimacyCalculator memberIntimacyCalculator;
 
 
 
+    @Transactional
     public Post createPost(Post post, LocalDate date){
 
         verifyExistPost(post.getMember().getEmail(), date);
         Member member = memberRepository.findByEmail(post.getMember().getEmail()).get();
         member.addPost(post);
         post.setMember(member);
+        memberIntimacyCalculator.addIntimacyPoint(member);
+        member.setMadePostToday(true);
+        member.setPenaltyPoints(0);
         Post savedPost = postRepository.save(post);
         memberRepository.save(member);
 
