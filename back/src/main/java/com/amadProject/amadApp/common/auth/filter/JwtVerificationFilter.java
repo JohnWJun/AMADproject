@@ -1,7 +1,7 @@
-package com.amadProject.amadApp.auth.filter;
+package com.amadProject.amadApp.common.auth.filter;
 
-import com.amadProject.amadApp.auth.jwt.JwtTokenizer;
-import com.amadProject.amadApp.auth.utils.CustomAuthorityUtils;
+import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
+import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

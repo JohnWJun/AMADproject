@@ -1,10 +1,10 @@
-package com.amadProject.amadApp.auth.config;
+package com.amadProject.amadApp.common.auth.config;
 
-import com.amadProject.amadApp.auth.filter.JwtVerificationFilter;
-import com.amadProject.amadApp.auth.handler.MemberAuthenticationEntryPoint;
-import com.amadProject.amadApp.auth.handler.OAuth2memberSuccessHandler;
-import com.amadProject.amadApp.auth.jwt.JwtTokenizer;
-import com.amadProject.amadApp.auth.utils.CustomAuthorityUtils;
+import com.amadProject.amadApp.common.auth.filter.JwtVerificationFilter;
+import com.amadProject.amadApp.common.auth.handler.MemberAuthenticationEntryPoint;
+import com.amadProject.amadApp.common.auth.handler.OAuth2memberSuccessHandler;
+import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
+import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
 import com.amadProject.amadApp.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

@@ -1,5 +1,7 @@
 package com.amadProject.amadApp.member.service;
 
+import com.amadProject.amadApp.common.tools.generator.MemberNicknameGenerator;
+import com.amadProject.amadApp.common.tools.generator.NickNameGenerator;
 import com.amadProject.amadApp.member.repository.MemberRepository;
 import com.amadProject.amadApp.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +15,12 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberNicknameGenerator nicknameGenerator;
 
 
     public Member createMember(Member member){
         if (!existsEmail(member.getEmail())) {
+            member.setNickname(nicknameGenerator.randomNickNameGenerator(NickNameGenerator.adjectives,NickNameGenerator.characters));
             Member savedMember = memberRepository.save(member);
             return savedMember;
         }

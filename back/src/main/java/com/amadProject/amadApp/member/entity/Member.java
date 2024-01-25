@@ -21,6 +21,20 @@ public class Member {
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
+
+    @Column(nullable = false, updatable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
+    private int intimacy = 50;
+
+    @Column
+    private String statusImg;
+
+
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 

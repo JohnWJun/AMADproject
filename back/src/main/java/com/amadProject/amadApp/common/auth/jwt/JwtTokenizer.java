@@ -1,4 +1,4 @@
-package com.amadProject.amadApp.auth.jwt;
+package com.amadProject.amadApp.common.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

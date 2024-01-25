@@ -1,8 +1,8 @@
-package com.amadProject.amadApp.auth.handler;
+package com.amadProject.amadApp.common.auth.handler;
 
 
-import com.amadProject.amadApp.auth.jwt.JwtTokenizer;
-import com.amadProject.amadApp.auth.utils.CustomAuthorityUtils;
+import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
+import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
 import com.amadProject.amadApp.member.entity.Member;
 import com.amadProject.amadApp.member.service.MemberService;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package com.amadProject.amadApp.auth.utils;
+package com.amadProject.amadApp.common.auth.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;

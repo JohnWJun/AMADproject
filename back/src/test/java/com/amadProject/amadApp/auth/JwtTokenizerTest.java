@@ -2,7 +2,7 @@ package com.amadProject.amadApp.auth;
 
 
 
-import com.amadProject.amadApp.auth.jwt.JwtTokenizer;
+import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
 import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
