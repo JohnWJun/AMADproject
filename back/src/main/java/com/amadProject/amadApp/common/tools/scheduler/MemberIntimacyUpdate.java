@@ -1,4 +1,4 @@
-package com.amadProject.amadApp.common.tools.schedular;
+package com.amadProject.amadApp.common.tools.scheduler;
 
 import com.amadProject.amadApp.common.tools.calculator.MemberIntimacyCalculator;
 import com.amadProject.amadApp.member.entity.Member;
