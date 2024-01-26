@@ -121,4 +121,12 @@ public interface PostMapper {
 
     }
     List<PostDto.Response> postsToResponses(List<Post> posts);
+
+    default PostDto.BibleAPIResponse apiBibleToResponse(String script){
+        PostDto.BibleAPIResponse response = new PostDto.BibleAPIResponse();
+        response.setHtml(script);
+
+        return  response;
+
+    };
 }

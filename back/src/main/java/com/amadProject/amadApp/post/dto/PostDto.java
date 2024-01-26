@@ -103,6 +103,14 @@ public class PostDto {
     @Getter
     @Setter
     @NoArgsConstructor
+    public static class BibleAPIResponse{
+        private String html;
+
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
     public static class PostBibleResponse{
         private long postId;
         private String title;

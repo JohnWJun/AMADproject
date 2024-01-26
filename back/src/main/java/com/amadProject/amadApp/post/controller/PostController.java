@@ -6,14 +6,18 @@ import com.amadProject.amadApp.post.mapper.PostMapper;
 import com.amadProject.amadApp.post.service.BibleVerseApiService;
 import com.amadProject.amadApp.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Slf4j
+@Transactional
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
@@ -32,8 +36,10 @@ public class PostController {
                                    @PathVariable("from") String from,
                                    @PathVariable("to") String to){
         String bibleVerse = apiService.getBible(bible, chapter, from, to);
+        PostDto.BibleAPIResponse response = mapper.apiBibleToResponse(bibleVerse);
+        log.info("성경구절 API 성공!");
 
-        return new ResponseEntity<>(bibleVerse,HttpStatus.OK);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PostMapping("/{member-email}")
@@ -43,6 +49,9 @@ public class PostController {
         LocalDate date = LocalDate.now();
         post.getMember().setEmail(email);
         PostDto.Response response = mapper.postToResponse(service.createPost(post,date));
+
+        log.info("사용자 ("+email+") 님의 묵상이 "+ date + " 에 생성되었습니다.");
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -52,7 +61,7 @@ public class PostController {
                                     @PathVariable("post-id") long postId,
                                     @RequestBody PostDto.Patch patchDto){
         Post postToUpdate = mapper.patchDtoToPost(patchDto, postId);
-          Post updatedPost = service.updatePost(postToUpdate);
+        Post updatedPost = service.updatePost(postToUpdate);
         PostDto.Response response = mapper.postToResponse(updatedPost);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
