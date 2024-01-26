@@ -52,7 +52,7 @@ public class PostController {
                                     @PathVariable("post-id") long postId,
                                     @RequestBody PostDto.Patch patchDto){
         Post postToUpdate = mapper.patchDtoToPost(patchDto, postId);
-          Post updatedPost = service.patchPost(postToUpdate);
+          Post updatedPost = service.updatePost(postToUpdate);
         PostDto.Response response = mapper.postToResponse(updatedPost);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }

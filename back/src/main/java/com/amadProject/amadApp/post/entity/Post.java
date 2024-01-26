@@ -1,6 +1,8 @@
 package com.amadProject.amadApp.post.entity;
 
+import com.amadProject.amadApp.amad.entity.Amad;
 import com.amadProject.amadApp.member.entity.Member;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,10 +13,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Getter
 @Setter
 @NoArgsConstructor
-@Getter
-@Entity
+@EqualsAndHashCode
 public class Post {
 
     @Id
@@ -27,19 +30,28 @@ public class Post {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @Column(nullable = false)
     private LocalDate publishedAt = LocalDate.now();
 
     @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<BibleChapterVerse> bibleChapterVerses = new ArrayList<>();
 
+    @OneToOne(mappedBy = "post")
+    private Amad amad;
+
+    @Column(nullable = false)
     private String content_1;
 
+    @Column(nullable = false)
     private String content_2;
 
+    @Column(nullable = false)
     private String content_3;
 
+    @Column(nullable = false)
     private String content_4;
 
+    @Column(nullable = false)
     private String content_5;
 
 

@@ -1,4 +1,6 @@
 spring:
+  jackson:
+    time-zone: Asia/Seoul
   h2:
     console:
       enabled: true
@@ -8,7 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -30,7 +32,7 @@ logging:
     org:
       springframework:
         orm:
-          jpa: DEBUG
+          jpa: INFO
 server:
   servlet:
     encoding:
@@ -41,5 +43,6 @@ mail:
 jwt:
   key:
     secret: ${JWT_SECRET_KEY}
+#    secret: asdasdfawer23123efgsdfgsdfasdfgadfh
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420

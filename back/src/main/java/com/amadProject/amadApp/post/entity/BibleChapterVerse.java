@@ -1,15 +1,17 @@
 package com.amadProject.amadApp.post.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class BibleChapterVerse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

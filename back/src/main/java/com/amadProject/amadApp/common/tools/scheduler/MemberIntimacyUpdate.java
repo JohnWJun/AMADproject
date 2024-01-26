@@ -23,7 +23,7 @@ public class MemberIntimacyUpdate {
     private final MemberIntimacyCalculator calculator;
     private static final int INTIMACY_DEDUCTIBLE = 10;
 
-    @Scheduled(cron = "0 0 * * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     //for test
 //    @Scheduled(cron = "0 */1 * * * *")
     private void memberIntimacyDailyUpdateTask(){
@@ -31,12 +31,11 @@ public class MemberIntimacyUpdate {
         log.info("The daily scheduled task in running...");
 
         List<Member> membersWhoSkip = memberRepository.findAllByIsMadePostToday();
-        List<Member> penaltyIncreasedMembers = membersWhoSkip.stream().map(
+        List<Member> penaltyIncreasedMembers = membersWhoSkip.stream().peek(
                 member -> {
                     calculator.increasePenalty(member);
                     member.setMadePostToday(false);
                     memberRepository.save(member);
-                    return member;
                 }
         ).collect(Collectors.toList());
 
@@ -54,11 +53,10 @@ public class MemberIntimacyUpdate {
 
 
         List<Member> membersForResetIsMadePost = memberRepository.findAllByMadePostToday();
-        List<Member> resetMembers = membersForResetIsMadePost.stream().map(
+        List<Member> resetMembers = membersForResetIsMadePost.stream().peek(
                 member -> {
                     member.setMadePostToday(false);
                     memberRepository.save(member);
-                    return member;
                 }
         ).collect(Collectors.toList());
         log.info("("+(long) resetMembers.size() +") members got reset their post records");

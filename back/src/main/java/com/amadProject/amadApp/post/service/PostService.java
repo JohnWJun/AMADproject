@@ -50,7 +50,7 @@ public class PostService {
        return savedPost;
     }
 
-    public Post patchPost(Post post){
+    public Post updatePost(Post post){
 
         Post findPost = postRepository.findById(post.getPostId()).get();
         Optional.ofNullable(post.getBibleChapterVerses())

@@ -1,5 +1,7 @@
 package com.amadProject.amadApp.member.entity;
 
+import com.amadProject.amadApp.amad.entity.Amad;
+import com.amadProject.amadApp.post.entity.BibleChapterVerse;
 import com.amadProject.amadApp.post.entity.Post;
 import lombok.*;
 
@@ -44,6 +46,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Amad> amads = new ArrayList<>();
+
+
+    public void addAmad(Amad amad){
+        if (amad.getMember() != this) amad.setMember(this);
+        amads.add(amad);
+    }
     public void addPost(Post post){
         if (post.getMember() != this) post.setMember(this);
         posts.add(post);

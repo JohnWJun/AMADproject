@@ -104,6 +104,7 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     public static class PostBibleResponse{
+        private long postId;
         private String title;
         private String writer;
         private LocalDate publishedAt;
