@@ -27,9 +27,13 @@ public class MemberController {
     public ResponseEntity postMember(@RequestBody MemberDto.Post post){
         Member member = memberMapper.memberPostToMember(post);
         MemberDto.Response response = memberMapper.memeberToMemberResponse(memberService.createMember(member));
+
+        log.info("새로운 유저, "+member.getEmail()+" 이(가) 생성되었습니다.");
+
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     };
 
+    //맴버 CRUD 미구현 구현 요망
 
     @GetMapping("/me")
     public ResponseEntity getMember(){
@@ -48,6 +52,6 @@ public class MemberController {
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(){
         //
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("",HttpStatus.NO_CONTENT);
     }
 }
