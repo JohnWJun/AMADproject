@@ -27,6 +27,7 @@
     padding: 36px 80px 20px;
     font-size: 31px;
     font-weight: bold;
+    color: dimgrey;
 }
 
 .modal form {
@@ -64,6 +65,8 @@
 }
 .input {
     width: 100%;
+    color: dimgrey;
+    background-color: white;
     border: none;
     font-size: 17px;
     margin-top: 16px;

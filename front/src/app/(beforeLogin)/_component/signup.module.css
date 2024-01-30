@@ -26,6 +26,7 @@
 .modalHeader {
     padding: 36px 80px 20px;
     font-size: 31px;
+    color: dimgrey;
     font-weight: bold;
 }
 
@@ -54,7 +55,7 @@
     top: 0;
     border: 1px solid rgb(207, 217, 222);
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 14px;
     height: 56px;
     padding: 8px 8px 0;
     color: rgb(83, 100, 113);
@@ -65,6 +66,8 @@
 .input {
     width: 100%;
     border: none;
+    background-color: white;
+    color: dimgrey;
     font-size: 17px;
     margin-top: 16px;
     padding: 12px 8px 8px;
