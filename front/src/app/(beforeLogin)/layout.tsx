@@ -1,14 +1,10 @@
-import React from "react";
-import styles from "@/app/page.module.css";
+import React, {ReactNode} from "react";
+import styles from "@/app/(beforeLogin)/_component/main.module.css";
 
-export default async function BeforeLoginLayout({children,modal}: {
-                                                    children: React.ReactNode,
-                                                    modal: React.ReactNode
-                                                }){
-
-    return(
+type Props = { children: ReactNode, modal: ReactNode };
+export default function Layout({ children, modal }: Props) {
+    return (
         <div className={styles.container}>
-            before login layout
             {children}
             {modal}
         </div>
