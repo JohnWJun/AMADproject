@@ -6,7 +6,7 @@ import TrendSection from "@/app/(afterLogin)/_component/TrendSection";
 import Link from "next/link";
 import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
-import amadLogo from "../../../public/AMAD.png"
+import amadLogo from "../../../public/AMAD_New.png"
 export default async function AfterLoginLayout({children}:
                                                    {children:React.ReactNode }) {
 

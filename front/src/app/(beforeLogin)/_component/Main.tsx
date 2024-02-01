@@ -1,6 +1,6 @@
 import styles from "@/app/(beforeLogin)/_component/main.module.css";
 import Image from "next/image";
-import amadLogo from "../../../../public/AMAD.png";
+import amadLogo from "../../../../public/AMAD_New.png";
 import Link from "next/link";
 
 export default function Main() {
