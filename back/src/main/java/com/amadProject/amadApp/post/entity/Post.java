@@ -1,6 +1,7 @@
 package com.amadProject.amadApp.post.entity;
 
 import com.amadProject.amadApp.amad.entity.Amad;
+import com.amadProject.amadApp.comment.entity.Comment;
 import com.amadProject.amadApp.member.entity.Member;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -53,6 +54,9 @@ public class Post {
 
     @Column(nullable = false)
     private String content_5;
+
+    @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> comments = new ArrayList<>();
 
 
     public void addBible(BibleChapterVerse bibleChapterVerse){

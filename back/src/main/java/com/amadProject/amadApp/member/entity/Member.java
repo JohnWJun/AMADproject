@@ -1,6 +1,7 @@
 package com.amadProject.amadApp.member.entity;
 
 import com.amadProject.amadApp.amad.entity.Amad;
+import com.amadProject.amadApp.comment.entity.Comment;
 import com.amadProject.amadApp.post.entity.BibleChapterVerse;
 import com.amadProject.amadApp.post.entity.Post;
 import lombok.*;
@@ -43,12 +44,14 @@ public class Member {
     private boolean isMadePostToday = false;
 
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Amad> amads = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> comments = new ArrayList<>();
 
     public void addAmad(Amad amad){
         if (amad.getMember() != this) amad.setMember(this);
