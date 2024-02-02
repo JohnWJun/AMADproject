@@ -24,8 +24,8 @@ public class Member {
     private String email;
 
 
-    @Column(nullable = false, updatable = false)
-    private String gender;
+//    @Column(nullable = false, updatable = false)
+//    private String gender;
 
     @Column(nullable = false)
     private String nickname;

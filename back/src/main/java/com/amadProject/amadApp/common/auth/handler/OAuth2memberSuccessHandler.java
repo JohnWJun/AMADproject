@@ -30,6 +30,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
 
+
     public OAuth2memberSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
@@ -100,7 +101,8 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private void saveMember(String email) {
         if (!memberService.existsEmail(email)) {
-            Member member = new Member(email);
+            Member member = new Member();
+            member.setEmail(email);
             memberService.createMember(member);
         }
     }
