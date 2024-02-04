@@ -1,6 +1,6 @@
 package com.amadProject.amadApp.common.tools.calculator;
 
-import com.amadProject.amadApp.member.entity.Member;
+import com.amadProject.amadApp.domain.member.entity.Member;
 import org.springframework.stereotype.Component;
 
 @Component

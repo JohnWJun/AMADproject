@@ -1,8 +1,8 @@
 package com.amadProject.amadApp.common.tools.scheduler;
 
 import com.amadProject.amadApp.common.tools.calculator.MemberIntimacyCalculator;
-import com.amadProject.amadApp.member.entity.Member;
-import com.amadProject.amadApp.member.repository.MemberRepository;
+import com.amadProject.amadApp.domain.member.entity.Member;
+import com.amadProject.amadApp.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -3,8 +3,8 @@ package com.amadProject.amadApp.common.auth.handler;
 
 import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
 import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
-import com.amadProject.amadApp.member.entity.Member;
-import com.amadProject.amadApp.member.service.MemberService;
+import com.amadProject.amadApp.domain.member.entity.Member;
+import com.amadProject.amadApp.domain.member.service.MemberService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -42,7 +42,9 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         List<String> authorities = authorityUtils.createRoles(email);
-        saveMember(email);
+        if (!memberService.existsEmail(email)){
+            saveMember(email);
+        }
         redirect(request,response,email,authorities);
     }
 

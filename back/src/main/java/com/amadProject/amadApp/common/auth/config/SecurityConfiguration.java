@@ -5,7 +5,7 @@ import com.amadProject.amadApp.common.auth.handler.MemberAuthenticationEntryPoin
 import com.amadProject.amadApp.common.auth.handler.OAuth2memberSuccessHandler;
 import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
 import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
-import com.amadProject.amadApp.member.service.MemberService;
+import com.amadProject.amadApp.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
