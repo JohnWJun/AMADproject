@@ -16,7 +16,9 @@ export default function Main() {
                 <Link href='i/flow/signup' className={styles.signup}>sign up</Link>
                 <h3>Already signed up?</h3>
                 <Link href='/login' className={styles.login}>log in</Link>
+                <h3>Sign in/up with Google?</h3>
+                <Link href={`${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`} className={styles.login}>log in</Link>
             </div>
         </>
-    );
+    )
 }
