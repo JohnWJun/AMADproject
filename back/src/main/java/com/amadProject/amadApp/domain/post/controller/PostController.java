@@ -7,18 +7,22 @@ import com.amadProject.amadApp.domain.post.service.BibleVerseApiService;
 import com.amadProject.amadApp.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Transactional
 @RestController
-@RequestMapping("blog")
+@RequestMapping("post")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -84,7 +88,15 @@ public class PostController {
 
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-
+    @GetMapping("/{local-date}")
+    public ResponseEntity getTodayPosts(@PathVariable("local-date") String writtenDate,
+                                        @Positive @RequestParam int page,
+                                        @Positive @RequestParam int size){
+        LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
+        Page<Post> todayPosts = service.findTodayPosts(date,page, size);
+        List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
 
     @DeleteMapping("/{member-email}/{local-date}")
     public ResponseEntity deletePost(@PathVariable("member-email") String email,

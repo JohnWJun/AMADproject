@@ -16,9 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class LikePost extends Auditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long likeId;
+
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

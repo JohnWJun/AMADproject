@@ -131,4 +131,17 @@ public interface PostMapper {
 
     };
 
+    default PostDto.AbstractResponse postToAbstractResponse(Post post){
+        PostDto.AbstractResponse abstractResponse = new PostDto.AbstractResponse();
+        abstractResponse.setTitle(post.getTitle());
+        abstractResponse.setWriter(post.getMember().getEmail());
+        abstractResponse.setCreatedAt(post.getCreatedAt());
+        abstractResponse.setContent_1(post.getContent_1());
+        abstractResponse.setLikes(post.getWhoLikesMyPost().size());
+
+        return abstractResponse;
+    }
+
+    List<PostDto.AbstractResponse> postsToAbstractResponses(List<Post> posts);
+
 }

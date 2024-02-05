@@ -27,6 +27,9 @@ public class Post extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @JoinColumn(nullable = false)
+    private LocalDate publishedDate= LocalDate.now();
+
     @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<BibleChapterVerse> bibleChapterVerses = new ArrayList<>();
 

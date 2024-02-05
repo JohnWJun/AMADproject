@@ -127,4 +127,17 @@ public class PostDto {
 
     }
 
+    @Getter
+    @Setter
+    public static class AbstractResponse{
+        private String title;
+        private String writer;
+        private LocalDateTime createdAt;
+        private String content_1;
+        private int likes;
+
+    }
+
+
+
 }

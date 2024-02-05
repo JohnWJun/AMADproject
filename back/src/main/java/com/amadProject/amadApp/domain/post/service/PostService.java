@@ -13,6 +13,9 @@ import com.amadProject.amadApp.domain.post.repository.BibleChapterVerseRepositor
 import com.amadProject.amadApp.domain.post.repository.PostRepository;
 import com.amadProject.amadApp.domain.post.like.repository.LikePostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -134,4 +137,9 @@ public class PostService {
         return post;
     }
 
+    public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {
+
+        return postRepository.findAll( writtenDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
+
+    }
 }
