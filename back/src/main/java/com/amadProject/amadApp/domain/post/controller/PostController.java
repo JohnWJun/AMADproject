@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Transactional
 @RestController
-@RequestMapping("/post")
+@RequestMapping("blog")
 @RequiredArgsConstructor
 public class PostController {
 

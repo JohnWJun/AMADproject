@@ -7,6 +7,9 @@ import com.amadProject.amadApp.common.tools.generator.NickNameGenerator;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +42,14 @@ public class MemberService {
         return findVerifiedMember(email);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Member> findMembers(int page, int size){
+        return memberRepository.findAll( PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
+
+    }
+
     public void deleteMember(Long memberId){
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         memberRepository.delete(member);
     }
     @Transactional(readOnly = true)

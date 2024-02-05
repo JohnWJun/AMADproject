@@ -56,7 +56,7 @@ public class PostService {
 
     public Post updatePost(Post post){
 
-        Post findPost = postRepository.findById(post.getPostId()).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Post findPost = postRepository.findById(post.getId()).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         Optional.ofNullable(post.getBibleChapterVerses())
                 .ifPresent(bibleChapterVerses-> {
 
