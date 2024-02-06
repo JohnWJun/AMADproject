@@ -62,6 +62,8 @@
 
 .postUserName {
     font-weight: bold;
+    text-decoration: none;
+    /*color: black;*/
 }
 .postUserNick, .postDate {
     color: rgb(83, 100, 113);
@@ -81,6 +83,11 @@
 }
 .postUserName:hover {
     text-decoration: underline;
+}
+.postUserName:visited,
+.postUserName:focus {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Use the color of the parent element */
 }
 
 .postMeta {
