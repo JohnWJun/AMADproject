@@ -28,16 +28,21 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
+
     private final PostRepository postRepository;
 
     private final MemberRepository memberRepository;
 
     private final BibleChapterVerseRepository bibleRepository;
 
+    private final LikePostRepository likePostRepository;
+
     private final BibleVerseApiService apiService;
+
     private final MemberIntimacyCalculator memberIntimacyCalculator;
 
-    private final LikePostRepository likePostRepository;
+
 
 
 

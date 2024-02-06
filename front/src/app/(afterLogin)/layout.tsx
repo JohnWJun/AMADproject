@@ -1,14 +1,15 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import Image from "next/image";
 import style from '@/app/(afterLogin)/layout.module.css';
 import FollowRecommend from "@/app/(afterLogin)/_component/FollowRecommend";
-import TrendSection from "@/app/(afterLogin)/_component/TrendSection";
+import TrendSection from "@/app/(afterLogin)/_component/AmadSection";
 import Link from "next/link";
 import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
 import amadLogo from "../../../public/AMAD_New.png"
-export default async function AfterLoginLayout({children}:
-                                                   {children:React.ReactNode }) {
+
+type Props = { children: ReactNode, modal: ReactNode };
+export default async function AfterLoginLayout({children, modal}: Props) {
 
     return (
         <div className={style.container}>
@@ -24,7 +25,7 @@ export default async function AfterLoginLayout({children}:
                             <ul>
                                 <NavMenu />
                             </ul>
-                            <Link href="/compose/tweet" className={style.postButton}>게시하기</Link>
+                            <Link href="/compose/amad" className={style.postButton}>게시하기</Link>
                         </nav>
                         <LogoutButton />
                     </div>
@@ -55,7 +56,7 @@ export default async function AfterLoginLayout({children}:
                     </section>
                 </div>
             </div>
-
+            {modal}
         </div>
     )
 }

@@ -42,7 +42,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         List<String> authorities = authorityUtils.createRoles(email);
-        if (!memberService.existsEmail(email)){
+        if (memberService.isExistsEmail(email)){
             saveMember(email);
         }
         redirect(request,response,email,authorities);
@@ -102,7 +102,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private void saveMember(String email) {
-        if (!memberService.existsEmail(email)) {
+        if (memberService.isExistsEmail(email)) {
             Member member = new Member();
             member.setEmail(email);
             memberService.createMember(member);

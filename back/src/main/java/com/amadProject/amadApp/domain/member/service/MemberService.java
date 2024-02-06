@@ -24,7 +24,7 @@ public class MemberService {
 
 
     public Member createMember(Member member){
-        if (!existsEmail(member.getEmail())) {
+        if (isExistsEmail(member.getEmail())) {
             member.setNickname(nicknameGenerator.randomNickNameGenerator(NickNameGenerator.adjectives,NickNameGenerator.characters));
             Member savedMember = memberRepository.save(member);
             return savedMember;
@@ -59,8 +59,8 @@ public class MemberService {
         return foundMember;
     }
 
-    public boolean existsEmail(String email) {
+    public boolean isExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-        return member.isPresent();
+        return member.isEmpty();
     }
 }
