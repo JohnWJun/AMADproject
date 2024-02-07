@@ -11,7 +11,7 @@ export default function CommentForm() {
     const onChange = () => {}
     const me = {
         id: 'zerohch0',
-        image: '/5Udwvqim.jpg'
+        image: '/AMAD.png'
     };
 
     return (

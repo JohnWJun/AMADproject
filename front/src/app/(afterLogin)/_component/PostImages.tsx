@@ -5,12 +5,12 @@ import cx from 'classnames';
 type Props = {
     post: {
         postId: number;
-        content: string,
         User: {
             id: string,
             nickname: string,
             image: string,
         },
+        content: string,
         createdAt: Date,
         Images: any[],
     }
