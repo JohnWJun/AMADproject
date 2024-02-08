@@ -10,3 +10,6 @@
     align-items: stretch;
     font-family: 'Malgun Gothic', sans-serif;
 }
+.postContainer {
+    margin-top: 100px; /* Adjust the value as needed */
+}

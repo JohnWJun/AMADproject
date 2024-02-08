@@ -14,19 +14,22 @@ export default function Home() {
             <main className={style.main}>
                 <TabProvider>
                     <Tab/>
-                    <PostForm />
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
+                    {/*<PostForm />*/}
+                    <div className={style.postContainer}>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                        <Post/>
+                    </div>
+
                 </TabProvider>
             </main>
     )
