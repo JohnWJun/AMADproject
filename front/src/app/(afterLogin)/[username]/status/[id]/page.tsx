@@ -1,6 +1,7 @@
 import BackButton from "@/app/(afterLogin)/_component/BackButton";
+import PostDetails from "@/app/(afterLogin)/_component/PostDetails";
 import style from './singlePost.module.css';
-import Post from "@/app/(afterLogin)/_component/Post";
+import Post from "@/app/(afterLogin)/_component/PostAbstract";
 import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/CommentForm";
 
 export default function SinglePost() {
@@ -10,7 +11,7 @@ export default function SinglePost() {
                 <BackButton/>
                 <h3 className={style.headerTitle}>게시하기</h3>
             </div>
-            <Post />
+            <PostDetails />
             <CommentForm />
             <div>
                 <Post />

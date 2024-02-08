@@ -10,7 +10,12 @@ type Props = {
             nickname: string,
             image: string,
         },
-        content: string,
+        content_1: string,
+        content_2: string,
+        content_3: string,
+        content_4: string,
+        content_5: string,
+        myAmad: string,
         createdAt: Date,
         Images: any[],
     }

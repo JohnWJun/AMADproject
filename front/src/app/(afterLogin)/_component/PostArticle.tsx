@@ -8,7 +8,12 @@ type Props = {
     children: ReactNode,
     post: {
         postId: number;
-        content: string,
+        content_1: string,
+        content_2: string,
+        content_3: string,
+        content_4: string,
+        content_5: string,
+        myAmad: string,
         User: {
             id: string,
             nickname: string,

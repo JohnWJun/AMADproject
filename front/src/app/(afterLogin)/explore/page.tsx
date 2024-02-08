@@ -1,7 +1,7 @@
 import style from "./explore.module.css";
 import SearchForm from "@/app/(afterLogin)/_component/SearchForm";
 import AmadAbstract from "@/app/(afterLogin)/_component/AmadAbstract";
-import Post from "@/app/(afterLogin)/_component/Post";
+import Post from "@/app/(afterLogin)/_component/PostAbstract";
 
 export default function Home() {
     return (

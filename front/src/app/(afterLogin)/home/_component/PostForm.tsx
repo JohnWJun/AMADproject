@@ -2,6 +2,8 @@
 
 import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
 import style from './postForm.module.css';
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function PostForm() {
     const imageRef = useRef<HTMLInputElement>(null);
@@ -10,9 +12,12 @@ export default function PostForm() {
         id: 'zerohch0',
         image: '/5Udwvqim.jpg'
     };
+    const router = useRouter();
 
     const onChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent(e.target.value);
+        // router.push("/compose/amad");
+
     }
 
     const onSubmit: FormEventHandler = (e) => {

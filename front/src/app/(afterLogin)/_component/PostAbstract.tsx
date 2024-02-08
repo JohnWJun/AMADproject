@@ -15,15 +15,20 @@ dayjs.extend(relativeTime)
 type Props = {
     noImage?: boolean
 }
-export default function Post({ noImage }: Props) {
+export default function PostAbstract({ noImage }: Props) {
     const target = {
         postId: 1,
         User: {
-            id: 'elonmusk',
-            nickname: 'Elon Musk',
-            image: '/yRsRRjGO.jpg',
+            id: 'tbvjdngus@gmail.com',
+            nickname: 'John Jun',
+            image: '/AMAD.png',
         },
-        content: '클론코딩 라이브로 하니 너무 힘들어요 ㅠㅠ',
+        content_1: '사랑의 하나님',
+        content_2: '서로 사랑하라',
+        content_3: '내 마음대로 판단하고 정죄하였습니다.',
+        content_4: '그래도 하나님은 나를 사랑하셨어요',
+        content_5: '사랑을 전하는 하루 되어라',
+        myAmad: '10명에게 안부를 묻고 사랑을 나누기',
         createdAt: new Date(),
         Images: [] as any[],
     }
@@ -58,14 +63,16 @@ export default function Post({ noImage }: Props) {
                         </Link>
                         <span className={style.postDate}>{dayjs(target.createdAt).fromNow(true)}</span>
                     </div>
-                    <div>{target.content}</div>
-                    <div className={style.postImageSection}>
-                        {/*{target.Images && target.Images.length >0 && (*/}
-                        {/*    <Link href={`/${target.User.id}/status/${target.postId}/photo/${target.Images[0].imageId}`}>*/}
-                        {/*    <img src={target.Images[0]?.link} alt="" />*/}
-                        {/*    </Link>*/}
-                        {/*    )}*/}
-                        <PostImages  post={target}/>
+                    <div className={style.postContent}>
+                        <h4>말씀하시는 하나님은...</h4>
+
+                        <span>{target.content_1}</span>
+
+                        <h4>오늘의 AMAD</h4>
+                        <span>{target.myAmad}</span>
+                        <div className={style.postImageSection}>
+                            <PostImages post={target}/>
+                        </div>
                     </div>
                     <ActionButtons/>
                 </div>

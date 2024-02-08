@@ -3,11 +3,25 @@
 import style from './composeAmad.module.css';
 import {ChangeEventHandler, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
+import {string} from "prop-types";
+import {type} from "node:os";
 export default function ComposeAmad() {
     type typeForTitle = string;
     type typeForContent = string;
 
-    const [title, setTitle] = useState<typeForTitle>('');
+    const bible = {
+        book: '',
+        chapter:'',
+        from:'',
+        to:''
+    };
+    const bibles = [];
+    const [book, setBook] = useState<typeForContent>(bible.book);
+    const [chapter, setChapter] = useState<typeForContent>(bible.chapter);
+    const [from, setFrom] = useState<typeForContent>(bible.from);
+    const [to, setTo] = useState<typeForContent>(bible.to);
+    const [title, setTitle] = useState<typeForContent>('');
+
     const [content_1, setContent_1] = useState<typeForContent>('');
     const [content_2, setContent_2] = useState<typeForContent>('');
     const [content_3, setContent_3] = useState<typeForContent>('');
@@ -25,6 +39,18 @@ export default function ComposeAmad() {
         imageRef.current?.click();
     }
 
+    const onSelectBook : ChangeEventHandler<HTMLSelectElement> =(e) => {
+        setBook(e.target.value);
+    }
+    const onSelectChapter : ChangeEventHandler<HTMLSelectElement> =(e) => {
+        setChapter(e.target.value);
+    }
+    const onSelectFrom : ChangeEventHandler<HTMLSelectElement> =(e) => {
+        setFrom(e.target.value);
+    }
+    const onSelectTo : ChangeEventHandler<HTMLSelectElement> =(e) => {
+        setTo(e.target.value);
+    }
     const onChangeAmad : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
         setAmad(e.target.value);
     }
@@ -76,14 +102,35 @@ export default function ComposeAmad() {
 
                         <div className={style.inputSection}>
                             <div className={style.inputDiv}>
-                                <h4>
-                                    오늘의 묵상을 기록하세요.
-
-                                </h4>
+                                <h4>오늘의 묵상을 기록하세요.</h4>
                             </div>
                             <div className={style.inputDiv}>
+                                <h5>오늘 나에게 주신 말씀</h5>
+                            </div>
+                            <span>
                                 <div>
-                                    1. 말씀하시는 하나님?
+                                성경: <select name={"book"} onSelect={onSelectBook}>
+                                        <option value={'ge'} >창세기</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    chapter:
+                                    <select name={"from"} onSelect={onSelectFrom}>
+                                        <option value={'1'}>1장</option>
+                                    </select>
+                                    from:
+                                    <select name={"from"} onSelect={onSelectFrom}>
+                                        <option value={'1'}>1절</option>
+                                    </select>
+                                    to:
+                                    <select name={"to"} onSelect={onSelectTo}>
+                                        <option value={'1'}>1절</option>
+                                    </select>
+                                </div>
+                            </span>
+                            <div className={style.inputDiv}>
+                                <div>
+                                1. 말씀하시는 하나님?
                                     <input className={style.input} placeholder="~는 하나님"
                                            value={content_1}
                                            onChange={onChangeContent_1}/>
