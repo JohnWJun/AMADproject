@@ -15,7 +15,16 @@
 
 .postWrapper {
     display: flex;
+    position: relative;
     flex-direction: row;
+}
+.postFixButton{
+    position: absolute;
+    right: 0;
+}
+
+.postFixButton:hover {
+    fill: #0083eb;
 }
 .postReposted {
     display: flex;
