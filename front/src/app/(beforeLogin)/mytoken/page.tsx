@@ -1,19 +1,23 @@
 "use client";
 import {useRouter} from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
 
+    const router =useRouter();
 
+    useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = urlParams.get('access_token');
     const refreshToken = urlParams.get('refresh_token');
-    localStorage.setItem('Authorization', accessToken ?? '');
-    localStorage.setItem('Refresh', refreshToken ?? '');
+        if (accessToken && refreshToken) {
+            localStorage.setItem('Authorization', accessToken);
+            localStorage.setItem('Refresh', refreshToken);
+            router.replace('/home');
+        } else {
+            console.error('Access or refresh token is missing');
+        }
+    }, []); // Empty dependency array ensures this effect runs only once after component mount
 
-    const router =useRouter();
-
-
-    router.replace('/home');
-    return null
-
+    return null; // or any loading indicator if needed
 }

@@ -19,7 +19,7 @@ public class MemberDto {
     @Setter
     public static class Post{
         private String email;
-//        private String gender;
+
     }
 
     @Getter
