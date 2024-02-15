@@ -5,6 +5,7 @@ import com.amadProject.amadApp.common.auth.jwt.JwtTokenizer;
 import com.amadProject.amadApp.common.auth.utils.CustomAuthorityUtils;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.member.service.MemberService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
@@ -41,9 +43,11 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+        String pic = String.valueOf(oAuth2User.getAttributes().get("picture"));
         List<String> authorities = authorityUtils.createRoles(email);
         if (memberService.isExistsEmail(email)){
-            saveMember(email);
+            saveMember(email,pic);
+            log.info("Google을 통해 유저: "+email+"이(가) 등록되었습니다.");
         }
         redirect(request,response,email,authorities);
     }
@@ -101,10 +105,11 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    private void saveMember(String email) {
+    private void saveMember(String email, String pic) {
         if (memberService.isExistsEmail(email)) {
             Member member = new Member();
             member.setEmail(email);
+            member.setStatusImg(pic);
             memberService.createMember(member);
         }
     }

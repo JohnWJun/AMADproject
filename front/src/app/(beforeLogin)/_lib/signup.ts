@@ -11,6 +11,7 @@ export const signup = async (data:any) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420"
             },
             body: JSON.stringify(data),
             credentials: 'include',

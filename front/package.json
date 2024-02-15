@@ -15,7 +15,8 @@
     "next": "^14",
     "normalize.css": "^8.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recoil-persist": "^5.1.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.0",
@@ -25,6 +26,7 @@
     "dayjs": "^1.11.10",
     "eslint": "^8",
     "eslint-config-next": "13.5.5",
+    "recoil": "^0.7.7",
     "typescript": "^5"
   }
 }

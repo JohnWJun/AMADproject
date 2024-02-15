@@ -1,8 +1,10 @@
 "use client";
 import {useRouter} from "next/navigation";
 import { useEffect } from "react";
+import {useRecoilState} from "recoil";
 
 export default function Page() {
+
 
     const router =useRouter();
 
@@ -13,6 +15,9 @@ export default function Page() {
         if (accessToken && refreshToken) {
             localStorage.setItem('Authorization', accessToken);
             localStorage.setItem('Refresh', refreshToken);
+            // setAuthorizationToken(accessToken);
+            // setRefreshToken(secondToken);
+
             router.replace('/home');
         } else {
             console.error('Access or refresh token is missing');
