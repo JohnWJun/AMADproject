@@ -29,7 +29,7 @@ public class MemberService {
             Member savedMember = memberRepository.save(member);
             return savedMember;
         }
-        return null;
+        throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
     public Member updateMember(Member member){
