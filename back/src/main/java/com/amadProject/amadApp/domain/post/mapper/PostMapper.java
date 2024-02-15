@@ -1,5 +1,6 @@
 package com.amadProject.amadApp.domain.post.mapper;
 
+import com.amadProject.amadApp.domain.amad.entity.Amad;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.post.dto.PostDto;
 import com.amadProject.amadApp.domain.post.entity.BibleChapterVerse;
@@ -15,6 +16,7 @@ public interface PostMapper {
     default Post postDtoToPost(PostDto.Post post){
         Post postToCreate = new Post();
         Member member = new Member();
+        Amad myAmad = new Amad();
         List<BibleChapterVerse> bibleChapterVerses = post.getBibleVerses().stream().map(
                 bibleChapterVersePost -> {
                     BibleChapterVerse bible = new BibleChapterVerse();
@@ -28,7 +30,10 @@ public interface PostMapper {
                 }
         ).collect(Collectors.toList());
 
-
+        myAmad.setPost(postToCreate);
+        myAmad.setMember(member);
+        myAmad.setMission(post.getMyAmad());
+        postToCreate.setAmad(myAmad);
         postToCreate.setTitle(post.getTitle());
         postToCreate.setMember(member);
         postToCreate.setContent_1(post.getContent_1());

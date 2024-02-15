@@ -3,6 +3,9 @@ package com.amadProject.amadApp.domain.post.service;
 import com.amadProject.amadApp.common.exception.BusinessLogicException;
 import com.amadProject.amadApp.common.exception.ExceptionCode;
 import com.amadProject.amadApp.common.tools.calculator.MemberIntimacyCalculator;
+import com.amadProject.amadApp.domain.amad.entity.Amad;
+import com.amadProject.amadApp.domain.amad.repository.AmadRepository;
+import com.amadProject.amadApp.domain.amad.service.AmadService;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.member.repository.MemberRepository;
 import com.amadProject.amadApp.domain.post.dto.PostDto;
@@ -38,6 +41,8 @@ public class PostService {
 
     private final LikePostRepository likePostRepository;
 
+    private final AmadRepository amadRepository;
+
     private final BibleVerseApiService apiService;
 
     private final MemberIntimacyCalculator memberIntimacyCalculator;
@@ -51,6 +56,8 @@ public class PostService {
 
         verifyExistPost(post.getMember().getEmail(), date);
         Member member = memberRepository.findByEmail(post.getMember().getEmail()).get();
+        post.getAmad().setMember(member);
+
 //        member.addPost(post);
         post.setMember(member);
         memberIntimacyCalculator.addIntimacyPoint(member);
@@ -58,6 +65,7 @@ public class PostService {
         member.setPenaltyPoints(0);
         Post savedPost = postRepository.save(post);
         memberRepository.save(member);
+//        amadRepository.save(post.getAmad());
 
        return savedPost;
     }

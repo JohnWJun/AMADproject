@@ -36,7 +36,7 @@ public class Post extends Auditable {
     @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<LikePost> whoLikesMyPost = new ArrayList<>();
 
-    @OneToOne(mappedBy = "post")
+    @OneToOne(mappedBy = "post",  cascade = CascadeType.ALL)
     private Amad amad;
 
     @Column(nullable = false)

@@ -11,14 +11,14 @@ public class AmadDto {
     @Setter
     public static class Post{
         private String mission;
-        private String description;
+//        private String description;
     }
 
     @Getter
     @Setter
     public static class Patch{
         private String mission;
-        private String description;
+//        private String description;
         private boolean isComplete;
     }
 
@@ -30,6 +30,6 @@ public class AmadDto {
         private LocalDateTime modifiedAt;
         private boolean isComplete;
         private String mission;
-        private String description;
+//        private String description;
     }
 }

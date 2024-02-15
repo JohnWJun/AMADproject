@@ -43,8 +43,8 @@ public class AmadService {
         Amad findAmad = amadRepository.findById(amadId).get();
         Optional.ofNullable(amad.getMission())
                 .ifPresent(mission-> findAmad.setMission(mission));
-        Optional.ofNullable(amad.getDescription())
-                .ifPresent(description-> findAmad.setDescription(description));
+//        Optional.ofNullable(amad.getDescription())
+//                .ifPresent(description-> findAmad.setDescription(description));
 
         if (amad.isComplete()) findAmad.setComplete(true);
 

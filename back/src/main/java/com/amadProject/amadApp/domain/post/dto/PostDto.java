@@ -54,6 +54,8 @@ public class PostDto {
         private String content_4;
 
         private String content_5;
+
+        private String myAmad;
     }
 
     @Getter

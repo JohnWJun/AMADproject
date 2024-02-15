@@ -29,8 +29,8 @@ public class Amad extends Auditable {
     @Column(nullable = false)
     private String mission;
 
-    @Column(nullable = false)
-    private String description;
+//    @Column(nullable = false)
+//    private String description;
 
     @Column(nullable = false)
     private boolean isComplete = false;
