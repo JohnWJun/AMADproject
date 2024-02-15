@@ -7,7 +7,7 @@ import Post from "@/app/(afterLogin)/_component/PostAbstract";
 // import GetPost from "@/app/(afterLogin)/home/_lib/GetPost";
 import { useEffect} from "react";
 import {tr} from "@faker-js/faker";
-import {getCurrentUserInfo} from "@/app/(afterLogin)/home/_component/memberapi";
+import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import { Member} from "@/app/_component/MemberRecoilState";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {router} from "next/client";

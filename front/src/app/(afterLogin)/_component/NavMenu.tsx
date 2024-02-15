@@ -3,7 +3,7 @@
 import style from './navMenu.module.css';
 import {useSelectedLayoutSegment} from "next/navigation";
 import Link from "next/link";
-import {getCurrentUserInfo} from "@/app/(afterLogin)/home/_component/memberapi";
+import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState";
 import {useEffect, useState} from "react";

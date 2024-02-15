@@ -1,37 +1,84 @@
 "use client";
 
 import style from './composeAmad.module.css';
-import {ChangeEventHandler, useRef, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {string} from "prop-types";
 import {type} from "node:os";
+import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
+import {useRecoilValue} from "recoil";
+import {Member} from "@/app/_component/MemberRecoilState"
 export default function ComposeAmad() {
     type typeForTitle = string;
     type typeForContent = string;
+    const memberInfo = useRecoilValue(Member);
 
-    const bible = {
-        book: '',
-        chapter:'',
-        from:'',
-        to:''
-    };
+    const Post = {
+        bibleVerses: [{
+            bible: '',
+            bibleChapter: 0,
+            bibleVerseFrom: 0,
+            bibleVerseTo: 0
+
+        }],
+        title: '',
+        content_1: '',
+        content_2: '',
+        content_3: '',
+        content_4: '',
+        content_5: '',
+        myAmad:'',
+    }
     const bibles = [];
-    const [book, setBook] = useState<typeForContent>(bible.book);
-    const [chapter, setChapter] = useState<typeForContent>(bible.chapter);
-    const [from, setFrom] = useState<typeForContent>(bible.from);
-    const [to, setTo] = useState<typeForContent>(bible.to);
-    const [title, setTitle] = useState<typeForContent>('');
+    const [book, setBook] = useState<typeForContent>(Post.bibleVerses[0].bible);
+    const [chapter, setChapter] = useState<number>(Post.bibleVerses[0].bibleChapter);
+    const [from, setFrom] = useState<number>(Post.bibleVerses[0].bibleVerseFrom);
+    const [to, setTo] = useState<number>(Post.bibleVerses[0].bibleVerseTo);
+    const [title, setTitle] = useState<typeForContent>(Post.title);
 
-    const [content_1, setContent_1] = useState<typeForContent>('');
-    const [content_2, setContent_2] = useState<typeForContent>('');
-    const [content_3, setContent_3] = useState<typeForContent>('');
-    const [content_4, setContent_4] = useState<typeForContent>('');
-    const [content_5, setContent_5] = useState<typeForContent>('');
-    const [amad, setAmad] = useState<typeForContent>('');
+    const [content_1, setContent_1] = useState<typeForContent>(Post.content_1);
+    const [content_2, setContent_2] = useState<typeForContent>(Post.content_2);
+    const [content_3, setContent_3] = useState<typeForContent>(Post.content_3);
+    const [content_4, setContent_4] = useState<typeForContent>(Post.content_4);
+    const [content_5, setContent_5] = useState<typeForContent>(Post.content_5);
+    const [amad, setAmad] = useState<typeForContent>(Post.myAmad);
 
     const imageRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const onSubmit = () => {};
+    const onSubmit: FormEventHandler = async (e) => {
+        e.preventDefault();
+
+        // Construct the requestBody object with the updated values
+        const requestBody = {
+
+                bibleVerses: [
+                    {
+                        bible: book,
+                        bibleChapter: chapter,
+                        bibleVerseFrom: from,
+                        bibleVerseTo: to
+                    }
+                ],
+                title: title,
+                content_1: content_1,
+                content_2: content_2,
+                content_3: content_3,
+                content_4: content_4,
+                content_5: content_5,
+                myAmad: amad
+
+        };
+        const accessToken = localStorage.getItem("Authorization") || '';
+        const refreshToken = localStorage.getItem("Refresh") || '';
+        const email = memberInfo.email
+
+        // Call the postPost function with the updated requestBody
+        const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
+        if (success) {
+            router.replace('/home');
+            router.refresh();
+        }
+    };
     const onClickClose = () => {
         router.back();
     }
@@ -43,13 +90,13 @@ export default function ComposeAmad() {
         setBook(e.target.value);
     }
     const onChangeChapter : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setChapter(e.target.value);
+        setChapter(parseInt(e.target.value));
     }
     const onChangeFrom : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setFrom(e.target.value);
+        setFrom(parseInt(e.target.value));
     }
     const onChangeTo : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setTo(e.target.value);
+        setTo(parseInt(e.target.value));
     }
     const onChangeAmad : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
         setAmad(e.target.value);
@@ -109,74 +156,74 @@ export default function ComposeAmad() {
                             </div>
                             <span>
                                 <div>
-                                성경: <select name={"book"} onSelect={onSelectBook}>
+                                성경: <select name="book" value={book} onChange={onSelectBook}>
 
-                                   <option value={'ge'}>ge (창세기)</option>
-                                   <option value={'exo'}>exo (출애굽기)</option>
-                                   <option value={'lev'}>lev (레위기)</option>
-                                   <option value={'num'}>num (민수기)</option>
-                                   <option value={'deu'}>deu (신명기)</option>
-                                   <option value={'josh'}>josh (여호수아)</option>
-                                   <option value={'jdgs'}>jdgs (사사기)</option>
-                                   <option value={'ruth'}>ruth (룻기)</option>
-                                   <option value={'1sm'}>1sm (사무엘상)</option>
-                                   <option value={'2sm'}>2sm (사무엘하)</option>
-                                   <option value={'1ki'}>1ki (열왕기상)</option>
-                                   <option value={'2ki'}>2ki (열왕기하)</option>
-                                   <option value={'1chr'}>1chr (역대상)</option>
-                                   <option value={'2chr'}>2chr (역대하)</option>
-                                   <option value={'ezra'}>ezra (에스라)</option>
-                                   <option value={'neh'}>neh (느헤미야)</option>
-                                   <option value={'est'}>est (에스더)</option>
-                                   <option value={'job'}>job (욥기)</option>
-                                   <option value={'psa'}>psa (시편)</option>
-                                   <option value={'prv'}>prv (잠언)</option>
-                                   <option value={'eccl'}>eccl (전도서)</option>
-                                   <option value={'ssol'}>ssol (아가)</option>
-                                   <option value={'isa'}>isa (이사야)</option>
-                                   <option value={'jer'}>jer (예레미야)</option>
-                                   <option value={'lam'}>lam (예레미야 애가)</option>
-                                   <option value={'eze'}>eze (에스겔)</option>
-                                   <option value={'dan'}>dan (다니엘)</option>
-                                   <option value={'hos'}>hos (호세아)</option>
-                                   <option value={'joel'}>joel (요엘)</option>
-                                   <option value={'amos'}>amos (아모스)</option>
-                                   <option value={'obad'}>obad (오바댜)</option>
-                                   <option value={'jonah'}>jonah (요나)</option>
-                                   <option value={'mic'}>mic (미가)</option>
-                                   <option value={'nahum'}>nahum (나훔)</option>
-                                   <option value={'hab'}>hab (하박국)</option>
-                                   <option value={'zep'}>zep (스바냐)</option>
-                                   <option value={'hag'}>hag (학개)</option>
-                                   <option value={'zep'}>zep (스가랴)</option>
-                                   <option value={'mal'}>mal (말라기)</option>
-                                   <option value={'mat'}>mat (마태복음)</option>
-                                   <option value={'mark'}>mark 마가복음)</option>
-                                   <option value={'luke'}>luke (누가복음)</option>
-                                   <option value={'john'}>john (요한복음)</option>
-                                   <option value={'acts'}>acts (사도행전)</option>
-                                   <option value={'rom'}>rom (로마서)</option>
-                                   <option value={'1cor'}>1cor (고린도전서)</option>
-                                   <option value={'2cor'}>2cor (고린도후서)</option>
-                                   <option value={'gal'}>gal (갈라디아서)</option>
-                                   <option value={'eph'}>eph (에베소서)</option>
-                                   <option value={'phi'}>phi (빌립보서)</option>
-                                   <option value={'col'}>col (골로새서)</option>
-                                   <option value={'1th'}>1th (데살로니가전서)</option>
-                                   <option value={'2th'}>2th (데살로니가후서)</option>
-                                   <option value={'1tim'}>1tim (디모데전서)</option>
-                                   <option value={'2tim'}>2tim (디모데후서)</option>
-                                   <option value={'titus'}>titus (디도서)</option>
-                                   <option value={'phmn'}>phmn (빌레몬서)</option>
-                                   <option value={'heb'}>heb (히브리서)</option>
-                                   <option value={'jas'}>jas (야고보서)</option>
-                                   <option value={'1pet'}>1pet (베드로전서)</option>
-                                   <option value={'2pet'}>2pet (베드로후서)</option>
-                                   <option value={'1jn'}>1jn (요한1서)</option>
-                                   <option value={'2jn'}>2jn (요한2서)</option>
-                                   <option value={'3jn'}>3jn (요한3서)</option>
-                                   <option value={'jude'}>jude (유다서)</option>
-                                   <option value={'rev'}>rev (요한계시록)</option>
+                                    <option value='ge'>ge (창세기)</option>
+                                    <option value='exo'>exo (출애굽기)</option>
+                                    <option value='lev'>lev (레위기)</option>
+                                    <option value='num'>num (민수기)</option>
+                                    <option value='deu'>deu (신명기)</option>
+                                    <option value='josh'>josh (여호수아)</option>
+                                    <option value='jdgs'>jdgs (사사기)</option>
+                                    <option value='ruth'>ruth (룻기)</option>
+                                    <option value='1sm'>1sm (사무엘상)</option>
+                                    <option value='2sm'>2sm (사무엘하)</option>
+                                    <option value='1ki'>1ki (열왕기상)</option>
+                                    <option value='2ki'>2ki (열왕기하)</option>
+                                    <option value='1chr'>1chr (역대상)</option>
+                                    <option value='2chr'>2chr (역대하)</option>
+                                    <option value='ezra'>ezra (에스라)</option>
+                                    <option value='neh'>neh (느헤미야)</option>
+                                    <option value='est'>est (에스더)</option>
+                                    <option value='job'>job (욥기)</option>
+                                    <option value='psa'>psa (시편)</option>
+                                    <option value='prv'>prv (잠언)</option>
+                                    <option value='eccl'>eccl (전도서)</option>
+                                    <option value='ssol'>ssol (아가)</option>
+                                    <option value='isa'>isa (이사야)</option>
+                                    <option value='jer'>jer (예레미야)</option>
+                                    <option value='lam'>lam (예레미야 애가)</option>
+                                    <option value='eze'>eze (에스겔)</option>
+                                    <option value='dan'>dan (다니엘)</option>
+                                    <option value='hos'>hos (호세아)</option>
+                                    <option value='joel'>joel (요엘)</option>
+                                    <option value='amos'>amos (아모스)</option>
+                                    <option value='obad'>obad (오바댜)</option>
+                                    <option value='jonah'>jonah (요나)</option>
+                                    <option value='mic'>mic (미가)</option>
+                                    <option value='nahum'>nahum (나훔)</option>
+                                    <option value='hab'>hab (하박국)</option>
+                                    <option value='zep'>zep (스바냐)</option>
+                                    <option value='hag'>hag (학개)</option>
+                                    <option value='zep'>zep (스가랴)</option>
+                                    <option value='mal'>mal (말라기)</option>
+                                    <option value='mat'>mat (마태복음)</option>
+                                    <option value='mark'>mark 마가복음)</option>
+                                    <option value='luke'>luke (누가복음)</option>
+                                    <option value='john'>john (요한복음)</option>
+                                    <option value='acts'>acts (사도행전)</option>
+                                    <option value='rom'>rom (로마서)</option>
+                                    <option value='1cor'>1cor (고린도전서)</option>
+                                    <option value='2cor'>2cor (고린도후서)</option>
+                                    <option value='gal'>gal (갈라디아서)</option>
+                                    <option value='eph'>eph (에베소서)</option>
+                                    <option value='phi'>phi (빌립보서)</option>
+                                    <option value='col'>col (골로새서)</option>
+                                    <option value='1th'>1th (데살로니가전서)</option>
+                                    <option value='2th'>2th (데살로니가후서)</option>
+                                    <option value='1tim'>1tim (디모데전서)</option>
+                                    <option value='2tim'>2tim (디모데후서)</option>
+                                    <option value='titus'>titus (디도서)</option>
+                                    <option value='phmn'>phmn (빌레몬서)</option>
+                                    <option value='heb'>heb (히브리서)</option>
+                                    <option value='jas'>jas (야고보서)</option>
+                                    <option value='1pet'>1pet (베드로전서)</option>
+                                    <option value='2pet'>2pet (베드로후서)</option>
+                                    <option value='1jn'>1jn (요한1서)</option>
+                                    <option value='2jn'>2jn (요한2서)</option>
+                                    <option value='3jn'>3jn (요한3서)</option>
+                                    <option value='jude'>jude (유다서)</option>
+                                    <option value='rev'>rev (요한계시록)</option>
 
                                     </select>
                                     <input name={"chapter"} onChange={onChangeChapter} placeholder={'1'}>
@@ -261,7 +308,7 @@ export default function ComposeAmad() {
                                     </svg>
                                 </button>
                             </div>
-                            <button className={style.actionButton} disabled={!content_1}>게시하기</button>
+                            <button type={"submit"} className={style.actionButton} disabled={!content_1}>게시하기</button>
                         </div>
                     </div>
                 </form>
