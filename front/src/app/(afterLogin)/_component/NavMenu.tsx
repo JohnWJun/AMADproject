@@ -3,18 +3,20 @@
 import style from './navMenu.module.css';
 import {useSelectedLayoutSegment} from "next/navigation";
 import Link from "next/link";
-import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState";
 import {useEffect, useState} from "react";
 
+
+
 export default function NavMenu() {
     const segment = useSelectedLayoutSegment();
     console.log(segment);
+
     const me = useRecoilValue(Member);
 
 
-if (me) {
+
     return (
         <>
             <li>
@@ -155,5 +157,5 @@ if (me) {
             </li>}
         </>
     );
-}
+
 }

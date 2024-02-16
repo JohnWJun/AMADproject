@@ -12,10 +12,10 @@ export default function Main() {
 
             <div className={styles.right}>
                 <h1>Make Your Daily Log <br/> with God</h1>
-                <h2>You can sign up now</h2>
-                <Link href='i/flow/signup' className={styles.signup}>sign up</Link>
-                <h3>Already signed up?</h3>
-                <Link href='/login' className={styles.login}>log in</Link>
+                {/*<h2>You can sign up now</h2>*/}
+                {/*<Link href='i/flow/signup' className={styles.signup}>sign up</Link>*/}
+                {/*<h3>Already signed up?</h3>*/}
+                {/*<Link href='/login' className={styles.login}>log in</Link>*/}
                 <h3>Sign in/up with Google</h3>
                 <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`} className={styles.login}>log in</Link>
             </div>

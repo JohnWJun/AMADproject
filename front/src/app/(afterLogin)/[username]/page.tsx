@@ -4,7 +4,7 @@ import Post from "@/app/(afterLogin)/_component/PostAbstract";
 import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import {useRecoilState, useRecoilValue} from "recoil"
 import {Member} from "@/app/_component/MemberRecoilState";
-import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
+
 
 
 export default function Profile() {

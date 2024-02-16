@@ -5,48 +5,64 @@ import Tab from "@/app/(afterLogin)/home/_component/Tab";
 import PostForm from "@/app/(afterLogin)/home/_component/PostForm";
 import Post from "@/app/(afterLogin)/_component/PostAbstract";
 // import GetPost from "@/app/(afterLogin)/home/_lib/GetPost";
-import { useEffect} from "react";
+import {useEffect, useState} from "react";
 import {tr} from "@faker-js/faker";
 import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import { Member} from "@/app/_component/MemberRecoilState";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
+import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
+import {Simulate} from "react-dom/test-utils";
+import submit = Simulate.submit;
+import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 // import Loading from "@/app/(afterLogin)/home/loading";
 // import TabDeciderSuspense from "@/app/(afterLogin)/home/_component/TabDeciderSuspense";
 
 export default function Home() {
     const router = useRouter();
+    const [accessToken, setAccessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
+    const [posts, setPosts] = useState([]);
+    const member = useRecoilValue(Member);
+    const [memberInfo, setMemberInfo] = useRecoilState(Member);
 
-    if (typeof window !== 'undefined') {
-        const accessToken = localStorage.getItem("Authorization");
-        const refreshToken = localStorage.getItem("Refresh");
-        // Use accessToken and refreshToken here
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const storedAccessToken = localStorage.getItem("Authorization") || '';
+            const storedRefreshToken = localStorage.getItem("Refresh") || '';
 
-        const member = useRecoilValue(Member);
-        const [memberInfo, setMemberInfo] = useRecoilState(Member);
+            setAccessToken(storedAccessToken);
+            setRefreshToken(storedRefreshToken);
 
-        if (accessToken === '') {
-            alert('로그인 후 접속이 가능합니다.')
-            router.replace('/');
-            router.refresh();
-        }
-        useEffect(() => {
-            const fetchUserData = async () => {
-                const {success} = await getCurrentUserInfo({
-                    accessToken,
-                    refreshToken,
+            if (member.email === '') {
+                const { success } = await getCurrentUserInfo({
+                    accessToken: storedAccessToken,
+                    refreshToken: storedRefreshToken,
                     setMemberInfo
                 });
-                // Process the user data if needed
-            };
-
-            // Fetch user data only if member email is empty
-            if (member.email === '') {
-                fetchUserData();
             }
-        }, [member]);
-    }
+        };
+
+        if (typeof window !== 'undefined') {
+            fetchUserData();
+        }
+    }, [member]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            let page = 1;
+            const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
+
+            if (success) {
+                setPosts(data);
+            }
+        };
+
+        fetchPosts();
+    }, [accessToken, refreshToken]);
+
+
 
         return (
 
@@ -58,6 +74,9 @@ export default function Home() {
                         {/*<Suspense fallback={<Loading />}>*/}
                         {/*    <TabDeciderSuspense />*/}
                         {/*</Suspense>*/}
+                        <PostAbstract noImage={false} post={posts[0]} />
+                        <PostAbstract noImage={false} post={posts[1]} />
+
 
                     </div>
 

@@ -12,66 +12,49 @@ import cx from "classnames";
 dayjs.locale('ko');
 dayjs.extend(relativeTime)
 
-type Props = {
-    noImage?: boolean
-}
-export default function PostAbstract({ noImage }: Props) {
-    const target = {
-        postId: 1,
-        User: {
-            id: 'tbvjdngus@gmail.com',
-            nickname: 'John Jun',
-            image: '/AMAD.png',
-        },
-        content_1: '사랑의 하나님',
-        content_2: '서로 사랑하라',
-        content_3: '내 마음대로 판단하고 정죄하였습니다.',
-        content_4: '그래도 하나님은 나를 사랑하셨어요',
-        content_5: '사랑을 전하는 하루 되어라',
-        myAmad: '10명에게 안부를 묻고 사랑을 나누기',
-        createdAt: new Date(),
-        Images: [] as any[],
-    }
-    if (Math.random() > 0.5 && !noImage) {
-        target.Images.push(
-            {imageId: 1, link: faker.image.urlLoremFlickr()},
-            {imageId: 2, link: faker.image.urlLoremFlickr()},
-            {imageId: 3, link: faker.image.urlLoremFlickr()},
-            {imageId: 4, link: faker.image.urlLoremFlickr()},
-        )
-    }
-    console.log(target.Images)
+
+export default function PostAbstract({ noImage, post }: any) {
+
+    // if (Math.random() > 0.5 && !noImage) {
+    //     post.imgs.push(
+    //         {imageId: 1, link: faker.image.urlLoremFlickr()},
+    //         {imageId: 2, link: faker.image.urlLoremFlickr()},
+    //         {imageId: 3, link: faker.image.urlLoremFlickr()},
+    //         {imageId: 4, link: faker.image.urlLoremFlickr()},
+    //     )
+    // }
+    // console.log(post.imgs)
 
     return (
-        <PostArticle post={target}>
+        <PostArticle post={post}>
             <div className={style.postWrapper}>
                 <div className={style.postUserSection}>
-                    <Link href={`/${target.User.id}`} className={style.postUserImage}>
-                        <img src={target.User.image} alt={target.User.nickname}/>
+                    <Link href={`/${post.writer}`} className={style.postUserImage}>
+                        <img src={post.statusImg} alt={post.nickname}/>
                         <div className={style.postShade}/>
                     </Link>
                 </div>
                 <div className={style.postBody}>
                     <div className={style.postMeta}>
-                        <Link href={`/${target.User.id}`}>
-                            <span className={style.postUserName}>{target.User.nickname}</span>
+                        <Link href={`/${post.writer}`}>
+                            <span className={style.postUserName}>{post.nickname}</span>
                             &nbsp;
-                            <span className={style.postUserId}>@{target.User.id}</span>
+                            <span className={style.postUserId}>@{post.writer}</span>
                             &nbsp;
                             ·
                             &nbsp;
                         </Link>
-                        <span className={style.postDate}>{dayjs(target.createdAt).fromNow(true)}</span>
+                        <span className={style.postDate}>{dayjs(post.createdAt).fromNow(true)}</span>
                     </div>
                     <div className={style.postContent}>
                         <h4>말씀하시는 하나님은...</h4>
 
-                        <span>{target.content_1}</span>
+                        <span>{post.title}</span>
 
                         <h4>오늘의 AMAD</h4>
-                        <span>{target.myAmad}</span>
+                        <span>{post.myAmad}</span>
                         <div className={style.postImageSection}>
-                            <PostImages post={target}/>
+                            {/*<PostImages post={post}/>*/}
                         </div>
                     </div>
                     <ActionButtons/>

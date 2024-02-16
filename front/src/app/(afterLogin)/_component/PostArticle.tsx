@@ -6,28 +6,13 @@ import {useRouter} from "next/navigation";
 
 type Props = {
     children: ReactNode,
-    post: {
-        postId: number;
-        content_1: string,
-        content_2: string,
-        content_3: string,
-        content_4: string,
-        content_5: string,
-        myAmad: string,
-        User: {
-            id: string,
-            nickname: string,
-            image: string,
-        },
-        createdAt: Date,
-        Images: any[],
-    }
+    post: any
 }
 
 export default function PostArticle({ children, post}: Props) {
     const router = useRouter();
     const onClick = () => {
-        router.push(`/${post.User.id}/status/${post.postId}`);
+        router.push(`/${post.writer}/status/${post.postId}`);
     }
 
     return (

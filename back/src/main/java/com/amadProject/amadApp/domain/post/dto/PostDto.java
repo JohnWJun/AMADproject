@@ -134,6 +134,8 @@ public class PostDto {
     public static class AbstractResponse{
         private String title;
         private String writer;
+        private String nickname;
+        private String statusImg;
         private LocalDateTime createdAt;
         private String content_1;
         private int likes;

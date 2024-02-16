@@ -143,6 +143,8 @@ public interface PostMapper {
         abstractResponse.setCreatedAt(post.getCreatedAt());
         abstractResponse.setContent_1(post.getContent_1());
         abstractResponse.setLikes(post.getWhoLikesMyPost().size());
+        abstractResponse.setNickname(post.getMember().getNickname());
+        abstractResponse.setStatusImg(post.getMember().getStatusImg());
 
         return abstractResponse;
     }
