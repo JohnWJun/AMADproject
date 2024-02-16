@@ -12,7 +12,7 @@ type Props = {
 export default function PostArticle({ children, post}: Props) {
     const router = useRouter();
     const onClick = () => {
-        router.push(`/${post.writer}/status/${post.postId}`);
+        router.push(`/${post.writer}/status/${post.id}/?email=${post.writer}`);
     }
 
     return (
@@ -20,4 +20,6 @@ export default function PostArticle({ children, post}: Props) {
             {children}
         </article>
     );
+
+
 }

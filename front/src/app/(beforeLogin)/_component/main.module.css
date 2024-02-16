@@ -18,20 +18,19 @@
   justify-content: center;
 }
 .right h1 {
+  color: sandybrown;
+  text-shadow: darkslategrey;
   font-weight: bold;
-  color:dimgrey;
   font-size: 64px;
   margin: 48px 0;
 }
 .right h2 {
   font-weight: bold;
-  color:dimgrey;
   font-size: 31px;
   margin-bottom: 32px;
 }
 .right h3 {
   font-weight: bold;
-  color:dimgrey;
   font-size: 17px;
   margin-bottom: 20px;
   margin-top: 40px;
@@ -66,4 +65,7 @@
 }
 .login:hover {
   background-color: rgba(29,155,240,0.1);
+}
+.login > svg{
+  margin-right: 10px;
 }

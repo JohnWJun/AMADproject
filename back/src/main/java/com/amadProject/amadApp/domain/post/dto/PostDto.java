@@ -83,7 +83,7 @@ public class PostDto {
     public static class Response{
         private String title;
         private String writer;
-        private LocalDateTime publishedAt;
+        private LocalDateTime createdAt;
         private LocalDateTime lastModifiedAt;
         private List<BibleChapterVerseResponse> ScriptureForToday;
         private int likes;
@@ -118,7 +118,9 @@ public class PostDto {
         private long postId;
         private String title;
         private String writer;
-        private LocalDateTime publishedAt;
+        private String nickname;
+        private String statusImg;
+        private LocalDateTime createdAt;
         private BibleResponse scripts;
         private int likes;
         private String content_1;
@@ -126,18 +128,21 @@ public class PostDto {
         private String content_3;
         private String content_4;
         private String content_5;
+        private String myAmad;
 
     }
 
     @Getter
     @Setter
     public static class AbstractResponse{
+        private long id;
         private String title;
         private String writer;
         private String nickname;
         private String statusImg;
         private LocalDateTime createdAt;
         private String content_1;
+        private String myAmad;
         private int likes;
 
     }

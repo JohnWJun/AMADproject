@@ -11,9 +11,23 @@ import cx from "classnames";
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime)
+type Props = {
+    noImage?:boolean,
+    post:{
+          id:bigint;
+          title:string;
+          writer:string;
+          nickname:string;
+          statusImg:string;
+          createdAt:string;
+          content_1:string;
+          myAmad:string;
+          likes:string;
+    }
+}
 
 
-export default function PostAbstract({ noImage, post }: any) {
+export default function PostAbstract({ noImage, post }: Props) {
 
     // if (Math.random() > 0.5 && !noImage) {
     //     post.imgs.push(

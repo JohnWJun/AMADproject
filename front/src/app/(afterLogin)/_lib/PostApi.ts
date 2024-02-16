@@ -83,11 +83,14 @@ type Props2 = {
     refreshToken: string,
     page: number
 }
-export const getTodayPosts= async ({accessToken,refreshToken, page}:Props2) =>{
+export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
 
     const tdy = new Date();
-
-    const localDateForm = tdy.getFullYear()+'-'+tdy.getMonth()+'-'+tdy.getDay();
+    const year = tdy.getFullYear();
+    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+    const day = tdy.getDate()
+    const localDateForm = year+'-'+month+'-'+day;
+    console.log(localDateForm);
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
             method: 'GET',
@@ -138,5 +141,67 @@ if (response.status === 200) {
     console.error(error);
     return { success: false, error: 'An error occurred' };
 }
+
+}
+
+export async function getPostDetail ({accessToken,refreshToken, email}:any) {
+
+    const tdy = new Date();
+    const year = tdy.getFullYear();
+    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+    const day = tdy.getDate()
+    const localDateForm = year+'-'+month+'-'+day;
+    console.log(localDateForm);
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": "Bearer "+ accessToken
+
+            },
+            credentials: 'include',
+        });
+        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`)
+        if (response.status === 401 && refreshToken) {
+            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "ngrok-skip-browser-warning": "69420",
+                    "Authorization": "Bearer "+ refreshToken
+
+                },
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                const data = await response.json();
+
+                localStorage.setItem("Authorization",refreshToken);
+                localStorage.removeItem("Refresh");
+
+                return { success: true, data };
+
+            } else{
+                alert("please login again");
+                redirect('/');
+            }
+        }
+
+        if (response.status === 200) {
+            const data = await response.json();
+
+            return { success: true , data};
+
+
+        } else {
+            const data = await response.json();
+            return { success: false, error: data.error };
+        }
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'An error occurred' };
+    }
 
 }

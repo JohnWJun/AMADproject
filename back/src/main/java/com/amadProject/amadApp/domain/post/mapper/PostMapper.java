@@ -96,7 +96,7 @@ public interface PostMapper {
         response.setScriptureForToday(bibleChapterVerseResponses);
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
-        response.setPublishedAt(post.getCreatedAt());
+        response.setCreatedAt(post.getCreatedAt());
         response.setLastModifiedAt(post.getModifiedAt());
         response.setContent_1(post.getContent_1());
         response.setContent_2(post.getContent_2());
@@ -116,13 +116,15 @@ public interface PostMapper {
         response.setScripts(bibleResponse);
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
-        response.setPublishedAt(post.getCreatedAt());
+        response.setCreatedAt(post.getCreatedAt());
         response.setContent_1(post.getContent_1());
         response.setContent_2(post.getContent_2());
         response.setContent_3(post.getContent_3());
         response.setContent_4(post.getContent_4());
         response.setContent_5(post.getContent_5());
         response.setLikes(post.getWhoLikesMyPost().size());
+        response.setNickname(post.getMember().getNickname());
+        response.setStatusImg(post.getMember().getStatusImg());
         return response;
 
     }
@@ -138,6 +140,7 @@ public interface PostMapper {
 
     default PostDto.AbstractResponse postToAbstractResponse(Post post){
         PostDto.AbstractResponse abstractResponse = new PostDto.AbstractResponse();
+        abstractResponse.setId(post.getId());
         abstractResponse.setTitle(post.getTitle());
         abstractResponse.setWriter(post.getMember().getEmail());
         abstractResponse.setCreatedAt(post.getCreatedAt());
