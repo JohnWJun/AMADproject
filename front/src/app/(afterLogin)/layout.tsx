@@ -6,7 +6,7 @@ import AmadSection from "@/app/(afterLogin)/_component/AmadSection";
 import Link from "next/link";
 import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
-import amadLogo from "../../../public/AMAD_New.png"
+import amadLogo from "../../../public/AMAD.png"
 import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
 
 type Props = { children: ReactNode, modal: ReactNode };

@@ -56,7 +56,7 @@ export default function Post({ noImage ,post }: Props) {
                         <div className={style.postContent}>
                             <h4>오늘 내게 주신 말씀</h4>
                             <span>{target.scripts[0].bible} {target.scripts[0].script}</span>
-                            <h4>말씀하시는 하나님은...</h4>
+                            <h4>1. 말씀하시는 하나님은...</h4>
 
                             <span>{target.content_1}</span>
 

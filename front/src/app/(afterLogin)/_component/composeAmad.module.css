@@ -162,7 +162,7 @@
     background-color: rgb(29, 155, 240, 0.1);
 }
 .uploadButton svg {
-    fill: rgb(29, 155, 240);
+    fill: #142d4c;
 }
 
 .actionButton {
@@ -172,7 +172,7 @@
     border-radius: 18px;
     border: none;
     margin: 8px 0;
-    background-color: rgb(29, 155, 240);
+    background-color: #142d4c;
     color: white;
     font-size: 17px;
 }

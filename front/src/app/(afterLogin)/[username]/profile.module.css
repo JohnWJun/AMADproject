@@ -81,3 +81,29 @@
 .backButton:hover {
     background-color: rgba(15, 20, 25, 0.1);
 }
+.statusContainer{
+    padding: 30px;
+}
+
+.progressContainer {
+    margin-top: 20px;
+    margin-bottom: 7px;
+}
+.progressContainer> svg{
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.progressContainer progress {
+    -webkit-appearance: none;
+    width: 80%;
+    appearance: none;
+    margin-bottom: 7px;
+}
+
+.progressContainer ::-webkit-progress-bar {
+    background-color: #e3e3e3;
+}
+
+.progressContainer ::-webkit-progress-value {
+    background-color: #f95959;
+}

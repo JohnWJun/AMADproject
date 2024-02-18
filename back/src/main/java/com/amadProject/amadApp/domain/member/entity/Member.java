@@ -53,6 +53,9 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<LikePost> postsILike = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
 
     public void addPostsILike(LikePost likePost){
         if (likePost.getMember() != this) likePost.setMember(this);
