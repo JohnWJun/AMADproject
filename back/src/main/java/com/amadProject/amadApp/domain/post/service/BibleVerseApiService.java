@@ -4,8 +4,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.net.URI;
+import java.util.Objects;
 
 @Service
 public class BibleVerseApiService {
@@ -20,8 +24,8 @@ public class BibleVerseApiService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        Document doc = Jsoup.parse(Objects.requireNonNull(responseEntity.getBody()));
 
-
-        return responseEntity.getBody();
+        return doc.body().text();
     }
 }

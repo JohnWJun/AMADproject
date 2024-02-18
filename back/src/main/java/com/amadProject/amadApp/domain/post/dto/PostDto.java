@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public class PostDto {
     @Getter
@@ -81,6 +82,7 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     public static class Response{
+        private long id;
         private String title;
         private String writer;
         private LocalDateTime createdAt;
@@ -99,7 +101,8 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     public static class BibleResponse{
-        private List<String> scripts;
+        private String bible;
+        private String script;
 
     }
 
@@ -115,13 +118,13 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     public static class PostBibleResponse{
-        private long postId;
+        private long id;
         private String title;
         private String writer;
         private String nickname;
         private String statusImg;
         private LocalDateTime createdAt;
-        private BibleResponse scripts;
+        private List<BibleResponse> scripts;
         private int likes;
         private String content_1;
         private String content_2;

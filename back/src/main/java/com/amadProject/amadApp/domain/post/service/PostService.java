@@ -107,21 +107,22 @@ public class PostService {
         postRepository.delete(postToDelete);
     }
 
-    public PostDto.BibleResponse getScripture(List<BibleChapterVerse> bibleChapterVerses) {
-        List<String> scriptures = bibleChapterVerses.stream().map(
+    public List<PostDto.BibleResponse> getScripture(List<BibleChapterVerse> bibleChapterVerses) {
+        List<PostDto.BibleResponse> scriptures = bibleChapterVerses.stream().map(
                 bibleChapterVerse -> {
+                    PostDto.BibleResponse response = new PostDto.BibleResponse();
                     String scripture = apiService.getBible(bibleChapterVerse.getBible(),
                             String.valueOf(bibleChapterVerse.getBibleChapter()),
                             String.valueOf(bibleChapterVerse.getBibleVerseFrom()),
                             String.valueOf(bibleChapterVerse.getBibleVerseTo()));
+                    response.setBible(bibleChapterVerse.getBible());
+                    response.setScript(scripture);
 
-                    return scripture;
+                    return response;
                 }
         ).collect(Collectors.toList());
-        PostDto.BibleResponse bibleResponse = new PostDto.BibleResponse();
-        bibleResponse.setScripts(scriptures);
 
-        return bibleResponse;
+        return scriptures;
     }
     private void verifyExistPost(String email, LocalDate date) {
         postRepository.findByEmailNDate(email, date).ifPresent(post -> {

@@ -20,9 +20,10 @@ type Props = {
 export default function Post({ noImage ,post }: Props) {
     const target = post
 
+    console.log(post);
+
 
         return (
-            <PostArticle post={target}>
 
                 <div className={style.postWrapper}>
                     <div className={style.postUserSection}>
@@ -53,6 +54,8 @@ export default function Post({ noImage ,post }: Props) {
                         </div>
 
                         <div className={style.postContent}>
+                            <h4>오늘 내게 주신 말씀</h4>
+                            <span>{target.scripts[0].bible} {target.scripts[0].script}</span>
                             <h4>말씀하시는 하나님은...</h4>
 
                             <span>{target.content_1}</span>
@@ -78,7 +81,6 @@ export default function Post({ noImage ,post }: Props) {
                         <ActionButtons/>
                     </div>
                 </div>
-            </PostArticle>
         )
 
 }

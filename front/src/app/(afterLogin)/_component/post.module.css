@@ -17,6 +17,9 @@
     display: flex;
     position: relative;
     flex-direction: row;
+    border-color: rgb(239, 243, 244);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 .postFixButton{
     position: absolute;
@@ -39,6 +42,7 @@
 }
 
 .postUserSection {
+    margin-left: 12px;
     margin-right: 12px;
     width: 40px;
 }

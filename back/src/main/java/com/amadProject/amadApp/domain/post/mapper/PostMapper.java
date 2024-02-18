@@ -92,7 +92,7 @@ public interface PostMapper {
                 ).collect(Collectors.toList());
 
 
-
+        response.setId(post.getId());
         response.setScriptureForToday(bibleChapterVerseResponses);
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
@@ -110,7 +110,7 @@ public interface PostMapper {
     }
 
 
-    default PostDto.PostBibleResponse postToPostBibleResponse(Post post, PostDto.BibleResponse bibleResponse){
+    default PostDto.PostBibleResponse postToPostBibleResponse(Post post, List<PostDto.BibleResponse> bibleResponse){
         PostDto.PostBibleResponse response = new PostDto.PostBibleResponse();
 
         response.setScripts(bibleResponse);
@@ -122,6 +122,7 @@ public interface PostMapper {
         response.setContent_3(post.getContent_3());
         response.setContent_4(post.getContent_4());
         response.setContent_5(post.getContent_5());
+        response.setMyAmad(post.getAmad().getMission());
         response.setLikes(post.getWhoLikesMyPost().size());
         response.setNickname(post.getMember().getNickname());
         response.setStatusImg(post.getMember().getStatusImg());
@@ -148,6 +149,7 @@ public interface PostMapper {
         abstractResponse.setLikes(post.getWhoLikesMyPost().size());
         abstractResponse.setNickname(post.getMember().getNickname());
         abstractResponse.setStatusImg(post.getMember().getStatusImg());
+        abstractResponse.setMyAmad(post.getAmad().getMission());
 
         return abstractResponse;
     }

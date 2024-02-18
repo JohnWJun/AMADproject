@@ -80,7 +80,7 @@ public class PostController {
 
         LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
         Post post = service.findPost(email,date);
-        PostDto.BibleResponse scriptures = service.getScripture(post.getBibleChapterVerses());
+        List<PostDto.BibleResponse> scriptures = service.getScripture(post.getBibleChapterVerses());
 
 
         PostDto.PostBibleResponse response = mapper.postToPostBibleResponse(post,scriptures);

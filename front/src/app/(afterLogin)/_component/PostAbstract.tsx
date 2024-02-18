@@ -12,7 +12,6 @@ import cx from "classnames";
 dayjs.locale('ko');
 dayjs.extend(relativeTime)
 type Props = {
-    noImage?:boolean,
     post:{
           id:bigint;
           title:string;
@@ -27,17 +26,8 @@ type Props = {
 }
 
 
-export default function PostAbstract({ noImage, post }: Props) {
+export default function PostAbstract({ post }: Props) {
 
-    // if (Math.random() > 0.5 && !noImage) {
-    //     post.imgs.push(
-    //         {imageId: 1, link: faker.image.urlLoremFlickr()},
-    //         {imageId: 2, link: faker.image.urlLoremFlickr()},
-    //         {imageId: 3, link: faker.image.urlLoremFlickr()},
-    //         {imageId: 4, link: faker.image.urlLoremFlickr()},
-    //     )
-    // }
-    // console.log(post.imgs)
 
     return (
         <PostArticle post={post}>

@@ -2,7 +2,6 @@
 import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import PostDetails from "@/app/(afterLogin)/_component/PostDetails";
 import style from './singlePost.module.css';
-import Post from "@/app/(afterLogin)/_component/PostAbstract";
 import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/CommentForm";
 import {useEffect, useState} from "react";
 import {getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
@@ -36,7 +35,7 @@ export default function SinglePost() {
 
     useEffect(() => {
         if (email) {
-            const fetchPosts = async () => {
+            const fetchPost = async () => {
                 const accessToken = localStorage.getItem("Authorization");
                 const refreshToken = localStorage.getItem("Refresh");
                 const { success, data } = await getPostDetail({ accessToken, refreshToken, email });
@@ -46,7 +45,7 @@ export default function SinglePost() {
                 }
             };
 
-            fetchPosts();
+            fetchPost();
         }
     }, [email]); // Run only when email changes
 

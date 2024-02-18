@@ -1,13 +1,15 @@
 "use client";
 
 import style from './composeAmad.module.css';
-import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {string} from "prop-types";
 import {type} from "node:os";
 import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState"
+import {log} from "node:util";
+import {da} from "@faker-js/faker";
 export default function ComposeAmad() {
     type typeForTitle = string;
     type typeForContent = string;
@@ -15,7 +17,7 @@ export default function ComposeAmad() {
 
     const Post = {
         bibleVerses: [{
-            bible: '',
+            bible: 'ge',
             bibleChapter: 0,
             bibleVerseFrom: 0,
             bibleVerseTo: 0
@@ -68,6 +70,8 @@ export default function ComposeAmad() {
                 myAmad: amad
 
         };
+
+        console.log(requestBody);
         const accessToken = localStorage.getItem("Authorization") || '';
         const refreshToken = localStorage.getItem("Refresh") || '';
         const email = memberInfo.email
@@ -75,7 +79,8 @@ export default function ComposeAmad() {
         // Call the postPost function with the updated requestBody
         const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
         if (success) {
-            router.replace('/home');
+            console.log(data);
+            router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
             router.refresh();
         }
     };
@@ -121,10 +126,7 @@ export default function ComposeAmad() {
     const onChangeContent_5: ChangeEventHandler<HTMLTextAreaElement> =(e) => {
         setContent_5(e.target.value);
     }
-    const me = {
-        id: 'zerohch0',
-        image: '/AMAD.png'
-    };
+
 
     return (
         <div className={style.modalBackground}>
@@ -142,7 +144,7 @@ export default function ComposeAmad() {
                     <div className={style.modalBody}>
                         <div className={style.postUserSection}>
                             <div className={style.postUserImage}>
-                                <img src={me.image} alt={me.id}/>
+                                <img src={memberInfo.statusImg} alt={memberInfo.email}/>
                             </div>
                         </div>
 
@@ -156,7 +158,7 @@ export default function ComposeAmad() {
                             </div>
                             <span>
                                 <div>
-                                성경: <select name="book" value={book} onChange={onSelectBook}>
+                                성경: <select name="book" value={book} onChange={onSelectBook} >
 
                                     <option value='ge'>ge (창세기)</option>
                                     <option value='exo'>exo (출애굽기)</option>

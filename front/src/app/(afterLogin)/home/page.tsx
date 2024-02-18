@@ -9,6 +9,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {useRouter} from "next/navigation";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
+import {da} from "@faker-js/faker";
 
 export default function Home() {
     const router = useRouter();
@@ -51,9 +52,17 @@ export default function Home() {
         };
 
         fetchPosts();
-    }, [accessToken, refreshToken]);
+        router.refresh();
+    }, [accessToken, refreshToken,router]);
 
+    console.log(posts)
 
+    if (!posts) {
+        return(
+            <div className={style.header}>
+                <div>Loading...</div>
+            </div>)
+    }
 
 
         return (
@@ -64,18 +73,18 @@ export default function Home() {
                     <div className={style.postContainer}>
                         {posts.length > 0 && (
                             <>
-                                <PostAbstract noImage={false} post={posts[0]}/>
+                                <PostAbstract post={posts[0]}/>
                                 {posts.length > 1 && (
-                                    <PostAbstract noImage={false} post={posts[1]}/>
+                                    <PostAbstract post={posts[1]}/>
                                 )}
                                     {posts.length > 2 && (
-                                        <PostAbstract noImage={false} post={posts[2]}/>
+                                        <PostAbstract post={posts[2]}/>
                                     )}
                                         {posts.length > 3 && (
-                                            <PostAbstract noImage={false} post={posts[3]}/>
+                                            <PostAbstract post={posts[3]}/>
                                         )}
                                             {posts.length > 4 && (
-                                                <PostAbstract noImage={false} post={posts[4]}/>
+                                                <PostAbstract post={posts[4]}/>
                                             )}
                             </>
                         )}
