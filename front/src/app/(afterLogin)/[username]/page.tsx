@@ -6,22 +6,45 @@ import {useRecoilState, useRecoilValue} from "recoil"
 import {Member} from "@/app/_component/MemberRecoilState";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import {usePathname} from "next/navigation";
-import {useEffect, useState} from "react";
+import {ChangeEventHandler, useEffect, useState} from "react";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import {getUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
+import {tr} from "@faker-js/faker";
 
+type Props = {
 
+    id: bigint,
+    nickname: string,
+    statusImg: string,
+    email: string,
+    intimacy: number;
+
+}
 
 export default function Profile() {
 
     const emailToFind = usePathname().replace('/','') as string;
 
-    console.log(emailToFind);
     const member = useRecoilValue(Member);
     const accessToken = localStorage.getItem("Authorization") || '';
     const refreshToken = localStorage.getItem("Refresh") || '';
     const loginUserEmail= member.email;
-    const[userToFind, setUserToFind] = useState<Props | null>(null);
+    const [userToFind, setUserToFind] = useState<Props | null>(null);
+    const [isEdit, setIsEdit] = useState(false);
+    const [nickname, setNickname] = useState("");
+    const onClickChangeButton = () => {
+        setIsEdit(true);
+    }
+    const onClickSubmitButton = () => {
+        //fetch patch member(nickname)
+        //refresh
+    }
+    const onClickCancelButton = () => {
+        setIsEdit(false);
+    }
+    const onChangeNickname: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setNickname(e.target.value);
+    }
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -29,11 +52,12 @@ export default function Profile() {
 
             if (success) {
                 setUserToFind(data);
+                setNickname(data.nickname);
                 console.log(data);
             }
         };
         fetchUserInfo();
-    }, [emailToFind]);
+    }, [accessToken,refreshToken,emailToFind]);
 
     if (!userToFind) {
         return(
@@ -54,7 +78,24 @@ export default function Profile() {
                     <img src={member.statusImg} alt={''}/>
                 </div>
                 <div className={style.userName}>
-                    <div>{member.nickname}</div>
+                    <div>{member.nickname}
+                        {isEdit && (
+                            <>
+                            <input value={nickname} onChange={onChangeNickname} ></input>
+                            <button type="button" onClick={onClickSubmitButton}></button>
+                            <button type="button" onClick={onClickCancelButton}></button>
+                            </>
+                        )}
+
+                        <button type="button" onClick={onClickChangeButton}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                             viewBox="-2 -2 24 24" preserveAspectRatio="xMinYMin" className="jam jam-write">
+                            <path
+                                d="M5.72 14.456l1.761-.508 10.603-10.73a.456.456 0 0 0-.003-.64l-.635-.642a.443.443 0 0 0-.632-.003L6.239 12.635l-.52 1.82zM18.703.664l.635.643c.876.887.884 2.318.016 3.196L8.428 15.561l-3.764 1.084a.901.901 0 0 1-1.11-.623.915.915 0 0 1-.002-.506l1.095-3.84L15.544.647a2.215 2.215 0 0 1 3.159.016zM7.184 1.817c.496 0 .898.407.898.909a.903.903 0 0 1-.898.909H3.592c-.992 0-1.796.814-1.796 1.817v10.906c0 1.004.804 1.818 1.796 1.818h10.776c.992 0 1.797-.814 1.797-1.818v-3.635c0-.502.402-.909.898-.909s.898.407.898.91v3.634c0 2.008-1.609 3.636-3.593 3.636H3.592C1.608 19.994 0 18.366 0 16.358V5.452c0-2.007 1.608-3.635 3.592-3.635h3.592z"/>
+                        </svg>
+                        </button>
+
+                    </div>
                     <div>@{member.email}</div>
                 </div>
             </div>

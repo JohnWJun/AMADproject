@@ -6,13 +6,39 @@ import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from 
 import { usePathname, useRouter} from "next/navigation";
 import {getPostDetail, patchPost, postPost} from "@/app/(afterLogin)/_lib/PostApi";
 import style from "@/app/(afterLogin)/_component/composeAmad.module.css";
-import {number} from "prop-types";
+
+type Props ={
+    title: string;
+    writer: string;
+    createdAt: string;
+    likes: number,
+     content_1: string,
+     content_2: string,
+    content_3: string,
+     content_4: string,
+    content_5:string,
+    myAmad: string,
+    myAmadId: bigint,
+    id: bigint,
+    nickname: string,
+    statusImg: string,
+
+    scripts:{
+        bibleChapterVerseId: bigint,
+        bible: string,
+        bibleChapter:number,
+        bibleVerseFrom:number,
+        bibleVerseTo:number,
+        script:string
+    }[]
+
+}
 
 export default function PatchAmadPage() {
     type typeForContent = string;
     const memberInfo = useRecoilValue(Member);
     const email = memberInfo.email;
-    const id = usePathname().replace('/patch/amad/','') as bigint;
+    const id = BigInt(parseInt(usePathname().replace('/patch/amad/','')));
     const accessToken = localStorage.getItem('Authorization');
     const refreshToken = localStorage.getItem('Refresh');
     const [post, setPost] = useState<Props | null>(null);
@@ -30,8 +56,8 @@ export default function PatchAmadPage() {
     const [content_4, setContent_4] = useState<typeForContent>('');
     const [content_5, setContent_5] = useState<typeForContent>('');
     const [amad, setAmad] = useState<typeForContent>('');
-    const [bibleChapterVerseId, setBibleChapterVerseId] = useState<bigint>(0);
-    const [amadId, setAmadId] = useState<bigint>(0);
+    const [bibleChapterVerseId, setBibleChapterVerseId] = useState<bigint>(BigInt(0));
+    const [amadId, setAmadId] = useState<bigint>(BigInt(0));
 
     const imageRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
@@ -93,13 +119,14 @@ export default function PatchAmadPage() {
 
         };
 
-
+        if (accessToken && refreshToken !== null){
         const {success, data} = await patchPost({requestBody, accessToken, refreshToken, id,bibleChapterVerseId,amadId });
         if (success) {
             router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
             router.refresh();
         }
-    };
+    }
+    }
     const onClickClose = () => {
         router.back();
     }

@@ -6,9 +6,12 @@ import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/Co
 import {useEffect, useState} from "react";
 import {getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 
+type Props = {
+    post: any,
+}
 
 export default function SinglePost() {
-    const [email, setEmail] = useState<string | null>(null);
+    const [email, setEmail] = useState<string>('');
     const [post, setPost] = useState<Props | null>(null);
 
     useEffect(() => {

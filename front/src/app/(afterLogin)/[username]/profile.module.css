@@ -43,6 +43,11 @@
     margin: 0 12px;
     flex: 1;
 }
+.userName svg{
+    padding-top: 2px;
+    margin-left: 10px;
+}
+
 .userName > div:first-child {
     font-weight: bold;
     font-size: 20px;
