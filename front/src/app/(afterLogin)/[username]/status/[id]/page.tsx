@@ -6,20 +6,6 @@ import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/Co
 import {useEffect, useState} from "react";
 import {getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 
-type Props = {
-    noImage?: boolean,
-    post: {
-        id: bigint;
-        title: string;
-        writer: string;
-        nickname: string;
-        statusImg: string;
-        createdAt: string;
-        content_1: string;
-        myAmad: string;
-        likes: string;
-    }
-}
 
 export default function SinglePost() {
     const [email, setEmail] = useState<string | null>(null);
@@ -62,7 +48,7 @@ export default function SinglePost() {
                 <BackButton />
                 <h3 className={style.headerTitle}>게시하기</h3>
             </div>
-            <PostDetails post={post} />
+            <PostDetails post={post} email={email} />
             <CommentForm />
             <div>
             </div>

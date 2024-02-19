@@ -46,15 +46,16 @@ public interface PostMapper {
         return postToCreate;
     }
 
-    default Post patchDtoToPost(PostDto.Patch patch, long postId){
+    default Post patchDtoToPost(PostDto.Patch patch, long postId, long bibleChapterVerseId, long amadId){
         Post post = new Post();
         post.setId(postId);
         Member member = new Member();
+        Amad myAmad = new Amad();
         System.out.println("in Mapper: "+ patch.getBibleVerses().toString());
         List<BibleChapterVerse> bibleChapterVerses = patch.getBibleVerses().stream().map(
                 bibleChapterVersePatch -> {
                     BibleChapterVerse bible = new BibleChapterVerse();
-                    bible.setId(bibleChapterVersePatch.getBibleChapterVerseId());
+                    bible.setId(bibleChapterVerseId);
                     bible.setPost(post);
                     bible.setBible(bibleChapterVersePatch.getBible());
                     bible.setBibleChapter(bibleChapterVersePatch.getBibleChapter());
@@ -64,6 +65,10 @@ public interface PostMapper {
                 }
         ).collect(Collectors.toList());
 
+        myAmad.setPost(post);
+        myAmad.setId(amadId);
+        myAmad.setMission(patch.getMyAmad());
+
 
         post.setTitle(patch.getTitle());
         post.setMember(member);
@@ -72,6 +77,7 @@ public interface PostMapper {
         post.setContent_3(patch.getContent_3());
         post.setContent_4(patch.getContent_4());
         post.setContent_5(patch.getContent_5());
+        post.setAmad(myAmad);
 
         post.setBibleChapterVerses(bibleChapterVerses);
         return post;
@@ -114,6 +120,7 @@ public interface PostMapper {
         PostDto.PostBibleResponse response = new PostDto.PostBibleResponse();
 
         response.setScripts(bibleResponse);
+        response.setId(post.getId());
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
         response.setCreatedAt(post.getCreatedAt());
@@ -126,6 +133,7 @@ public interface PostMapper {
         response.setLikes(post.getWhoLikesMyPost().size());
         response.setNickname(post.getMember().getNickname());
         response.setStatusImg(post.getMember().getStatusImg());
+        response.setMyAmadId(post.getAmad().getId());
         return response;
 
     }

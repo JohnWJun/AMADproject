@@ -205,3 +205,90 @@ export async function getPostDetail ({accessToken,refreshToken, email}:any) {
     }
 
 }
+
+type PatchProps ={
+    requestBody: {
+        bibleVerses: {
+            bible: string,
+            bibleChapter: number,
+            bibleVerseFrom: number,
+            bibleVerseTo: number
+
+        }[],
+        title: string,
+        content_1: string,
+        content_2: string,
+        content_3: string,
+        content_4: string,
+        content_5: string,
+        myAmad: string,
+    },
+    accessToken: string,
+    refreshToken: string,
+    id: bigint,
+    bibleChapterVerseId: bigint,
+    amadId: bigint
+}
+
+export async function patchPost ({requestBody, accessToken,refreshToken, id, bibleChapterVerseId,amadId}:PatchProps) {
+
+    const tdy = new Date();
+    const year = tdy.getFullYear();
+    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+    const day = tdy.getDate()
+    const localDateForm = year+'-'+month+'-'+day;
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${id}/${bibleChapterVerseId}/${amadId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": "Bearer "+ accessToken
+
+            },
+            body: JSON.stringify(requestBody),
+            credentials: 'include',
+        });
+        if (response.status === 401 && refreshToken) {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${id}/${bibleChapterVerseId}/${amadId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "ngrok-skip-browser-warning": "69420",
+                    "Authorization": "Bearer "+ refreshToken
+
+                },
+                body: JSON.stringify(requestBody),
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                const data = await response.json();
+
+                localStorage.setItem("Authorization",refreshToken);
+                localStorage.removeItem("Refresh");
+
+                return { success: true, data };
+
+            } else{
+                alert("please login again");
+                redirect('/');
+            }
+        }
+
+        if (response.status === 200) {
+            const data = await response.json();
+
+            return { success: true , data};
+
+
+        } else {
+            const data = await response.json();
+            return { success: false, error: data.error };
+        }
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'An error occurred' };
+    }
+
+}

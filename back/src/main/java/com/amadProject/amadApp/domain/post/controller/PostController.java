@@ -65,10 +65,12 @@ public class PostController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PatchMapping("/{post-id}")
+    @PatchMapping("/{post-id}/{bibleChapterVerse-id}/{amad-id}")
     public ResponseEntity patchPost(@PathVariable("post-id") long postId,
+                                    @PathVariable("bibleChapterVerse-id") long bibleChapterVerseId,
+                                    @PathVariable("amad-id") long amadId,
                                     @RequestBody PostDto.Patch patchDto){
-        Post postToUpdate = mapper.patchDtoToPost(patchDto, postId);
+        Post postToUpdate = mapper.patchDtoToPost(patchDto, postId,bibleChapterVerseId,amadId);
         Post updatedPost = service.updatePost(postToUpdate);
         PostDto.Response response = mapper.postToResponse(updatedPost);
         return new ResponseEntity<>(response,HttpStatus.OK);

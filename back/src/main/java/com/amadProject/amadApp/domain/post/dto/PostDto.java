@@ -21,7 +21,7 @@ public class PostDto {
     @Getter
     @Setter
     public static class BibleChapterVersePatch{
-        private long bibleChapterVerseId;
+
         private String bible;
         private int bibleChapter;
         private int bibleVerseFrom;
@@ -76,6 +76,8 @@ public class PostDto {
 
         private String content_5;
 
+        private String myAmad;
+
     }
 
     @Getter
@@ -101,7 +103,11 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     public static class BibleResponse{
+        private long bibleChapterVerseId;
         private String bible;
+        private int bibleChapter;
+        private int bibleVerseFrom;
+        private int bibleVerseTo;
         private String script;
 
     }
@@ -132,6 +138,7 @@ public class PostDto {
         private String content_4;
         private String content_5;
         private String myAmad;
+        private long myAmadId;
 
     }
 

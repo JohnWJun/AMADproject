@@ -1,85 +1,101 @@
 "use client";
 
-import style from './composeAmad.module.css';
-import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
-import {string} from "prop-types";
-import {type} from "node:os";
-import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
 import {useRecoilValue} from "recoil";
-import {Member} from "@/app/_component/MemberRecoilState"
-import {log} from "node:util";
-import {da} from "@faker-js/faker";
-export default function ComposeAmad() {
+import {Member} from "@/app/_component/MemberRecoilState";
+import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
+import { usePathname, useRouter} from "next/navigation";
+import {getPostDetail, patchPost, postPost} from "@/app/(afterLogin)/_lib/PostApi";
+import style from "@/app/(afterLogin)/_component/composeAmad.module.css";
+import {number} from "prop-types";
 
+export default function PatchAmadPage() {
     type typeForContent = string;
     const memberInfo = useRecoilValue(Member);
+    const email = memberInfo.email;
+    const id = usePathname().replace('/patch/amad/','') as bigint;
+    const accessToken = localStorage.getItem('Authorization');
+    const refreshToken = localStorage.getItem('Refresh');
+    const [post, setPost] = useState<Props | null>(null);
 
-    const Post = {
-        bibleVerses: [{
-            bible: 'ge',
-            bibleChapter: 0,
-            bibleVerseFrom: 0,
-            bibleVerseTo: 0
-
-        }],
-        title: '',
-        content_1: '',
-        content_2: '',
-        content_3: '',
-        content_4: '',
-        content_5: '',
-        myAmad:'',
-    }
     const bibles = [];
-    const [book, setBook] = useState<typeForContent>(Post.bibleVerses[0].bible);
-    const [chapter, setChapter] = useState<number>(Post.bibleVerses[0].bibleChapter);
-    const [from, setFrom] = useState<number>(Post.bibleVerses[0].bibleVerseFrom);
-    const [to, setTo] = useState<number>(Post.bibleVerses[0].bibleVerseTo);
-    const [title, setTitle] = useState<typeForContent>(Post.title);
+    const [book, setBook] = useState<typeForContent>('');
+    const [chapter, setChapter] = useState<number>(0);
+    const [from, setFrom] = useState<number>(0);
+    const [to, setTo] = useState<number>(0);
+    const [title, setTitle] = useState<typeForContent>('');
 
-    const [content_1, setContent_1] = useState<typeForContent>(Post.content_1);
-    const [content_2, setContent_2] = useState<typeForContent>(Post.content_2);
-    const [content_3, setContent_3] = useState<typeForContent>(Post.content_3);
-    const [content_4, setContent_4] = useState<typeForContent>(Post.content_4);
-    const [content_5, setContent_5] = useState<typeForContent>(Post.content_5);
-    const [amad, setAmad] = useState<typeForContent>(Post.myAmad);
+    const [content_1, setContent_1] = useState<typeForContent>('');
+    const [content_2, setContent_2] = useState<typeForContent>('');
+    const [content_3, setContent_3] = useState<typeForContent>('');
+    const [content_4, setContent_4] = useState<typeForContent>('');
+    const [content_5, setContent_5] = useState<typeForContent>('');
+    const [amad, setAmad] = useState<typeForContent>('');
+    const [bibleChapterVerseId, setBibleChapterVerseId] = useState<bigint>(0);
+    const [amadId, setAmadId] = useState<bigint>(0);
 
     const imageRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        if (email) {
+            const fetchPost = async () => {
+                const accessToken = localStorage.getItem("Authorization");
+                const refreshToken = localStorage.getItem("Refresh");
+                const {success, data} = await getPostDetail({accessToken, refreshToken, email});
+
+                if (success) {
+                    setPost(data);
+                    setBibleChapterVerseId(data.scripts[0].bibleChapterVerseId);
+                    setAmadId(data.myAmadId);
+                    setTitle(data.content_1);
+                    setBook(data.scripts[0].bible);
+                    setChapter(data.scripts[0].bibleChapter);
+                    setFrom(data.scripts[0].bibleVerseFrom);
+                    setTo(data.scripts[0].bibleVerseTo);
+                    setContent_1(data.content_1);
+                    setContent_2(data.content_2);
+                    setContent_3(data.content_3);
+                    setContent_4(data.content_4);
+                    setContent_5(data.content_5);
+                    setAmad(data.myAmad);
+
+
+                }
+            };
+
+            fetchPost();
+        }
+    }, [email,bibleChapterVerseId,amadId]);
+
+
+
     const onSubmit: FormEventHandler = async (e) => {
         e.preventDefault();
 
         // Construct the requestBody object with the updated values
         const requestBody = {
 
-                bibleVerses: [
-                    {
-                        bible: book,
-                        bibleChapter: chapter,
-                        bibleVerseFrom: from,
-                        bibleVerseTo: to
-                    }
-                ],
-                title: title,
-                content_1: content_1,
-                content_2: content_2,
-                content_3: content_3,
-                content_4: content_4,
-                content_5: content_5,
-                myAmad: amad
+            bibleVerses: [
+                {
+                    bible: book,
+                    bibleChapter: chapter,
+                    bibleVerseFrom: from,
+                    bibleVerseTo: to
+                }
+            ],
+            title: title,
+            content_1: content_1,
+            content_2: content_2,
+            content_3: content_3,
+            content_4: content_4,
+            content_5: content_5,
+            myAmad: amad
 
         };
 
-        console.log(requestBody);
-        const accessToken = localStorage.getItem("Authorization") || '';
-        const refreshToken = localStorage.getItem("Refresh") || '';
-        const email = memberInfo.email
 
-        // Call the postPost function with the updated requestBody
-        const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
+        const {success, data} = await patchPost({requestBody, accessToken, refreshToken, id,bibleChapterVerseId,amadId });
         if (success) {
-            console.log(data);
             router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
             router.refresh();
         }
@@ -91,44 +107,50 @@ export default function ComposeAmad() {
         imageRef.current?.click();
     }
 
-    const onSelectBook : ChangeEventHandler<HTMLSelectElement> =(e) => {
+    const onSelectBook: ChangeEventHandler<HTMLSelectElement> = (e) => {
         setBook(e.target.value);
     }
-    const onChangeChapter : ChangeEventHandler<HTMLInputElement> =(e) => {
+    const onChangeChapter: ChangeEventHandler<HTMLInputElement> = (e) => {
         setChapter(parseInt(e.target.value));
     }
-    const onChangeFrom : ChangeEventHandler<HTMLInputElement> =(e) => {
+    const onChangeFrom: ChangeEventHandler<HTMLInputElement> = (e) => {
         setFrom(parseInt(e.target.value));
     }
-    const onChangeTo : ChangeEventHandler<HTMLInputElement> =(e) => {
+    const onChangeTo: ChangeEventHandler<HTMLInputElement> = (e) => {
         setTo(parseInt(e.target.value));
     }
-    const onChangeAmad : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+    const onChangeAmad: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setAmad(e.target.value);
     }
-    const onChangeContent_1 : ChangeEventHandler<HTMLInputElement> =(e) => {
+    const onChangeContent_1: ChangeEventHandler<HTMLInputElement> = (e) => {
         setContent_1(e.target.value);
         setTitle(e.target.value);
     }
 
-    const onChangeContent_2 : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+    const onChangeContent_2: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent_2(e.target.value);
     }
 
-    const onChangeContent_3 : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+    const onChangeContent_3: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent_3(e.target.value);
     }
 
-    const onChangeContent_4 : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+    const onChangeContent_4: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent_4(e.target.value);
     }
 
-    const onChangeContent_5: ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+    const onChangeContent_5: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent_5(e.target.value);
     }
 
-
+    if (!post) {
+        return (
+            <div className={style.header}>
+                <div>Loading...</div>
+            </div>);
+    }else{
     return (
+
         <div className={style.modalBackground}>
             <div className={style.modal}>
                 <button className={style.closeButton} onClick={onClickClose}>
@@ -158,7 +180,8 @@ export default function ComposeAmad() {
                             </div>
                             <span>
                                 <div>
-                                성경: <select name="book" value={book} onChange={onSelectBook} >
+                                성경: <select name="book" value={book}
+                                            onChange={onSelectBook} aria-placeholder={post.scripts[0].bible}>
 
                                     <option value='ge'>ge (창세기)</option>
                                     <option value='exo'>exo (출애굽기)</option>
@@ -228,11 +251,11 @@ export default function ComposeAmad() {
                                     <option value='rev'>rev (요한계시록)</option>
 
                                     </select>
-                                    <input name={"chapter"} onChange={onChangeChapter} placeholder={'1'}>
+                                    <input name={"chapter"} onChange={onChangeChapter} value={chapter}>
                                     </input> 장
-                                    <input name={"from"} onChange={onChangeFrom} placeholder={'1'}>
+                                    <input name={"from"} value={from} onChange={onChangeFrom} >
                                     </input> 절 ~
-                                    <input name={"to"} onChange={onChangeTo} placeholder={'1'}>
+                                    <input name={"to"} value={to} onChange={onChangeTo} >
                                     </input> 절
                                 </div>
                                 <div>
@@ -242,16 +265,17 @@ export default function ComposeAmad() {
                             <div className={style.inputDiv}>
                                 <div>
                                     1. 말씀하시는 하나님?
-                                    <input className={style.input} placeholder="~는 하나님"
+                                    <input className={style.input}
                                            value={content_1}
-                                           onChange={onChangeContent_1}/>
+                                           onChange={onChangeContent_1}></input>
 
                                 </div>
                             </div>
                             <div className={style.inputDiv}>
                                 <div>
                                     2. {content_1}이 이 말씀을 통해 하시고 싶은 말씀은?
-                                    <textarea className={style.textArea} placeholder="오늘 나에게 이 말씀을 통해 하나님께서는 말씀하십니다."
+                                    <textarea className={style.textArea}
+                                              placeholder={post.content_2}
                                               value={content_2}
                                               onChange={onChangeContent_2}/>
                                 </div>
@@ -259,7 +283,7 @@ export default function ComposeAmad() {
                             <div className={style.inputDiv}>
                                 <div>
                                     3. {content_1}, <br/>이 말씀에 비추어 저는 어떤 삶을 살았습니까?
-                                    <textarea className={style.textArea} placeholder="하나님과 나를 점검하고 깨닫게하시는 모습을 나눠주세요."
+                                    <textarea className={style.textArea}
                                               value={content_3}
                                               onChange={onChangeContent_3}/>
                                 </div>
@@ -268,7 +292,6 @@ export default function ComposeAmad() {
                                 <div>
                                     4. {content_1}, <br/>그럼에도 불구하고 주님은 저에게 어떻게 하셨습니까?
                                     <textarea className={style.textArea}
-                                              placeholder="하나님께서 어떤 상황속에서 어떻게 함께하셨는지 여쭈어보세요."
                                               value={content_4}
                                               onChange={onChangeContent_4}/>
                                 </div>
@@ -278,7 +301,6 @@ export default function ComposeAmad() {
                                 <div>
                                     5. {content_1}, <br/>오늘 저는 어떤 삶을 살기 원하십니까?
                                     <textarea className={style.textArea}
-                                              placeholder="오늘 하나님께서 당신에게 원하시는 모습은 어떤 모습인가요?"
                                               value={content_5}
                                               onChange={onChangeContent_5}/>
                                 </div>
@@ -287,7 +309,6 @@ export default function ComposeAmad() {
                                 <div>
                                     <h6>AMAD</h6>
                                     <textarea className={style.textArea}
-                                              placeholder="하나님께서 주신 당신의 오늘의 미션은?"
                                               value={amad}
                                               onChange={onChangeAmad}/>
                                 </div>
@@ -310,11 +331,12 @@ export default function ComposeAmad() {
                                     </svg>
                                 </button>
                             </div>
-                            <button type={"submit"} className={style.actionButton} disabled={!content_1}>게시하기</button>
+                            <button type={"submit"} className={style.actionButton} disabled={!content_1}>수정하기</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     )
+}
 }

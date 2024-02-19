@@ -93,6 +93,8 @@ public class PostService {
                 .ifPresent(content-> findPost.setContent_4(content));
         Optional.ofNullable(post.getContent_5())
                 .ifPresent(content-> findPost.setContent_5(content));
+        Optional.ofNullable(post.getAmad())
+                .ifPresent(amad-> findPost.setAmad(amad));
         return postRepository.save(findPost);
     }
 
@@ -115,8 +117,12 @@ public class PostService {
                             String.valueOf(bibleChapterVerse.getBibleChapter()),
                             String.valueOf(bibleChapterVerse.getBibleVerseFrom()),
                             String.valueOf(bibleChapterVerse.getBibleVerseTo()));
+                    response.setBibleChapterVerseId(bibleChapterVerse.getId());
                     response.setBible(bibleChapterVerse.getBible());
                     response.setScript(scripture);
+                    response.setBibleChapter(bibleChapterVerse.getBibleChapter());
+                    response.setBibleVerseFrom(bibleChapterVerse.getBibleVerseFrom());
+                    response.setBibleVerseTo(bibleChapterVerse.getBibleVerseTo());
 
                     return response;
                 }
