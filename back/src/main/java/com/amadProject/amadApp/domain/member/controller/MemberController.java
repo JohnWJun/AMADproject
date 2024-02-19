@@ -6,6 +6,7 @@ import com.amadProject.amadApp.domain.member.dto.MemberDto;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.member.mapper.MemberMapper;
 import com.amadProject.amadApp.domain.member.service.MemberService;
+import groovy.lang.GString;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,13 @@ public class MemberController {
     public ResponseEntity getMember(){
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         String email = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        MemberDto.Response response= memberMapper.memeberToMemberResponse(memberService.findMember(email));
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity getSpecificMember(@PathVariable("email") String email){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         MemberDto.Response response= memberMapper.memeberToMemberResponse(memberService.findMember(email));
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
