@@ -1,15 +1,12 @@
 "use client";
 
 import style from './composeAmad.module.css';
-import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
-import {string} from "prop-types";
-import {type} from "node:os";
 import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState"
-import {log} from "node:util";
-import {da} from "@faker-js/faker";
+
 export default function ComposeAmad() {
 
     type typeForContent = string;

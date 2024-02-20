@@ -5,6 +5,7 @@ import style from './singlePost.module.css';
 import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/CommentForm";
 import {useEffect, useState} from "react";
 import {getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
+import Loader from "@/app/_component/Loader";
 
 type Props = {
     post: any,
@@ -40,9 +41,7 @@ export default function SinglePost() {
 
     if (!post) {
         return(
-        <div className={style.header}>
-        <div>Loading...</div>
-            </div>)
+       <Loader/>)
         }
 
     return (

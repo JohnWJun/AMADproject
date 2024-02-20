@@ -10,7 +10,7 @@ import {useEffect, useState} from "react";
 
 
 export default function NavMenu() {
-    const segment = useSelectedLayoutSegment();
+    const segment = useSelectedLayoutSegment()?.replace('%40','@');
     console.log(segment);
 
     const me = useRecoilValue(Member);

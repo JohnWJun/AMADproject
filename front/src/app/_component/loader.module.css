@@ -1,0 +1,188 @@
+/* loader.module.css */
+
+/* loader.module.css */
+
+.loaderRoot {
+    display: flex;
+    justify-content: center;
+    --master: 16px;
+    --background: #e3e3e3;
+    --cardbackground: white;
+    --cardhoverbackground: #fff;
+    --color: #111;
+    --margin: calc(var(--master) / 2) 0 calc(var(--master) + (var(--master) / 2)) 0;
+    --shadow: 0 2px 3px rgba(0,0,0,0.1);
+    --hovershadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Vertically center items */
+    width: inherit;
+    height: 100vh; /* Set the container height to 100% of viewport height */
+     /* Optional: Add padding to the container */
+    position: absolute; /* Position relative for absolute positioning */
+
+}
+
+.card {
+    background: var(--cardbackground);
+    font-size: var(--master);
+    text-align: center;
+    width: 100%;
+    position: relative; /* Position the card absolutely */
+}
+
+.loaderRoot .h1:hover {
+    background: var(--cardhoverbackground);
+    box-shadow: var(--hovershadow);
+}
+
+.loaderRoot h1 {
+    color: var(--color);
+    font-size: calc(var(--master) + (var(--master) / 2));
+    font-weight: 400;
+    margin: var(--margin);
+    text-align: center;
+}
+
+.loaderRoot p {
+    color: rgba(17, 17, 17, 0.88); /* Adjust the RGBA values to get a lighter color */
+    font-weight: 300;
+    line-height: calc(var(--master) + (var(--master) / 2));
+    margin: var(--margin);
+    text-align: center;
+}
+
+.loader {
+    box-sizing: content-box;
+    height: 40px;
+    margin: 0 auto 10px auto;
+    position: relative;
+    width: 70px;
+}
+
+.loader:before {
+    border: 2px solid var(--color);
+    box-sizing: content-box;
+    content: '';
+    height: 0;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 0;
+}
+
+.loader .spin {
+    animation: spin 2.25s linear infinite;
+    height: 14px;
+    left: 28px;
+    position: absolute;
+    top: 13px;
+    width: 14px;
+}
+
+.loader .spin:before {
+    border: 3px solid var(--color);
+    box-sizing: content-box;
+    content: '';
+    height: 14px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 14px;
+}
+
+.loader .bounce {
+    animation: bounce 2.25s linear infinite;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+.loader .bounce:after,
+.loader .bounce:before {
+    box-sizing: content-box;
+    content: '';
+    height: 10px;
+    position: absolute;
+    top: 13px;
+    transform: rotate(45deg);
+    width: 10px;
+}
+
+.loader .bounce:before {
+    border-bottom: 3px solid var(--color);
+    border-left: 3px solid var(--color);
+    left: 0;
+}
+
+.loader .bounce:after {
+    border-right: 3px solid var(--color);
+    border-top: 3px solid var(--color);
+    right: 0;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    10% {
+        transform: rotate(0deg);
+    }
+    20% {
+        transform: rotate(90deg);
+    }
+    35% {
+        transform: rotate(90deg);
+    }
+    45% {
+        transform: rotate(180deg);
+    }
+    60% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    85% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: scaleX(1);
+    }
+    10% {
+        transform: scaleX(1);
+    }
+    20% {
+        transform: scaleX(0.8);
+    }
+    35% {
+        transform: scaleX(0.8);
+    }
+    45% {
+        transform: scaleX(1);
+    }
+    60% {
+        transform: scaleX(1);
+    }
+    75% {
+        transform: scaleX(0.8);
+    }
+    85% {
+        transform: scaleX(0.8);
+    }
+    100% {
+        transform: scaleX(1);
+    }
+}

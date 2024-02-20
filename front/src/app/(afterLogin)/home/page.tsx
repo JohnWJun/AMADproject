@@ -10,6 +10,7 @@ import {useRouter} from "next/navigation";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import {da} from "@faker-js/faker";
+import Loader from "@/app/_component/Loader";
 
 export default function Home() {
     const router = useRouter();
@@ -57,11 +58,10 @@ export default function Home() {
 
     console.log(posts)
 
-    if (!posts) {
-        return(
-            <div className={style.header}>
-                <div>Loading...</div>
-            </div>)
+    if (posts.length ===0) {
+        return (
+            <Loader/>
+        )
     }
 
 
@@ -86,6 +86,22 @@ export default function Home() {
                                             {posts.length > 4 && (
                                                 <PostAbstract post={posts[4]}/>
                                             )}
+                                                {posts.length > 5 && (
+                                                    <PostAbstract post={posts[5]}/>
+                                                )}
+                                                    {posts.length > 6 && (
+                                                        <PostAbstract post={posts[6]}/>
+                                                    )}
+                                                        {posts.length > 7 && (
+                                                            <PostAbstract post={posts[7]}/>
+                                                        )}
+                                                            {posts.length > 8 && (
+                                                                <PostAbstract post={posts[8]}/>
+                                                            )}
+                                                                {posts.length > 9 && (
+                                                                    <PostAbstract post={posts[9]}/>
+                                                                )}
+
                             </>
                         )}
                     </div>

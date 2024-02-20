@@ -5,7 +5,8 @@ import {Member} from "@/app/_component/MemberRecoilState";
 import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
 import { usePathname, useRouter} from "next/navigation";
 import {getPostDetail, patchPost, postPost} from "@/app/(afterLogin)/_lib/PostApi";
-import style from "@/app/(afterLogin)/_component/composeAmad.module.css";
+import style from "@/app/(afterLogin)/patch/amad/[id]/patchAmad.module.css";
+import Loader from "@/app/_component/Loader";
 
 type Props ={
     title: string;
@@ -172,9 +173,7 @@ export default function PatchAmadPage() {
 
     if (!post) {
         return (
-            <div className={style.header}>
-                <div>Loading...</div>
-            </div>);
+            <Loader/>);
     }else{
     return (
 
@@ -200,7 +199,7 @@ export default function PatchAmadPage() {
 
                         <div className={style.inputSection}>
                             <div className={style.inputDiv}>
-                                <h4>오늘의 묵상을 기록하세요.</h4>
+                                <h4>수정하기</h4>
                             </div>
                             <div className={style.inputDiv}>
                                 <h5>오늘 나에게 주신 말씀</h5>

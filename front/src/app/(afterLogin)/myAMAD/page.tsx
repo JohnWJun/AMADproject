@@ -1,4 +1,4 @@
-import Post from "@/app/(afterLogin)/_component/PostDetails";
+import PostDetails from "@/app/(afterLogin)/_component/PostDetails";
 import style from "./myAmad.module.css"
 import AmadDetail from "./_component/AmadDetail";
 
@@ -8,7 +8,7 @@ export default function Home() {
             <div className={style.container}>
                 <h3>오늘 나의 묵상</h3>
             </div>
-            <Post/>
+            {/*<PostDetails post={} email={}/>*/}
             <div className={style.container}>
                 <h3>오늘 나의 AMAD</h3>
             </div>

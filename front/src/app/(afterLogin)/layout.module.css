@@ -34,6 +34,9 @@
     }
 
 }
+/*@media all and (min-width: 780px){*/
+
+/*}*/
 
 .leftSectionFixed nav {
     flex: 1;
@@ -144,3 +147,4 @@
 .followRecommend h3 {
     padding-bottom: 12px;
 }
+
