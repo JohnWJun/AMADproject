@@ -60,7 +60,9 @@ export default function Home() {
 
     if (posts.length ===0) {
         return (
+            // <div className={style.main}>
             <Loader/>
+            // </div>
         )
     }
 

@@ -24,6 +24,17 @@
     flex-direction: column;
     align-items: center;
 }
+
+@media all and (min-width: 1300px) {
+    .leftSection {
+        width: 275px;
+    }
+    .leftSectionFixed {
+        align-items: flex-start;
+    }
+
+}
+
 .leftSectionFixed nav {
     flex: 1;
 }
@@ -55,7 +66,7 @@
     justify-content: center;
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 28px;
-    background-color: #142d4c;
+    background-color: rgb(29, 155, 240);
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -65,7 +76,7 @@
     font-size: 17px;
 }
 .postButton:hover {
-    background-color: #ececec;
+    background-color: rgb(26, 140, 216);
 }
 .postButton span {
     display: none;
@@ -76,6 +87,19 @@
     width: 24px;
 }
 
+@media all and (min-width: 1300px) {
+    .postButton {
+        height: 52px;
+        width: 234px;
+        border-radius: 26px;
+    }
+    .postButton span {
+        display: inline-block;
+    }
+    .postButton svg {
+        display: none;
+    }
+}
 
 .rightSectionWrapper {
     display: flex;
@@ -93,11 +117,20 @@
     display: flex;
     justify-content: space-between;
 }
-
+@media all and (min-width: 1024px) {
+    .rightSection {
+        display: inline-block;
+        width: 350px;
+        height: 100%;
+    }
+    .rightSectionInner {
+        width: 990px;
+    }
+}
 
 .main {
-    width: 100%;
-    height: auto;
+    width: 600px;
+    height: 200dvh;
 }
 
 .followRecommend {
@@ -111,24 +144,87 @@
 .followRecommend h3 {
     padding-bottom: 12px;
 }
+.mobileMenu nav {
+    display: none;
 
-/*스크린 크기 1300 이상일때*/
-@media all and (min-width: 1300px) {
+}
+.mobilePostButton{
+    display: none;
+}
+
+@media screen and (max-width: 1023px){
+
+}
+
+@media screen and (max-width: 540px){
+    .container {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+    }
+
+    .leftSectionWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 10%;
+        margin-bottom: 10px;
+    }
+
     .leftSection {
-        width: 275px;
+        flex-direction: row;
+        height: 100%;
+        width: 100%;
+
     }
     .leftSectionFixed {
-        align-items: flex-start;
+        display: flex;
+        background-color: #9fd3c7;
+        width: 100%;
+        height: 10%;
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 10px;
+
     }
-    .leftSectionFixed nav {
-        flex: 1;
+    .leftSectionFixed nav{
+        display: none;
     }
-    .leftSectionFixed nav li {
+    .mobileMenu{
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        height: 50px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #ececec;
+
+    }
+
+    .mobileMenu nav {
+        display: flex;
+        flex-direction: row;
+
+    }
+    .mobileMenu ul {
+        display: flex;
+        flex-direction: row;
+
+    }
+    .mobileMenu nav li {
         list-style-type: none;
+        display: inline;
     }
 
     .logo {
-        display: inline-block;
+        display: flex;
         height: 56px;
         margin-top: 2px;
     }
@@ -144,91 +240,75 @@
     .logoPill:hover {
         background-color: rgba(15,20,25, 0.1);
     }
-
-
-    .postButton:hover {
-        background-color: #ececec;
-    }
-
-    .postButton {
-        height: 52px;
-        width: 234px;
-        border-radius: 26px;
-    }
-    .postButton span {
-        display: inline-block;
-    }
-    .postButton svg {
-        display: none;
-    }
-
-
-}
-/*스크린 크기 780이상 1300이하일때*/
-@media (max-width: 1300px) and (min-width: 780px){
-    .leftSection {
-        width: 72px;
-        height: 100dvh;
-    }
-    .leftSectionFixed {
+    .mobilePostButtonContainer{
         position: fixed;
-        width: inherit;
-        padding: 0 8px;
-        height: 100dvh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        bottom: 8%;
     }
-    .postButton {
-        margin: 16px 0;
+
+    .mobilePostButton {
+        margin-left: 10px;
+        margin-bottom: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 28px;
-        background-color: #142d4c;
-        width: 50px;
-        height: 50px;
+        background-color: rgb(29, 155, 240);
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         border: none;
         color: rgb(255, 255, 255);
         font-weight: 700;
         font-size: 17px;
     }
-    .postButton span {
+    .mobilePostButton:hover {
+        background-color: rgb(26, 140, 216);
+    }
+    .mobilePostButton span {
         display: none;
     }
-    .postButton svg {
+    .mobilePostButton svg {
         display: inline-block;
         fill: white;
         width: 24px;
     }
+    .main {
+        width: 100%;
+        height: auto;
+    }
+
+    .followRecommend {
+        display: none;
+    }
     .rightSectionWrapper {
         display: flex;
-        align-items: flex-start;
-        height: 100dvh;
-        flex-direction: column;
-        flex-grow: 1;
+        align-items: center;
+        height: auto;
     }
+
     .rightSection {
         display: none;
     }
     .rightSectionInner {
-        height: 100%;
-        width: 600px;
+        margin-top: 40px;
+        width: 370px;
+        height: auto;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
-}
 
-@media all and (min-width: 1024px) {
-    .rightSection {
-        display: inline-block;
-        width: 350px;
-        height: 100%;
-    }
+}
+@media screen and (max-width: 280px){
     .rightSectionInner {
-        width: 990px;
+        margin-top: 40px;
+        width: 270px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
+
 }
-
-

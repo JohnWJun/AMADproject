@@ -22,3 +22,22 @@
     }
 }
 
+@media screen and (max-width: 540px){
+    .navPill {
+        display: inline-flex;
+        height: 50px;
+        padding: 12px;
+        align-items: center;
+    }
+
+}
+@media screen and (max-width: 280px){
+    .navPill {
+        display: inline-flex;
+        height: 50px;
+        width: 40px;
+        padding: 12px;
+        align-items: center;
+    }
+}
+
