@@ -20,6 +20,19 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
+@media screen and (max-width: 540px){
+    .homeFixed {
+        position: fixed;
+        top: 5%;
+        z-index: 1;
+        width: inherit;
+        background-color: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border-color: rgb(239, 243, 244);
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+}
 
 .homeText {
     font-size: 20px;
