@@ -103,6 +103,7 @@ export default function Home() {
                                                                 {posts.length > 9 && (
                                                                     <PostAbstract post={posts[9]}/>
                                                                 )}
+                            {/* Empty Space needed*/}
 
                             </>
                         )}
