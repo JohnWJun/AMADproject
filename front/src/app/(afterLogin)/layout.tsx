@@ -8,6 +8,7 @@ import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
 import amadLogo from "../../../public/AMAD.png"
 import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
+import MainLogo from "@/app/_component/MainLogo";
 
 type Props = { children: ReactNode, modal: ReactNode };
 export default async function AfterLoginLayout({children, modal}: Props) {
@@ -19,7 +20,7 @@ export default async function AfterLoginLayout({children, modal}: Props) {
                     <div className={style.leftSectionFixed}>
                         <Link className={style.logo} href="/home">
                             <div className={style.logoPill}>
-                                <Image src={amadLogo} alt={"logo"} width={40} height={40} />
+                                <MainLogo width={'50px'} height={'45px'}/>
                             </div>
                         </Link>
                         <nav>
