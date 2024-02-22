@@ -1,5 +1,5 @@
 .main {
-    width: 600px;
+    width: inherit;
     min-height: 100dvh;
     border-color: rgb(239, 243, 244);
     border-right-width: 1px;

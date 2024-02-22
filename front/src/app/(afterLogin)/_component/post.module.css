@@ -9,6 +9,23 @@
     transition-duration: 0.2s;
     cursor: pointer;
 }
+@media screen and (max-width: 912px){
+}
+@media screen and (max-width: 768px){
+    .post {
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 578px){
+    .post {
+        font-size: 9px;
+    }
+}
+@media screen and (max-width: 280px){
+    .post {
+        font-size: 7px;
+    }
+}
 .post:hover {
     background-color: rgba(0, 0, 0, 0.03);
 }
@@ -299,3 +316,4 @@
 .heartButton.liked .count, .heartButton:hover .count {
     color: rgb(228, 34, 126);
 }
+

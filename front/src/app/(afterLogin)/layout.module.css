@@ -1,3 +1,4 @@
+
 .container {
     display: flex;
     align-items: stretch;
@@ -122,6 +123,9 @@
     display: none;
 }
 
+
+/*wide Screen devices*/
+
 @media all and (min-width: 1300px) {
     .leftSection {
         width: 275px;
@@ -153,7 +157,7 @@
     }
 }
 
-/*MOBILE*/
+/*wide tablets*/
 
 @media screen and (max-width: 1024px){
     .rightSection {
@@ -175,7 +179,7 @@
     }
 
 }
-
+/*From here mobile setting starts*/
 @media screen and (max-width: 912px){
     .container {
         display: flex;

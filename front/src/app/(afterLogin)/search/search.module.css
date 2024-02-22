@@ -1,5 +1,5 @@
 .main {
-    width: 600px;
+    width: inherit;
     border-color: rgb(239, 243, 244);
     border-right-width: 1px;
     border-left-width: 1px;
@@ -10,13 +10,34 @@
     align-items: stretch;
 }
 
+
+/*@media screen and (max-width: 912px){*/
+/*    .main  {*/
+/*        width: 600px;*/
+/*    }*/
+/*}*/
+/*@media screen and (max-width: 768px){*/
+/*    .main  {*/
+/*        width: 400px;*/
+/*    }*/
+/*}*/
+/*@media screen and (max-width: 578px){*/
+/*    .main  {*/
+/*        width: 300px;*/
+/*    }*/
+/*}*/
+/*@media screen and (max-width: 280px){*/
+/*    .main  {*/
+/*        width: 270px;*/
+/*    }*/
+/*}*/
 .searchTop {
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
     border-color: rgb(239, 243, 244);
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    width: 600px;
+    width: inherit;
     position: fixed;
 }
 .searchZone {

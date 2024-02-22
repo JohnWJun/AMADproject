@@ -22,17 +22,17 @@ export default function Search({ searchParams }: Props) {
                 <Tab/>
             </div>
             <div className={style.list}>
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
                 {/*<SearchResult searchParams={searchParams} />*/}
             </div>
         </main>

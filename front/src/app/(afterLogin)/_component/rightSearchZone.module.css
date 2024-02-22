@@ -10,6 +10,7 @@
     align-items: center;
 }
 
+
 .search svg {
     margin-left: 20px;
     fill: rgb(83, 100, 113);
@@ -22,6 +23,11 @@
     padding: 12px;
     margin-left: 5px;
     font-size: 15px;
+}
+@media screen and (max-width: 280px){
+    .search input{
+        width: 200px;
+    }
 }
 
 .filterTitle {

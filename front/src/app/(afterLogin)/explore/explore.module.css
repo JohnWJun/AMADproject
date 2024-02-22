@@ -1,5 +1,5 @@
 .main {
-    width: 600px;
+    width: inherit;
     border-color: rgb(239, 243, 244);
     border-right-width: 1px;
     border-left-width: 1px;
@@ -12,7 +12,7 @@
 
 .formZone {
     padding-left: 16px;
-    width: 566px;
+    width: inherit;
     margin-bottom: 60px;
 }
 
@@ -28,4 +28,31 @@
 }
 .explorePost h3 {
     padding: 12px 16px;
+}
+
+@media screen and (max-width: 912px){
+    .formZone {
+        padding: 3px 3px;
+        width: 594px;
+    }
+    .explorePost h3 {
+        padding: 12px 16px;
+        font-size: 15px;
+        text-align: center;
+    }
+}
+@media screen and (max-width: 768px){
+    .formZone {
+        width: 394px;
+    }
+}
+@media screen and (max-width: 578px){
+    .formZone {
+        width: 294px;
+    }
+}
+@media screen and (max-width: 280px){
+    .formZone {
+        width: 264px;
+    }
 }
