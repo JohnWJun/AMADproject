@@ -11,26 +11,7 @@
 }
 
 
-/*@media screen and (max-width: 912px){*/
-/*    .main  {*/
-/*        width: 600px;*/
-/*    }*/
-/*}*/
-/*@media screen and (max-width: 768px){*/
-/*    .main  {*/
-/*        width: 400px;*/
-/*    }*/
-/*}*/
-/*@media screen and (max-width: 578px){*/
-/*    .main  {*/
-/*        width: 300px;*/
-/*    }*/
-/*}*/
-/*@media screen and (max-width: 280px){*/
-/*    .main  {*/
-/*        width: 270px;*/
-/*    }*/
-/*}*/
+
 .searchTop {
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);

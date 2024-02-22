@@ -1,5 +1,5 @@
 .main {
-    width: 600px;
+    width: inherit;
     border-color: rgb(239, 243, 244);
     border-right-width: 1px;
     border-left-width: 1px;
@@ -9,6 +9,7 @@
     flex-direction: column;
     align-items: stretch;
 }
+
 
 .header {
     display: flex;
@@ -39,6 +40,8 @@
     width: 134px;
     border-radius: 50%;
 }
+
+
 .nameContainer{
     display: flex;
     flex-direction: row;
@@ -91,6 +94,59 @@
     color: white;
     cursor: pointer;
 }
+@media screen and (max-width: 912px){
+
+}
+@media screen and (max-width: 768px){
+    .followButton {
+        margin-top: 6px;
+    }
+    .userName {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+    .userZone{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .userImage {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 0;
+    }
+}
+@media screen and (max-width: 578px){
+
+    .userImage {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+    }
+}
+@media screen and (max-width: 280px){
+    .userImage {
+        width: 60px;
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+    }
+    .userImage img {
+        width: inherit;
+        border-radius: 50%;
+    }
+    .headerTitle {
+        display: none;
+    }
+}
 .followButton:hover {
     background-color: rgb(39,44,48);
 }
@@ -128,6 +184,23 @@
     appearance: none;
     margin-bottom: 7px;
     border-radius: 4px;
+}
+@media screen and (max-width: 912px){
+
+
+}
+@media screen and (max-width: 768px){
+    .progressContainer progress{
+        width: 70%;
+    }
+}
+@media screen and (max-width: 578px){
+
+}
+@media screen and (max-width: 280px){
+    .progressContainer progress{
+        width: 60%;
+    }
 }
 
 .progressContainer ::-webkit-progress-bar {

@@ -5,3 +5,19 @@
 .amadContent > div{
     padding-top: 20px;
 }
+@media screen and (max-width: 912px){
+    .amadContent{
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 5px;
+    }
+}
+@media screen and (max-width: 768px){
+
+}
+@media screen and (max-width: 578px){
+
+}
+@media screen and (max-width: 280px){
+
+}
