@@ -1,37 +1,35 @@
-.container{
+.container {
   display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
+  flex-direction: row;
+  background-color: #fff;
   width: 100dvw;
   height: 100dvh;
 }
 .left {
-  font-size: 50px;
-  flex: 1.2;
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+}
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .left > svg {
   width: 50%;
   height: 50%;
 }
-.right {
-  flex: 0.8;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
+
 .right h1 {
   color: #142d4c;
-  text-align: center;
-  font-weight: bold;
-  font-size: 30px;
+  font-size: 64px;
 }
 .right h2 {
- display: none;
+  display: none;
 }
+
 .right h3 {
   font-weight: bold;
   font-size: 17px;
@@ -72,8 +70,68 @@
 .login > svg{
   margin-right: 10px;
 }
+@media screen and (min-width: 912px){
+  .right h2 {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 31px;
+    margin-bottom: 32px;
+  }
+}
 
-/*@media screen and (max-width: 912px){}*/
-/*@media screen and (max-width: 768px){}*/
-/*@media screen and (max-width: 578px){}*/
-/*@media screen and (max-width: 280px){}*/
+
+@media screen and (max-width: 912px){
+  .container{
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 100dvw;
+    height: 100dvh;
+  }
+  .left {
+    font-size: 50px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 100px;
+  }
+  .right h1 {
+    color: #142d4c;
+    text-align: center;
+    font-weight: bold;
+    font-size: 60px;
+  }
+  .login{
+    width: 200px;
+  }
+}
+@media screen and (max-width: 768px){
+  .right h1{
+    font-size: 50px;
+  }
+  .right h2 {
+    display: none;
+  }
+  .left {
+    font-size: 50px;
+  }
+  .right {
+    flex: 0.8;
+  }
+}
+@media screen and (max-width: 578px){}
+@media screen and (max-width: 280px){
+  .login{
+    width: 150px;
+    font-size: 10px;
+  }
+}
