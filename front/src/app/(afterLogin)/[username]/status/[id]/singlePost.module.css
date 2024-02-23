@@ -1,5 +1,5 @@
 .main {
-    width: 600px;
+    width: inherit;
     border-color: rgb(239, 243, 244);
     border-right-width: 1px;
     border-left-width: 1px;
@@ -9,6 +9,27 @@
     flex-direction: column;
     align-items: stretch;
 }
+/*@media screen and (max-width: 912px){*/
+/*    .main {*/
+/*        width: 594px;*/
+/*    }*/
+
+/*}*/
+/*@media screen and (max-width: 768px){*/
+/*    .main {*/
+/*        width: 394px;*/
+/*    }*/
+/*}*/
+/*@media screen and (max-width: 578px){*/
+/*    .main {*/
+/*        width: 294px;*/
+/*    }*/
+/*}*/
+/*@media screen and (max-width: 280px){*/
+/*    .main {*/
+/*        width: 264px;*/
+/*    }*/
+/*}*/
 
 .header {
     display: flex;

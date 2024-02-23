@@ -27,7 +27,7 @@ export default function Post({ noImage ,post, email }: Props) {
 
 
         return (
-
+                <article className={style.post}>
                 <div className={style.postWrapper}>
                     <div className={style.postUserSection}>
                         <Link href={`/${target.writer}`} className={style.postUserImage}>
@@ -87,6 +87,7 @@ export default function Post({ noImage ,post, email }: Props) {
                         <ActionButtons/>
                     </div>
                 </div>
+                </article>
         )
 
 }

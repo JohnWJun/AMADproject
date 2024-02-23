@@ -22,6 +22,7 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
+
 .postInputSection {
     flex: 1;
 }
@@ -59,6 +60,33 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(29, 155, 240, 0.01);
+}
+@media screen and (max-width: 912px){
+    .postForm {
+        font-size: 13px;
+        margin-bottom: 150px;
+    }
+    .postForm textarea {
+        width: 100%;
+        border: none;
+        padding: 12px 0;
+        font-size: 13px;
+        line-height: 24px;
+        outline: none;
+    }
+    .postForm textarea::placeholder {
+        font-family: 'Malgun Gothic', sans-serif;
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 768px){
+
+}
+@media screen and (max-width: 578px){
+
+}
+@media screen and (max-width: 280px){
+
 }
 .uploadButton:hover {
     background-color: rgb(29, 155, 240, 0.1);
