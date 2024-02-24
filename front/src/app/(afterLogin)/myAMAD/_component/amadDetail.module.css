@@ -1,6 +1,7 @@
 .amadContent{
     flex-direction: column;
-    padding-left: 60px;
+    padding-left: 10px;
+    padding-bottom: 20px;
 }
 .amadContent > div{
     padding-top: 20px;

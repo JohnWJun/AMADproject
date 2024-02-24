@@ -134,6 +134,7 @@ public interface PostMapper {
         response.setNickname(post.getMember().getNickname());
         response.setStatusImg(post.getMember().getStatusImg());
         response.setMyAmadId(post.getAmad().getId());
+        response.setComplete(post.getAmad().isComplete());
         return response;
 
     }

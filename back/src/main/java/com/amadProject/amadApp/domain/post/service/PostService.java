@@ -162,4 +162,9 @@ public class PostService {
         return postRepository.findAll( writtenDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
 
     }
+
+    public Page<Post> findPosts(String email, int page, int size) {
+        LocalDate tdy = LocalDate.now();
+        return postRepository.findAllByEmail(tdy,email,PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+    }
 }

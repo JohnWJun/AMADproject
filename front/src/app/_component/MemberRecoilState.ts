@@ -18,12 +18,12 @@ import {useEffect, useState} from "react";
 //     // Handle the case where window is not available
 //     storage = undefined; // or any other appropriate behavior
 // }
-const localStorage =
-    typeof window !== "undefined" ? window.localStorage : undefined;
+// const localStorage =
+//     typeof window !== "undefined" ? window.localStorage : undefined;
 
 const { persistAtom } = recoilPersist({
     key: "recoil-states",
-    storage: localStorage
+    storage: window.localStorage
 });
 
 

@@ -10,8 +10,8 @@ export default function AmadSection() {
     if(pathname === '/explore') return null;
 
     return (
-        <div className={style.trendBg}>
-            <div className={style.trend}>
+        <div className={style.amadBg}>
+            <div className={style.amad}>
                 <h3>나의 AMAD</h3>
                 <AmadAbstract />
 

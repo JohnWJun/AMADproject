@@ -6,22 +6,26 @@ import CommentForm from "@/app/(afterLogin)/[username]/status/[id]/_component/Co
 import {useEffect, useState} from "react";
 import {getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import Loader from "@/app/_component/Loader";
+import {useRecoilValue} from "recoil";
+import {Member} from "@/app/_component/MemberRecoilState";
 
 type Props = {
     post: any,
 }
 
 export default function SinglePost() {
-    const [email, setEmail] = useState<string>('');
+    // const [email, setEmail] = useState<string>('');
     const [post, setPost] = useState<Props | null>(null);
+    const member = useRecoilValue(Member);
+    const email = member.email;
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const emailParam = urlParams.get("email");
-        if (emailParam) {
-            setEmail(emailParam);
-        }
-    }, []); // Empty dependency array to ensure this runs only once on initial render
+    // useEffect(() => {
+    //     // const urlParams = new URLSearchParams(window.location.search);
+    //     // const emailParam = urlParams.get("email");
+    //     if (emailParam) {
+    //         setEmail(emailParam);
+    //     }
+    // }, []); // Empty dependency array to ensure this runs only once on initial render
 
     useEffect(() => {
         if (email) {

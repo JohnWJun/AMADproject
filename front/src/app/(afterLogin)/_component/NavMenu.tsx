@@ -16,7 +16,16 @@ export default function NavMenu() {
     const me = useRecoilValue(Member);
 
 
+    const [isClient, setIsClient] = useState(false);
 
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+        setIsClient(true)
+            }
+    }, [isClient]);
+    console.log(isClient);
+
+    if (isClient){
     return (
         <>
             <li>
@@ -156,6 +165,6 @@ export default function NavMenu() {
                 </Link>
             </li>}
         </>
-    );
+    );}
 
 }

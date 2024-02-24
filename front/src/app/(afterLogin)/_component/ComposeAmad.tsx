@@ -77,7 +77,7 @@ export default function ComposeAmad() {
         const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
         if (success) {
             console.log(data);
-            router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
+            router.replace(`/${data.nickname}/status/${data.id}/`);
             router.refresh();
         }
     };

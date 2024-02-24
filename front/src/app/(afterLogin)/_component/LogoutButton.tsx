@@ -3,11 +3,16 @@
 import style from "./logoutButton.module.css";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState";
+import {useRouter} from "next/navigation";
 
 export default function LogoutButton() {
     const member = useRecoilValue(Member);
+    const router = useRouter();
 
-    const onLogout = () => {};
+    const onLogout = () => {
+        localStorage.clear();
+        router.replace('/');
+    };
 
     return (
         <button className={style.logOutButton} onClick={onLogout}>

@@ -100,6 +100,16 @@ public class PostController {
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
+    @GetMapping("last/{member-email}")
+    public ResponseEntity getLastPosts(@PathVariable("member-email") String email,
+                                        @Positive @RequestParam int page,
+                                        @Positive @RequestParam int size){
+
+        Page<Post> todayPosts = service.findPosts(email,page, size);
+        List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{member-email}/{local-date}")
     public ResponseEntity deletePost(@PathVariable("member-email") String email,
                                   @PathVariable("local-date") String writtenDate){

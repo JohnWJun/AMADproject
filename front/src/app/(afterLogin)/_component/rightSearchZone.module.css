@@ -19,6 +19,7 @@
 .search input {
     outline: none;
     background-color: inherit;
+    width: 200px;
     border: none;
     padding: 12px;
     margin-left: 5px;

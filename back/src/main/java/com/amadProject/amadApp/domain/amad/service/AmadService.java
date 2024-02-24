@@ -46,7 +46,7 @@ public class AmadService {
 //        Optional.ofNullable(amad.getDescription())
 //                .ifPresent(description-> findAmad.setDescription(description));
 
-        if (amad.isComplete()) findAmad.setComplete(true);
+        findAmad.setComplete(amad.isComplete());
 
         return amadRepository.save(findAmad);
     }
