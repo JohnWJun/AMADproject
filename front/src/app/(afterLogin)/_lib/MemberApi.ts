@@ -110,3 +110,71 @@ export const getUserInfo = async ({accessToken, refreshToken, emailToFind}:any) 
         return { success: false, error: 'An error occurred' };
     }
 }
+
+type Props ={
+    accessToken:string,
+    refreshToken: string,
+    nickname: string,
+    userId: bigint,
+    setMemberInfo: any
+}
+export const patchNickname = async ({accessToken, refreshToken, nickname, userId, setMemberInfo }:Props) => {
+
+    const requestBody ={
+        nickname: nickname
+    }
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": "Bearer "+ accessToken
+
+            },
+            body: JSON.stringify(requestBody),
+            credentials: 'include',
+        });
+        if (response.status === 401 && refreshToken) {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "ngrok-skip-browser-warning": "69420",
+                    "Authorization": "Bearer "+ refreshToken
+
+                },
+                body: JSON.stringify(requestBody),
+                credentials: 'include',
+            });
+            if (response.status === 200) {
+                const data = await response.json();
+                setMemberInfo(data);
+
+                localStorage.setItem("Authorization",refreshToken);
+                localStorage.removeItem("Refresh");
+
+                return { success: true ,data};
+
+            } else{
+                alert("please login again");
+                redirect('/');
+            }
+        }
+
+        if (response.status === 200) {
+            const data = await response.json();
+            setMemberInfo(data);
+            return { success: true,data };
+
+
+        } else {
+            const data = await response.json();
+            return { success: false, error: data.error };
+        }
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'An error occurred' };
+    }
+}

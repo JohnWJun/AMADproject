@@ -5,12 +5,13 @@ import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import {useRecoilState, useRecoilValue} from "recoil"
 import {Member} from "@/app/_component/MemberRecoilState";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {ChangeEventHandler, useEffect, useState} from "react";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
-import {getUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
+import {getUserInfo, patchNickname} from "@/app/(afterLogin)/_lib/MemberApi";
 import {tr} from "@faker-js/faker";
 import Loader from "@/app/_component/Loader";
+import {router} from "next/client";
 
 type Props = {
 
@@ -25,14 +26,17 @@ type Props = {
 export default function Profile() {
 
     const emailToFind = usePathname().replace('/','') as string;
-
+    const router = useRouter();
     const member = useRecoilValue(Member);
+    const [memberInfo, setMemberInfo] = useRecoilState(Member);
+    const userId = member.id;
     const accessToken = localStorage.getItem("Authorization") || '';
     const refreshToken = localStorage.getItem("Refresh") || '';
     const loginUserEmail= member.email;
     const [userToFind, setUserToFind] = useState<Props | null>(null);
     const [isEdit, setIsEdit] = useState(false);
     const [nickname, setNickname] = useState("");
+    const [isPatched, setIsPatched] = useState(false);
     const onClickChangeButton = () => {
         setIsEdit(true);
     }
@@ -40,7 +44,24 @@ export default function Profile() {
         //fetch patch member(nickname)
         //refresh
         //the nickname must be updated in recoil when it is patched.
+            const fetchUserInfo = async () => {
+                const { success, data } = await patchNickname({ accessToken, refreshToken, nickname, userId ,setMemberInfo});
+
+                if (success) {
+                    setIsEdit(false);
+                    setIsPatched(true);
+                }
+            }
+        fetchUserInfo();
+
     }
+    // useEffect(() => {
+    //     console.log("useEffect triggered");
+    //     if (isPatched) {
+    //         console.log("isPatched is true, refreshing router...");
+    //         router.refresh();
+    //     }
+    // }, [isPatched, router]);
     const onClickCancelButton = () => {
         setIsEdit(false);
     }

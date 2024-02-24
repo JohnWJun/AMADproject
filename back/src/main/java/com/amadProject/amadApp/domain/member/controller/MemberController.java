@@ -40,6 +40,14 @@ public class MemberController {
     };
 
     //맴버 CRUD 미구현 구현 요망
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id")long memberId,
+                                      @RequestBody MemberDto.Patch patch){
+        Member member = memberMapper.patchToMember(patch);
+        Member updatedMember = memberService.updateMember(member,memberId);
+        return new ResponseEntity<>(memberMapper.memeberToMemberResponse(updatedMember),HttpStatus.OK);
+    }
+
 
     @GetMapping("/me")
     public ResponseEntity getMember(){
@@ -65,7 +73,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(long memberId){
+    public ResponseEntity deleteMember(@PathVariable("member-id")long memberId){
         memberService.deleteMember(memberId);
         return new ResponseEntity<>("The member is deleted",HttpStatus.NO_CONTENT);
     }

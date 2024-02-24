@@ -32,8 +32,10 @@ public class MemberService {
         throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
-    public Member updateMember(Member member){
-        Member foundMember = findVerifiedMember(member.getEmail());
+    public Member updateMember(Member member, long memberId){
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        Optional.ofNullable(member.getNickname())
+                .ifPresent(nickname -> foundMember.setNickname(nickname));
 
         return memberRepository.save(foundMember);
     }

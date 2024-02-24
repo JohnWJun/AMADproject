@@ -293,16 +293,19 @@ export async function patchPost ({requestBody, accessToken,refreshToken, id, bib
 
 }
 
-export async function getPosts ({accessToken,refreshToken, page}:Props2) {
 
-    const tdy = new Date();
-    const year = tdy.getFullYear();
-    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
-    const day = tdy.getDate()
-    const localDateForm = year+'-'+month+'-'+day;
-    console.log(localDateForm);
+type Props3 ={
+    accessToken:string,
+    refreshToken: string,
+    page: number,
+    email: string
+}
+
+export async function getLastPosts ({accessToken,refreshToken, page, email}:Props3) {
+
+
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -313,7 +316,7 @@ export async function getPosts ({accessToken,refreshToken, page}:Props2) {
             credentials: 'include',
         });
         if (response.status === 401 && refreshToken) {
-            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -353,18 +356,17 @@ export async function getPosts ({accessToken,refreshToken, page}:Props2) {
     }
 
 }
-type Props3 ={
-    accessToken:string,
-    refreshToken: string,
-    page: number,
-    email: string
-}
 
-export async function getLastPosts ({accessToken,refreshToken, page, email}:Props3) {
+export async function getPosts ({accessToken,refreshToken, page}:Props3) {
 
-
+    const tdy = new Date();
+    const year = tdy.getFullYear();
+    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+    const day = tdy.getDate()
+    const localDateForm = year+'-'+month+'-'+day;
+    console.log(localDateForm);
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -375,7 +377,7 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
             credentials: 'include',
         });
         if (response.status === 401 && refreshToken) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
+            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
