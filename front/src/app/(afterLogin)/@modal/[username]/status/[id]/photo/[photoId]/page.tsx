@@ -27,15 +27,15 @@ export default function Default() {
                 </div>
             </div>
             <div className={style.commentZone}>
-                <Post noImage />
-                <CommentForm />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {/*<Post noImage />*/}
+                {/*<CommentForm />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
+                {/*<Post />*/}
             </div>
         </div>
     );

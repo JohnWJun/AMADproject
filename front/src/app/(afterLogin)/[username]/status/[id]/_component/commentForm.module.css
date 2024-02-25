@@ -61,10 +61,11 @@
     justify-content: center;
     background-color: rgb(29, 155, 240, 0.01);
 }
+
 @media screen and (max-width: 912px){
     .postForm {
         font-size: 13px;
-        margin-bottom: 150px;
+        margin-bottom: 10px;
     }
     .postForm textarea {
         width: 100%;

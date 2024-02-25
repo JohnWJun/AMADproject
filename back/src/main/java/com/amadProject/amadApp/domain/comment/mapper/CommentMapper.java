@@ -17,6 +17,8 @@ public interface CommentMapper {
             response.setMention(comment.getMention());
             response.setCreatedAt(comment.getCreatedAt());
             response.setModifiedAt(comment.getModifiedAt());
+            response.setWriter(comment.getMember().getEmail());
+            response.setStatusImg(comment.getMember().getStatusImg());
 
             return response;
         };

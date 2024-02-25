@@ -1,24 +1,58 @@
 "use client";
 
-import {useRef, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
 import style from './commentForm.module.css';
+import {useRecoilValue} from "recoil";
+import {Member} from "@/app/_component/MemberRecoilState";
+import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
+import {postComment} from "@/app/(afterLogin)/_lib/CommentApi";
+import {useRouter} from "next/navigation";
 
-export default function CommentForm() {
+type Props = {
+    postId: bigint,
+    onCommentAdded: () => void // Callback function to notify parent about newly added comment
+}
+
+export default function CommentForm({ postId, onCommentAdded }: Props) {
     const [content, setContent] = useState('');
     const imageRef = useRef<HTMLInputElement>(null);
-    const onClickButton = () => {}
-    const onSubmit = () => {}
-    const onChange = () => {}
-    const me = {
-        id: 'zerohch0',
-        image: '/AMAD.png'
-    };
+    const me = useRecoilValue(Member);
+    const memberId = me.id;
+    const router = useRouter();
 
-    return (
+    const onClickButton = () => {}
+    const onSubmit : FormEventHandler = async (e) => {
+        e.preventDefault();
+        const accessToken = localStorage.getItem("Authorization") || '';
+        const refreshToken = localStorage.getItem("Refresh") || '';
+
+        console.log(memberId);
+        console.log()
+
+        const {success,data} = await postComment({content, accessToken, refreshToken, postId, memberId});
+        if (success) {
+            console.log(data);
+            // Call the callback function provided by the parent component
+            onCommentAdded();
+            // Clear the content of the comment form after submission
+            setContent('');
+            // You may replace or refresh the router if needed
+            router.replace(`/${data.nickname}/status/${postId}/`);
+        }
+
+
+
+    }
+    const onChange : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
+        setContent(e.target.value);
+    }
+
+
+        return (
         <form className={style.postForm} onSubmit={onSubmit}>
             <div className={style.postUserSection}>
                 <div className={style.postUserImage}>
-                    <img src={me.image} alt={me.id}/>
+                    <img src={me.statusImg} alt={me.nickname}/>
                 </div>
             </div>
             <div className={style.postInputSection}>
@@ -36,7 +70,7 @@ export default function CommentForm() {
                                 </svg>
                             </button>
                         </div>
-                        <button className={style.actionButton} disabled={!content}>답글</button>
+                        <button type={"submit"} className={style.actionButton} disabled={!content}>답글</button>
                     </div>
                 </div>
             </div>

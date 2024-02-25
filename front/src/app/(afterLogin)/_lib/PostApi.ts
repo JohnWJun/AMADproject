@@ -144,7 +144,7 @@ if (response.status === 200) {
 
 }
 
-export async function getPostDetail ({accessToken,refreshToken, email}:any) {
+export async function getPostDetail ({accessToken,refreshToken, memberId}:any) {
 
     const tdy = new Date();
     const year = tdy.getFullYear();
@@ -152,8 +152,9 @@ export async function getPostDetail ({accessToken,refreshToken, email}:any) {
     const day = tdy.getDate()
     const localDateForm = year+'-'+month+'-'+day;
     console.log(localDateForm);
+    console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${memberId}/${localDateForm}`);
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${memberId}/${localDateForm}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -163,9 +164,9 @@ export async function getPostDetail ({accessToken,refreshToken, email}:any) {
             },
             credentials: 'include',
         });
-        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`)
+        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${memberId}/${localDateForm}`)
         if (response.status === 401 && refreshToken) {
-            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}/${localDateForm}`, {
+            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${memberId}/${localDateForm}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

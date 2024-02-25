@@ -24,6 +24,8 @@ public class CommentDto {
     @Setter
     public static class Response{
         private String nickname;
+        private String writer;
+        private String statusImg;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private String mention;

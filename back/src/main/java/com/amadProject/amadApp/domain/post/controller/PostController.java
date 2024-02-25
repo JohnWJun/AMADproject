@@ -76,12 +76,12 @@ public class PostController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/{member-email}/{local-date}")
-    public ResponseEntity getPost(@PathVariable("member-email") String email,
+    @GetMapping("/{member-id}/{local-date}")
+    public ResponseEntity getPost(@PathVariable("member-id") long memberId,
                                   @PathVariable("local-date") String writtenDate){
 
         LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
-        Post post = service.findPost(email,date);
+        Post post = service.findPost(memberId,date);
         List<PostDto.BibleResponse> scriptures = service.getScripture(post.getBibleChapterVerses());
 
 
