@@ -23,7 +23,6 @@ export default function NavMenu() {
         setIsClient(true)
             }
     }, [isClient]);
-    console.log(isClient);
 
     if (isClient){
     return (

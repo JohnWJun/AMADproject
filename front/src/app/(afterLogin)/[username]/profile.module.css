@@ -190,6 +190,7 @@
 
 }
 @media screen and (max-width: 768px){
+
     .progressContainer progress{
         width: 70%;
     }
@@ -232,6 +233,47 @@
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
+}
+
+@media screen and (max-width: 912px){
+
+
+}
+@media screen and (max-width: 768px){
+    .userName svg {
+
+        padding-top: 2px;
+        margin-left: 0;
+    }
+    .nameContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .form__group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 50%;
+    }
+    .form__field{
+        text-align: center;
+    }
+}
+@media screen and (max-width: 578px){
+    .form__group{
+
+    }
+
+}
+@media screen and (max-width: 280px){
+    .form__group{
+
+    }
 }
 
 .form__field::placeholder {

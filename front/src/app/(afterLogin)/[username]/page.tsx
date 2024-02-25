@@ -50,18 +50,12 @@ export default function Profile() {
                 if (success) {
                     setIsEdit(false);
                     setIsPatched(true);
+                    router.refresh();
                 }
             }
         fetchUserInfo();
 
     }
-    // useEffect(() => {
-    //     console.log("useEffect triggered");
-    //     if (isPatched) {
-    //         console.log("isPatched is true, refreshing router...");
-    //         router.refresh();
-    //     }
-    // }, [isPatched, router]);
     const onClickCancelButton = () => {
         setIsEdit(false);
     }
