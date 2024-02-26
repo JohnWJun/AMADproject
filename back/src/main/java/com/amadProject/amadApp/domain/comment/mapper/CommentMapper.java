@@ -13,6 +13,8 @@ public interface CommentMapper {
         default CommentDto.Response commentToResponse (Comment comment){
 
             CommentDto.Response response = new CommentDto.Response();
+            response.setPostId(comment.getPost().getId());
+            response.setId(comment.getId());
             response.setNickname(comment.getMember().getNickname());
             response.setMention(comment.getMention());
             response.setCreatedAt(comment.getCreatedAt());

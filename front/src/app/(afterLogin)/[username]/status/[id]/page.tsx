@@ -10,6 +10,8 @@ import {usePathname, useRouter} from "next/navigation";
 import Comment from "@/app/(afterLogin)/_component/Comment";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import {getComments} from "@/app/(afterLogin)/_lib/CommentApi";
+import {useRecoilValue} from "recoil";
+import {Member} from "@/app/_component/MemberRecoilState";
 
 type Props = {
     post:{
@@ -40,6 +42,8 @@ type Props = {
 }
 
 export default function SinglePost() {
+    const loginUser = useRecoilValue(Member);
+    const me = loginUser.email;
     const [memberId, setMemberId] = useState(BigInt(0));
     const [post, setPost] = useState<Props | null>(null);
     const [postId, setPostId] = useState(BigInt(0));
@@ -52,6 +56,13 @@ export default function SinglePost() {
     const refreshToken = localStorage.getItem("Refresh") ||'';
     const router = useRouter();
 
+    const [isPatched, setIsPatched] = useState(false);
+
+    const onCommentPatched = () => {
+        // Set a flag to indicate that comments have changed
+        setIsPatched(true);
+        console.log(isPatched)
+    };
     useEffect(() => {
         if (id !=undefined) {
             setMemberId(BigInt(id));
@@ -82,6 +93,13 @@ export default function SinglePost() {
         }
     }, [postId]);
 
+    useEffect(() => {
+        if (isPatched) {
+            fetchComments();
+            setIsPatched(false);
+        }
+    }, [isPatched]);
+
     const fetchComments = async () => {
         let page = 1;
         const { success, data } = await getComments({ accessToken, refreshToken, postId, page });
@@ -110,33 +128,33 @@ export default function SinglePost() {
                 <h3>답글</h3>
                 {comments.length > 0 && (
                     <div className={style.commentInputSection}>
-                        <Comment comment={comments[0]}/>
+                        <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[0]}/>
                         {comments.length > 1 && (
-                            <Comment comment={comments[1]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[1]}/>
                         )}
                         {comments.length > 2 && (
-                            <Comment comment={comments[2]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[2]}/>
                         )}
                         {comments.length > 3 && (
-                            <Comment comment={comments[3]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[3]}/>
                         )}
                         {comments.length > 4 && (
-                            <Comment comment={comments[4]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[4]}/>
                         )}
                         {comments.length > 5 && (
-                            <Comment comment={comments[5]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[5]}/>
                         )}
                         {comments.length > 6 && (
-                            <Comment comment={comments[6]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[6]}/>
                         )}
                         {comments.length > 7 && (
-                            <Comment comment={comments[7]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[7]}/>
                         )}
                         {comments.length > 8 && (
-                            <Comment comment={comments[8]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[8]}/>
                         )}
                         {comments.length > 9 && (
-                            <Comment comment={comments[9]}/>
+                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[9]}/>
                         )}
                         {/* Empty Space needed*/}
 
