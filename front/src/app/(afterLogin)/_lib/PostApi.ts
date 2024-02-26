@@ -358,16 +358,10 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
 
 }
 
-export async function getPosts ({accessToken,refreshToken, page}:Props3) {
+export async function getPosts ({accessToken,refreshToken, page}:Props2) {
 
-    const tdy = new Date();
-    const year = tdy.getFullYear();
-    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
-    const day = tdy.getDate()
-    const localDateForm = year+'-'+month+'-'+day;
-    console.log(localDateForm);
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=10`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -378,7 +372,7 @@ export async function getPosts ({accessToken,refreshToken, page}:Props3) {
             credentials: 'include',
         });
         if (response.status === 401 && refreshToken) {
-            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=10`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

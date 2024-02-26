@@ -104,8 +104,8 @@ public class PostService {
     }
 
 
-    public void deletePost(String email, LocalDate date){
-        Post postToDelete = postRepository.findByEmailNDate(email,date).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    public void deletePost(long postId){
+        Post postToDelete = postRepository.findById(postId).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         postRepository.delete(postToDelete);
     }
 
@@ -159,12 +159,17 @@ public class PostService {
 
     public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {
 
-        return postRepository.findAll( writtenDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
+        return postRepository.findAllByWrittenDate( writtenDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
 
     }
 
     public Page<Post> findPosts(String email, int page, int size) {
         LocalDate tdy = LocalDate.now();
-        return postRepository.findAllByEmail(tdy,email,PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+        return postRepository.findAllByEmailExcToday(tdy,email,PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+    }
+
+    public Page<Post> findAllPosts( int page, int size) {
+        LocalDate tdy = LocalDate.now();
+        return postRepository.findAll(PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
     }
 }

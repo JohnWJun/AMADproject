@@ -3,13 +3,13 @@
 import {createContext, ReactNode, useState} from "react";
 
 export const TabContext = createContext({
-    tab: 'rec',
-    setTab: (value: 'rec' | 'fol') => {},
+    tab: 'tdy',
+    setTab: (value: 'tdy' | 'all') => {},
 });
 
 type Props = { children: ReactNode };
 export default function TabProvider({ children }: Props) {
-    const [tab, setTab] = useState('rec');
+    const [tab, setTab] = useState('tdy');
 
     return (
         <TabContext.Provider value={{ tab, setTab }}>

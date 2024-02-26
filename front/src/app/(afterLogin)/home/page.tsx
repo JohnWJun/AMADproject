@@ -7,7 +7,7 @@ import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import { Member} from "@/app/_component/MemberRecoilState";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {useRouter} from "next/navigation";
-import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
+import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import {da} from "@faker-js/faker";
 import Loader from "@/app/_component/Loader";
@@ -55,14 +55,29 @@ export default function Home() {
         fetchPosts();
         router.refresh();
     }, [accessToken, refreshToken,router]);
+    const fetchPosts = async () => {
+        let page = 1;
+        const { success, data } = await getPosts({ accessToken, refreshToken, page });
+
+        if (success) {
+            setPosts(data);
+
+        }
+    };
+    const fetchTdyPosts = async () => {
+        let page = 1;
+        const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
+
+        if (success) {
+            setPosts(data);
+        }
+    };
 
     console.log(posts)
 
     if (posts.length ===0) {
         return (
-            // <div className={style.main}>
             <Loader/>
-            // </div>
         )
     }
 
@@ -71,7 +86,7 @@ export default function Home() {
 
             <main className={style.main}>
                 <TabProvider>
-                    <Tab/>
+                    <Tab fetchPosts={fetchPosts} fetchTdyPosts={fetchTdyPosts}/>
                     <div className={style.postContainer}>
                         {posts.length > 0 && (
                             <>

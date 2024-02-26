@@ -99,9 +99,17 @@ public class PostController {
         List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
+    @GetMapping("/all")
+    public ResponseEntity getPosts(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int size){
+
+        Page<Post> todayPosts = service.findAllPosts(page, size);
+        List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
+        return new ResponseEntity<>(responses, HttpStatus.OK);
+    }
 
     @GetMapping("last/{member-email}")
-    public ResponseEntity getLastPosts(@PathVariable("member-email") String email,
+    public ResponseEntity getMyLastPosts(@PathVariable("member-email") String email,
                                         @Positive @RequestParam int page,
                                         @Positive @RequestParam int size){
 
@@ -110,11 +118,9 @@ public class PostController {
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{member-email}/{local-date}")
-    public ResponseEntity deletePost(@PathVariable("member-email") String email,
-                                  @PathVariable("local-date") String writtenDate){
-        LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
-        service.deletePost(email,date);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{post-id}")
+    public ResponseEntity deletePost(@PathVariable("post-id") long postId){
+        service.deletePost(postId);
+        return new ResponseEntity<>("the Post is deleted",HttpStatus.NO_CONTENT);
     }
 }

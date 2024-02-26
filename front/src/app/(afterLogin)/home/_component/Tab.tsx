@@ -2,14 +2,21 @@
 import style from './tab.module.css';
 import {useState} from "react";
 
-export default function Tab() {
-    const [tab, setTab] = useState('rec');
+type Props ={
+    fetchPosts: () => void
+    fetchTdyPosts: () => void
+}
 
-    const onClickRec = () => {
-        setTab('rec');
+export default function Tab({ fetchPosts, fetchTdyPosts}: Props) {
+    const [tab, setTab] = useState('tdy');
+
+    const onClickTdy = () => {
+        setTab('tdy');
+        fetchTdyPosts();
     }
-    const onClickFol = () => {
-        setTab('fol');
+    const onClickAll = () => {
+        setTab('all');
+        fetchPosts();
     }
     let today = new Date();
     let day = ['일', '월', '화', '수', '목', '금', '토'];
@@ -21,13 +28,13 @@ export default function Tab() {
         <div className={style.homeFixed}>
             <div className={style.homeText}>{dateFormat} / 친구들의 AMAD</div>
             <div className={style.homeTab}>
-                <div onClick={onClickRec}>
-                    추천
-                    <div className={style.tabIndicator} hidden={tab === 'fol'}></div>
+                <div onClick={onClickTdy}>
+                    오늘
+                    <div className={style.tabIndicator} hidden={tab === 'all'}></div>
                 </div>
-                <div onClick={onClickFol}>
-                    팔로우 중
-                    <div className={style.tabIndicator} hidden={tab === 'rec'}></div>
+                <div onClick={onClickAll}>
+                    모든
+                    <div className={style.tabIndicator} hidden={tab === 'tdy'}></div>
                 </div>
             </div>
         </div>

@@ -50,7 +50,8 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated()
+                )
                 .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2memberSuccessHandler(jwtTokenizer,authorityUtils,memberService)))
                 .logout()
                 .logoutSuccessUrl("http://localhost:3000");
