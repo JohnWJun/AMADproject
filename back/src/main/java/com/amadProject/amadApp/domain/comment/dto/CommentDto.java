@@ -23,6 +23,8 @@ public class CommentDto {
     @Getter
     @Setter
     public static class Response{
+        private long id;
+        private long postId;
         private String nickname;
         private String writer;
         private String statusImg;

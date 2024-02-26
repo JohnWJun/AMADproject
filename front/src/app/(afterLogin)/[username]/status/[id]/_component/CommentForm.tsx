@@ -37,7 +37,7 @@ export default function CommentForm({ postId, onCommentAdded }: Props) {
             // Clear the content of the comment form after submission
             setContent('');
             // You may replace or refresh the router if needed
-            router.replace(`/${data.nickname}/status/${postId}/`);
+
         }
 
 

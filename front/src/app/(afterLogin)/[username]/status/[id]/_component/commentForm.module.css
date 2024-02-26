@@ -61,7 +61,19 @@
     justify-content: center;
     background-color: rgb(29, 155, 240, 0.01);
 }
-
+.patchDeleteButtons button{
+    background: none;
+    border: none;
+    margin-right: 5px;
+}
+.patchDeleteButtons button svg{
+    width: 15px;
+    height: 15px;
+}
+.patchDeleteButtons button:hover{
+    background-color: #c5f0f5;
+    border-radius: 5px;
+}
 @media screen and (max-width: 912px){
     .postForm {
         font-size: 13px;
