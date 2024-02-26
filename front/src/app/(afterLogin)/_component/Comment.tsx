@@ -30,11 +30,13 @@ export default function Comment({comment, me,onCommentPatched}:Props) {
 
     const onClickDeleteButton = () => {
         const fetchComment = async () => {
-            const { success, data } = await deleteComment ({ accessToken, refreshToken, postId,commentId});
+            const { success } = await deleteComment ({ accessToken, refreshToken, postId,commentId});
 
             if (success) {
                 onCommentPatched();
                 setIsEdit(false);
+
+
             }
         }
         fetchComment();
@@ -49,6 +51,8 @@ export default function Comment({comment, me,onCommentPatched}:Props) {
             if (success) {
                 onCommentPatched();
                 setIsEdit(false);
+
+
             }
         }
         fetchComment();

@@ -161,12 +161,12 @@ export const deleteComment = async ({ accessToken,refreshToken, postId, commentI
                 credentials: 'include',
             });
             if (response.status === 204) {
-                const data = await response.json();
+
 
                 localStorage.setItem("Authorization",refreshToken);
                 localStorage.removeItem("Refresh");
 
-                return { success: true, data };
+                return { success: true  };
 
             } else{
                 alert("please login again");
@@ -175,9 +175,9 @@ export const deleteComment = async ({ accessToken,refreshToken, postId, commentI
         }
 
         if (response.status === 204) {
-            const data = await response.json();
 
-            return { success: true , data};
+
+            return { success: true };
 
 
         } else {
