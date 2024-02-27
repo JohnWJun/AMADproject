@@ -30,11 +30,11 @@ export default function Tab({ fetchPosts, fetchTdyPosts}: Props) {
             <div className={style.homeTab}>
                 <div onClick={onClickTdy}>
                     오늘
-                    <div className={style.tabIndicator} hidden={tab === 'all'}></div>
+                    <div className={style.tabIndicator} hidden={tab === 'all'} ></div>
                 </div>
                 <div onClick={onClickAll}>
                     모든
-                    <div className={style.tabIndicator} hidden={tab === 'tdy'}></div>
+                    <div className={style.tabIndicator} hidden={tab === 'tdy'} ></div>
                 </div>
             </div>
         </div>
