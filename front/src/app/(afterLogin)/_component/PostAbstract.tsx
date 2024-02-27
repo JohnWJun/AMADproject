@@ -13,15 +13,15 @@ dayjs.locale('ko');
 dayjs.extend(relativeTime)
 type Props = {
     post:{
-          id:bigint;
-          title:string;
-          writer:string;
-          nickname:string;
-          statusImg:string;
-          createdAt:string;
-          content_1:string;
-          myAmad:string;
-          likes:string;
+          id:bigint,
+          title:string,
+          writer:string,
+          nickname:string,
+          statusImg:string,
+          createdAt:string,
+          content_1:string,
+          myAmad:string,
+          likes:string,
     }
 }
 

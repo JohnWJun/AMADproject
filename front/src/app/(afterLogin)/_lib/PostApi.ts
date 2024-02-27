@@ -91,9 +91,9 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
     const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
     const day = tdy.getDate()
     const localDateForm = year+'-'+month+'-'+day;
-    console.log(localDateForm);
+    console.log(`${localDateForm}?page=${page}&size=3`)
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=3`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
         });
         if (response.status === 401 ) {
 
-                const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+                const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=3`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -384,7 +384,7 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
 export async function getPosts ({accessToken,refreshToken, page}:Props2) {
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=3`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -395,7 +395,7 @@ export async function getPosts ({accessToken,refreshToken, page}:Props2) {
             credentials: 'include',
         });
         if (response.status === 401 && refreshToken) {
-            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=10`, {
+            const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=3`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
