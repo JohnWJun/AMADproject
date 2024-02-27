@@ -36,43 +36,45 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-//TODO:
-// reorient token policy matching front-end;
+
 
 
         Exception exception = (Exception) request.getAttribute("exception");
-//        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
 
         if (exception instanceof ExpiredJwtException) {
-//             String refreshToken = request.getHeader("Refresh");
-//
-//
-//
-//             Map<String, Object> claims = verifyJws(request);
-//             String username = (String) claims.get("sub");
-//             List<String> roles = authorityUtils.createRoles(username);
-//             claims.put("roles", roles);
-//
-//             Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-//             String base64EncodedSecretKey = jwtTokenizer.encodedBasedSecretKey(jwtTokenizer.getSecretKey());
-//             String accessToken = jwtTokenizer.generateAccessToken(claims,username,expiration, base64EncodedSecretKey);
-//             String newRefreshToken = refreshToken.replace("Bearer ", "");
-//
-//             setAuthenticationToContext(claims);
-//             System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//
-//             URI redirectUri = createURI(accessToken, newRefreshToken);
-// //            response.setStatus(HttpServletResponse.SC_FOUND);
-// //            response.setHeader("Location", redirectUri.toString());
-//             System.out.println(redirectUri);
-//             response.sendRedirect(redirectUri.toString());
 
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token expired");
+
+
+             if(request.getHeader("Refresh") != null ){
+
+                 log.info(request.getHeader("Refresh"));
+
+             Map<String, Object> claims = verifyJws(request);
+             String username = (String) claims.get("sub");
+             List<String> roles = authorityUtils.createRoles(username);
+             claims.put("roles", roles);
+
+             Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+             Date expirationForRefresh = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+             String base64EncodedSecretKey = jwtTokenizer.encodedBasedSecretKey(jwtTokenizer.getSecretKey());
+             String newAccessToken = jwtTokenizer.generateAccessToken(claims,username,expiration, base64EncodedSecretKey);
+             String newRefreshToken =  jwtTokenizer.generateRefreshToken(username,expirationForRefresh,base64EncodedSecretKey);
+
+             setAuthenticationToContext(claims);
+
+             response.setHeader("Authorization",newAccessToken);
+             response.setHeader("Refresh",newRefreshToken);
+             response.setStatus(HttpServletResponse.SC_FOUND);
+                 log.info("please retry with the new Token");
+                 log.info(newAccessToken);
+
+             }else if (request.getHeader("Refresh") == null ){
+                 log.info("please send the Refresh Token");
+                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+             }
 
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN); // Set the unauthorized status code
-            response.getWriter().write("Invalid Token"); // Set the error message
             logExceptionMessage(authException, exception);
         }
 

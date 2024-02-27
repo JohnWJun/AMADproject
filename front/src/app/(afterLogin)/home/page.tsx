@@ -14,8 +14,8 @@ import Loader from "@/app/_component/Loader";
 
 export default function Home() {
     const router = useRouter();
-    const [accessToken, setAccessToken] = useState('');
-    const [refreshToken, setRefreshToken] = useState('');
+    const accessToken = localStorage.getItem("Authorization") || '';
+    const refreshToken = localStorage.getItem("Refresh") || '';
     const [posts, setPosts] = useState([]);
     const member = useRecoilValue(Member);
     const [memberInfo, setMemberInfo] = useRecoilState(Member);
@@ -25,8 +25,6 @@ export default function Home() {
             const storedAccessToken = localStorage.getItem("Authorization") || '';
             const storedRefreshToken = localStorage.getItem("Refresh") || '';
 
-            setAccessToken(storedAccessToken);
-            setRefreshToken(storedRefreshToken);
 
             if (member.email === '') {
                 const { success } = await getCurrentUserInfo({
@@ -53,8 +51,7 @@ export default function Home() {
         };
 
         fetchPosts();
-        router.refresh();
-    }, [accessToken, refreshToken,router]);
+    }, [accessToken, refreshToken]);
     const fetchPosts = async () => {
         let page = 1;
         const { success, data } = await getPosts({ accessToken, refreshToken, page });

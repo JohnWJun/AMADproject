@@ -1,6 +1,7 @@
 
 import {redirect} from "next/navigation";
 
+
 type Props ={
     requestBody: {
         bibleVerses: {
@@ -102,24 +103,48 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
             },
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
-    const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            "ngrok-skip-browser-warning": "69420",
-            "Authorization": "Bearer "+ refreshToken
+        if (response.status === 401 ) {
+            console.log('resend request');
+                const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "ngrok-skip-browser-warning": "69420",
+                        "Authorization": "Bearer "+ accessToken,
+                        "Refresh": "Bearer "+ refreshToken
 
-        },
-        credentials: 'include',
-    });
-    if (response.status === 200) {
-        const data = await response.json();
+                    },
+                    credentials: 'include',
+                });
 
-        localStorage.setItem("Authorization",refreshToken);
-        localStorage.removeItem("Refresh");
+    if (response.status === 302) {
 
+
+        console.log('new token received');
+        const newAccessToken = response.headers.get('Authorization') || '';
+        const newRefreshToken = response.headers.get('Refresh') || '';
+
+        console.log(newAccessToken);
+
+        if (newAccessToken != null) {
+
+            localStorage.setItem("Authorization", newAccessToken);
+            localStorage.setItem("newRefresh", newRefreshToken);
+        const finalResponse =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": "Bearer "+ newAccessToken
+
+            },
+            credentials: 'include',
+        });
+
+        const data = await finalResponse.json();
         return { success: true, data };
+        }
+
 
     } else{
         alert("please login again");
@@ -134,8 +159,8 @@ if (response.status === 200) {
 
 
 } else {
-    const data = await response.json();
-    return { success: false, error: data.error };
+
+    return { success: false };
 }
 } catch (error) {
     console.error(error);
