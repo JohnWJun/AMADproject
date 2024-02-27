@@ -13,7 +13,7 @@ import {da} from "@faker-js/faker";
 import Loader from "@/app/_component/Loader";
 
 export default function Home() {
-    const router = useRouter();
+
     const accessToken = localStorage.getItem("Authorization") || '';
     const refreshToken = localStorage.getItem("Refresh") || '';
     const [posts, setPosts] = useState([]);

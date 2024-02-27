@@ -104,7 +104,7 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
             credentials: 'include',
         });
         if (response.status === 401 ) {
-            console.log('resend request');
+
                 const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${localDateForm}?page=${page}&size=10`, {
                     method: 'GET',
                     headers: {
@@ -120,11 +120,9 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
     if (response.status === 302) {
 
 
-        console.log('new token received');
         const newAccessToken = response.headers.get('Authorization') || '';
         const newRefreshToken = response.headers.get('Refresh') || '';
 
-        console.log(newAccessToken);
 
         if (newAccessToken != null) {
 
