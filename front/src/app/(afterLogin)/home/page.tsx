@@ -6,11 +6,8 @@ import {useEffect, useRef, useState} from "react";
 import {getCurrentUserInfo} from "@/app/(afterLogin)/_lib/MemberApi";
 import { Member} from "@/app/_component/MemberRecoilState";
 import {useRecoilState, useRecoilValue} from "recoil";
-import {useRouter} from "next/navigation";
 import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
-import {da, tr} from "@faker-js/faker";
-import Loader from "@/app/_component/Loader";
 import ComponentLoader from "@/app/_component/ComponentLoader";
 
 interface Post {
@@ -35,12 +32,13 @@ export default function Home() {
     const [page, setPage] = useState(1);
     const [isTabtdy, setIsTabtdy] = useState(true);
     const [isLastPost, setIsLastPost] = useState(false);
-
+    const [isFirst, setIsFirst] = useState(false);
     useEffect(() => {
         console.log('order 1')
         const observer = new IntersectionObserver(entries => {
             const entry = entries[0];
-            if(entry.isIntersecting) {
+            console.log(isFirst);
+            if(entry.isIntersecting && isFirst) {
                 if (page === 1) {
                     setPage(2);
                 } else {
@@ -49,13 +47,19 @@ export default function Home() {
                 console.log('page: ', page);
                 console.log('entry: ', entry);
             }
-        },{ threshold: 0.5})
+        },{ threshold: 0.5});
         if(myRef.current){
             observer.observe(myRef.current);
         }
         if(myRef.current && isLastPost){
             observer.unobserve(myRef.current);
         }
+        return () =>{
+            if (observer){
+                observer.disconnect();
+            }
+        }
+
 
     }, [posts]);
 
@@ -85,6 +89,22 @@ export default function Home() {
             const fetchPosts = async () => {
 
                 const {success, data} = await getTodayPosts({accessToken, refreshToken, page});
+                console.log(isFirst);
+                if (success) {
+                    setPosts((prevPosts) => [...prevPosts, ...data]);
+                    if (data.length < 3) {
+                        setIsLastPost(true);
+                        console.log('its the last page', page);
+                    }
+                    setIsFirst(true);
+                    console.log('useEffect getTodayPosts activated: ', data);
+                }
+            }
+            fetchPosts();
+        } else {
+            const fetchPosts = async () => {
+                console.log(isFirst);
+                const {success, data} = await getPosts({accessToken, refreshToken, page});
 
                 if (success) {
                     setPosts((prevPosts) => [...prevPosts, ...data]);
@@ -92,18 +112,8 @@ export default function Home() {
                         setIsLastPost(true);
                         console.log('its the last page', page);
                     }
-
+                    setIsFirst(true);
                     console.log('useEffect getTodayPosts activated: ', data);
-                }
-            }
-            fetchPosts();
-        } else {
-            const fetchPosts = async () => {
-
-                const {success, data} = await getPosts({accessToken, refreshToken, page});
-
-                if (success) {
-                    setPosts((prevPosts) => [...prevPosts, ...data]);
                 }
             }
             fetchPosts();
