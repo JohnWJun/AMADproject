@@ -9,7 +9,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {useRouter} from "next/navigation";
 import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
-import {da} from "@faker-js/faker";
+import {da, tr} from "@faker-js/faker";
 import Loader from "@/app/_component/Loader";
 import ComponentLoader from "@/app/_component/ComponentLoader";
 
@@ -31,9 +31,34 @@ export default function Home() {
     const [posts, setPosts] = useState<Post[]>([]);
     const member = useRecoilValue(Member);
     const [memberInfo, setMemberInfo] = useRecoilState(Member);
-    const observer = useRef<IntersectionObserver | null>(null);
+    const myRef = useRef() as any;
     const [page, setPage] = useState(1);
     const [isTabtdy, setIsTabtdy] = useState(true);
+    const [isLastPost, setIsLastPost] = useState(false);
+
+    useEffect(() => {
+        console.log('order 1')
+        const observer = new IntersectionObserver(entries => {
+            const entry = entries[0];
+            if(entry.isIntersecting) {
+                if (page === 1) {
+                    setPage(2);
+                } else {
+                    setPage((prevPage) => prevPage + 1);
+                }
+                console.log('page: ', page);
+                console.log('entry: ', entry);
+            }
+        },{ threshold: 0.5})
+        if(myRef.current){
+            observer.observe(myRef.current);
+        }
+        if(myRef.current && isLastPost){
+            observer.unobserve(myRef.current);
+        }
+
+    }, [posts]);
+
     useEffect(() => {
         const fetchUserData = async () => {
             const storedAccessToken = localStorage.getItem("Authorization") || '';
@@ -55,6 +80,7 @@ export default function Home() {
     }, [member,setMemberInfo]);
 
     useEffect(() => {
+        console.log('order 2')
         if (isTabtdy){
             const fetchPosts = async () => {
 
@@ -62,6 +88,12 @@ export default function Home() {
 
                 if (success) {
                     setPosts((prevPosts) => [...prevPosts, ...data]);
+                    if (data.length < 3) {
+                        setIsLastPost(true);
+                        console.log('its the last page', page);
+                    }
+
+                    console.log('useEffect getTodayPosts activated: ', data);
                 }
             }
             fetchPosts();
@@ -79,6 +111,8 @@ export default function Home() {
 
 
     }, [page]);
+
+    console.log('updated posts',posts);
     const fetchPosts = async () => {
         const renewPage = 1;
         setPage(renewPage);
@@ -99,45 +133,13 @@ export default function Home() {
 
         if (success) {
             setIsTabtdy(true);
+            console.log('tab getTodayPosts activated')
             setPosts(data);
         }
     };
 
 
-    useEffect(() => {
-        observer.current = new IntersectionObserver(
-            (entries) => {
-                const target = entries[0];
-                if (target.isIntersecting) {
-                    console.log('I got you')
-                    setPage((prevPage) => prevPage + 1);
-                }
-            },
-            { threshold: 0.2}
-        );
 
-        if (observer.current) {
-            const element = document.getElementById("observer-element");
-            if (element) {
-                observer.current.observe(element);
-            }
-            const N = posts.length;
-            const totalCount = 12;
-
-            if (element && (0 === N || totalCount <= N)) {
-                observer.current?.unobserve(element);
-                console.log("here")
-
-            }
-        }
-
-
-        // return () => {
-        //     if (observer.current) {
-        //         observer.current.disconnect();
-        //     }
-        // };
-    }, [posts]);
 
 
 
@@ -147,13 +149,15 @@ export default function Home() {
                 <TabProvider>
                     <Tab fetchPosts={fetchPosts} fetchTdyPosts={fetchTdyPosts}/>
                     <div className={style.postContainer}>
-                        {posts.length === 0 && (<><ComponentLoader/></>)}
+                        {posts.length === 0 && (<><ComponentLoader body={'오늘 아직 아무도 묵상을 완료하지 않았네요..'}/></>)}
+                        {posts && <>
                         {posts.map((post, index) => (
                             <PostAbstract key={index} post={post}/>
                         ))}
-
+                        <div ref={myRef}  className={style.observer}></div>
+                        </>}
                     </div>
-                    <div id="observer-element"></div>
+
                 </TabProvider>
             </main>
         )

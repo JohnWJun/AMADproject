@@ -15,10 +15,16 @@ export default function ComponentLoader({header, body}:Props){
 
 
                     <div className={style.card}>
-                        {!header &&
+                        {!header && !body&&
                             <>
                                 <h1>Data is loading...</h1>
                                 <p>please wait for a moment</p>
+                            </>
+                        }
+                        {!header && body &&
+                            <>
+                                <h1>Data is loading...</h1>
+                                <p>{body}</p>
                             </>
                         }
                         {header &&
