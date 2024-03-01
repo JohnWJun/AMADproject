@@ -14,8 +14,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query(value = "SELECT p FROM Post p where p.member.email = :email AND p.publishedDate = :date")
     Optional<Post> findByEmailNDate(String email, LocalDate date);
-    @Query(value = "SELECT p FROM Post p where p.member.id = :memberId AND p.publishedDate = :date")
-    Optional<Post> findByMemberIdAndDate(long memberId, LocalDate date);
+
     @Query(value = "SELECT p FROM Post p where p.member.email = :email AND  p.publishedDate != :date")
     Page<Post> findAllByEmailExcToday(LocalDate date, String email, Pageable pageable);
 

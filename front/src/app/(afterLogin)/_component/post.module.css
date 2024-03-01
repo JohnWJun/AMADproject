@@ -40,6 +40,19 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
+@media screen and (max-width: 912px){
+}
+@media screen and (max-width: 768px){
+    .postWrapper {
+        margin-top: 20px;
+    }
+}
+@media screen and (max-width: 578px){
+
+}
+@media screen and (max-width: 280px){
+
+}
 .postFixButton{
     position: absolute;
     right: 5%;

@@ -9,6 +9,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import ComponentLoader from "@/app/_component/ComponentLoader";
+import {tr} from "@faker-js/faker";
 
 interface Post {
     id:bigint,
@@ -32,42 +33,12 @@ export default function Home() {
     const [page, setPage] = useState(1);
     const [isTabtdy, setIsTabtdy] = useState(true);
     const [isLastPost, setIsLastPost] = useState(false);
-    const [isFirst, setIsFirst] = useState(false);
-    useEffect(() => {
-        console.log('order 1')
-        const observer = new IntersectionObserver(entries => {
-            const entry = entries[0];
-            console.log(isFirst);
-            if(entry.isIntersecting && isFirst) {
-                if (page === 1) {
-                    setPage(2);
-                } else {
-                    setPage((prevPage) => prevPage + 1);
-                }
-                console.log('page: ', page);
-                console.log('entry: ', entry);
-            }
-        },{ threshold: 0.5});
-        if(myRef.current){
-            observer.observe(myRef.current);
-        }
-        if(myRef.current && isLastPost){
-            observer.unobserve(myRef.current);
-        }
-        return () =>{
-            if (observer){
-                observer.disconnect();
-            }
-        }
-
-
-    }, [posts]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
             const storedAccessToken = localStorage.getItem("Authorization") || '';
             const storedRefreshToken = localStorage.getItem("Refresh") || '';
-
 
             if (member.email === '') {
                 const { success } = await getCurrentUserInfo({
@@ -81,96 +52,91 @@ export default function Home() {
         if (typeof window !== 'undefined') {
             fetchUserData();
         }
-    }, [member,setMemberInfo]);
+    }, [member, setMemberInfo]);
 
     useEffect(() => {
-        console.log('order 2')
-        if (isTabtdy){
-            const fetchPosts = async () => {
-
-                const {success, data} = await getTodayPosts({accessToken, refreshToken, page});
-                console.log(isFirst);
-                if (success) {
-                    setPosts((prevPosts) => [...prevPosts, ...data]);
-                    if (data.length < 3) {
-                        setIsLastPost(true);
-                        console.log('its the last page', page);
-                    }
-                    setIsFirst(true);
-                    console.log('useEffect getTodayPosts activated: ', data);
-                }
-            }
-            fetchPosts();
+        if (isTabtdy) {
+            fetchTdyPost();
         } else {
-            const fetchPosts = async () => {
-                console.log(isFirst);
-                const {success, data} = await getPosts({accessToken, refreshToken, page});
-
-                if (success) {
-                    setPosts((prevPosts) => [...prevPosts, ...data]);
-                    if (data.length < 3) {
-                        setIsLastPost(true);
-                        console.log('its the last page', page);
-                    }
-                    setIsFirst(true);
-                    console.log('useEffect getTodayPosts activated: ', data);
-                }
-            }
-            fetchPosts();
+            fetchPost();
         }
-
-
     }, [page]);
 
-    console.log('updated posts',posts);
-    const fetchPosts = async () => {
-        const renewPage = 1;
-        setPage(renewPage);
-        console.log('after fetchPosts page: '+ page);
-        const { success, data } = await getPosts({ accessToken, refreshToken, page });
+    useEffect(() => {
+        const entryCallback = (entries:any) => {
+            const entry = entries[0];
+            if (entry.isIntersecting) {
+                setPage(prevPage => prevPage + 1);
 
-        if (success) {
-            setIsTabtdy(false);
-            setPosts(data);
 
+                console.log('page: ', page);
+                console.log('entry: ', entry);
+            }
+        };
+
+        const options = { threshold: 0.5 };
+        const observer = new IntersectionObserver(entryCallback, options);
+
+        if (myRef.current && !isLastPost) {
+            observer.observe(myRef.current);
         }
-    };
-    const fetchTdyPosts = async () => {
-        const renewPage = 1;
-        setPage(renewPage);
-        console.log('After fetchTdyPosts : '+page)
+
+        return () => {
+            if (myRef.current) {
+                observer.unobserve(myRef.current);
+            }
+        };
+    }, [page]);
+
+    const fetchTdyPost = async () => {
+        setIsLoading(true);
         const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
 
         if (success) {
-            setIsTabtdy(true);
-            console.log('tab getTodayPosts activated')
-            setPosts(data);
+
+            setPosts(prevPosts => [...prevPosts, ...data]);
+            if (data.length < 3) {
+                setIsLastPost(true);
+                console.log('its the last page', page);
+            }
+            setIsLoading(false);
+            console.log('infinite getTodayPosts activated: ', data);
         }
     };
 
+    const fetchPost = async () => {
+        setIsLoading(true);
+        const { success, data } = await getPosts({ accessToken, refreshToken, page });
 
+        if (success) {
+            setPosts(prevPosts => [...prevPosts, ...data]);
+            if (data.length < 3) {
+                setIsLastPost(true);
+                console.log('its the last page', page);
+            }
+            setIsLoading(false);
+            console.log('infinite getPosts activated: ', data);
+        }
+    };
 
-
-
-
-        return (
-
-            <main className={style.main}>
-                <TabProvider>
-                    <Tab fetchPosts={fetchPosts} fetchTdyPosts={fetchTdyPosts}/>
-                    <div className={style.postContainer}>
-                        {posts.length === 0 && (<><ComponentLoader body={'오늘 아직 아무도 묵상을 완료하지 않았네요..'}/></>)}
-                        {posts && <>
-                        {posts.map((post, index) => (
-                            <PostAbstract key={index} post={post}/>
-                        ))}
-                        <div ref={myRef}  className={style.observer}></div>
-                        </>}
-                    </div>
-
-                </TabProvider>
-            </main>
-        )
-
-
+    return (
+        <main className={style.main}>
+            <TabProvider>
+                <Tab setIsLastPost={setIsLastPost} setPosts={setPosts} setPage={setPage} setIsTdy={setIsTabtdy}/>
+                <div className={style.postContainer}>
+                    {posts.length === 0 && (
+                        <ComponentLoader body={'오늘 아직 아무도 묵상을 완료하지 않았네요..'}/>
+                    )}
+                    {posts && (
+                        <>
+                            {posts.map((post, index) => (
+                                <PostAbstract key={index} post={post}/>
+                            ))}
+                            <div ref={myRef} className={style.observer}></div>
+                        </>
+                    )}
+                </div>
+            </TabProvider>
+        </main>
+    );
 }

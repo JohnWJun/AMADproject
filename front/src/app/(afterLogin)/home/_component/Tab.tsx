@@ -1,22 +1,39 @@
 "use client";
 import style from './tab.module.css';
 import {useState} from "react";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 type Props ={
-    fetchPosts: () => void
-    fetchTdyPosts: () => void
+    setPage: any
+    setIsTdy: any
+    setPosts: any,
+    setIsLastPost: any
 }
 
-export default function Tab({ fetchPosts, fetchTdyPosts}: Props) {
+export default function Tab({ setIsLastPost,setPage, setIsTdy, setPosts}: Props) {
     const [tab, setTab] = useState('tdy');
 
+    const router = useRouter();
     const onClickTdy = () => {
         setTab('tdy');
-        fetchTdyPosts();
+        setPage(1);
+        setIsTdy(true);
+        setPosts([]);
+        setIsLastPost(false);
+        router.replace('/home');
+        router.refresh();
+
     }
     const onClickAll = () => {
         setTab('all');
-        fetchPosts();
+        setPage(1);
+        setIsTdy(false);
+        setPosts([]);
+        setIsLastPost(false);
+        router.replace('/home');
+        router.refresh();
+
     }
     let today = new Date();
     let day = ['일', '월', '화', '수', '목', '금', '토'];

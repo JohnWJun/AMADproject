@@ -44,12 +44,11 @@ type Props = {
 export default function SinglePost() {
     const loginUser = useRecoilValue(Member);
     const me = loginUser.email;
-    const [memberId, setMemberId] = useState(BigInt(0));
     const [post, setPost] = useState<Props | null>(null);
-    const [postId, setPostId] = useState(BigInt(0));
+    // const [postId, setPostId] = useState(BigInt(0));
     const pathname = usePathname();
     const parts = pathname.split("/"); // Split the pathname by "/"
-    const id = parts[parts.length - 1];
+    const postId = BigInt(parts[parts.length - 1]);
     const [email, setEmail] = useState('');
     const [comments, setComments]= useState([]);
     const accessToken = localStorage.getItem("Authorization") ||'';
@@ -63,29 +62,22 @@ export default function SinglePost() {
         setIsPatched(true);
         console.log(isPatched)
     };
-    useEffect(() => {
-        if (id !=undefined) {
-            setMemberId(BigInt(id));
-        }
-    }, [id]); // Empty dependency array to ensure this runs only once on initial render
 
     useEffect(() => {
-        if (memberId) {
-            console.log(memberId)
+        if (postId) {
             const fetchPost = async () => {
 
-                const { success, data } = await getPostDetail({ accessToken, refreshToken, memberId });
+                const { success, data } = await getPostDetail({ accessToken, refreshToken, postId});
 
                 if (success) {
                     setPost(data);
                     setEmail(data.writer);
-                    setPostId(data.id)
                 }
             };
 
             fetchPost();
         }
-    }, [memberId]);
+    }, [postId]);
 
     useEffect(() => {
         if (postId) {

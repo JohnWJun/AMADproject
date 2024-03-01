@@ -76,12 +76,10 @@ public class PostController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}/{local-date}")
-    public ResponseEntity getPost(@PathVariable("member-id") long memberId,
-                                  @PathVariable("local-date") String writtenDate){
+    @GetMapping("detail/{post-id}")
+    public ResponseEntity getPost(@PathVariable("post-id") long postId){
 
-        LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
-        Post post = service.findPost(memberId,date);
+        Post post = service.findPost(postId);
         List<PostDto.BibleResponse> scriptures = service.getScripture(post.getBibleChapterVerses());
 
 
@@ -90,7 +88,7 @@ public class PostController {
 
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-    @GetMapping("/{local-date}")
+    @GetMapping("/today/{local-date}")
     public ResponseEntity getTodayPosts(@PathVariable("local-date") String writtenDate,
                                         @Positive @RequestParam int page,
                                         @Positive @RequestParam int size){
@@ -108,7 +106,7 @@ public class PostController {
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-    @GetMapping("last/{member-email}")
+    @GetMapping("/last/{member-email}")
     public ResponseEntity getMyLastPosts(@PathVariable("member-email") String email,
                                         @Positive @RequestParam int page,
                                         @Positive @RequestParam int size){

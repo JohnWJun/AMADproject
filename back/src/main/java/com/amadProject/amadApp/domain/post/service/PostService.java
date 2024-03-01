@@ -98,8 +98,8 @@ public class PostService {
         return postRepository.save(findPost);
     }
 
-    public Post findPost(long memberId, LocalDate date) {
-        Optional<Post> optionalPost = postRepository.findByMemberIdAndDate(memberId, date);
+    public Post findPost(long postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
         return optionalPost.orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
