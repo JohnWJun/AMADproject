@@ -72,6 +72,14 @@ public class MemberController {
         return new ResponseEntity<>(responses,HttpStatus.OK);
     }
 
+    @GetMapping("/recommend")
+    public ResponseEntity getRecommendedMembers(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size){
+        Page<Member> pages = memberService.findRecommendedMembers(page,size);
+        List<MemberDto.Response> responses = memberMapper.membersToMemberResponses(pages.getContent());
+        return new ResponseEntity<>(responses,HttpStatus.OK);
+    }
+
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id")long memberId){
         memberService.deleteMember(memberId);

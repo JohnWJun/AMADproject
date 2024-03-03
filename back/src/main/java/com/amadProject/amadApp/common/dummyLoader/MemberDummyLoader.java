@@ -42,6 +42,7 @@ public class MemberDummyLoader implements CommandLineRunner {
         dummyMember3.setEmail("HolyJohn@gmail.com");
         dummyMember3.setNickname("거룩한요한");
         dummyMember3.setStatusImg("/John.png");
+        dummyMember3.setIntimacy(100);
         dummyMember3.setRoles(roles);
 
         repository.save(dummyMember3);
@@ -50,6 +51,7 @@ public class MemberDummyLoader implements CommandLineRunner {
         dummyMember4.setEmail("BraveDavid@gmail.com");
         dummyMember4.setNickname("용감한다윗");
         dummyMember4.setStatusImg("/David.png");
+        dummyMember4.setIntimacy(70);
         dummyMember4.setRoles(roles);
 
         repository.save(dummyMember4);
@@ -58,6 +60,7 @@ public class MemberDummyLoader implements CommandLineRunner {
         dummyMember5.setEmail("dummyMember5@gmail.com");
         dummyMember5.setNickname("dummyMember5");
         dummyMember5.setStatusImg("/Joseph.png");
+        dummyMember5.setIntimacy(60);
         dummyMember5.setRoles(roles);
 
         repository.save(dummyMember5);

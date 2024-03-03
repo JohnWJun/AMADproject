@@ -2,13 +2,19 @@
     padding: 12px 0;
     height: 66px;
     display: flex;
+    flex-direction: column;
 }
 
 .userLogo {
     width: 40px;
     margin-right: 12px;
 }
-
+.itemSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
 .userLogo, .userLogo img {
     width: 40px;
     height: 40px;

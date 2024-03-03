@@ -47,8 +47,8 @@ export default async function AfterLoginLayout({children, modal}: Props) {
                         <div className={style.followRecommend}>
                             <h3>팔로우 추천</h3>
                             <FollowRecommend/>
-                            <FollowRecommend/>
-                            <FollowRecommend/>
+                            {/* <FollowRecommend/>
+                            <FollowRecommend/> */}
                         </div>
                     </section>
                     <div className={style.mobilePostButtonContainer}>

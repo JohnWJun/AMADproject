@@ -49,6 +49,11 @@ public class MemberService {
         return memberRepository.findAll( PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
 
     }
+    @Transactional(readOnly = true)
+    public Page<Member> findRecommendedMembers(int page, int size){
+        return memberRepository.findAll( PageRequest.of(page-1,size, Sort.by("intimacy").descending()));
+
+    }
 
     public void deleteMember(Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));

@@ -107,6 +107,7 @@
 .followRecommend {
     font-size: 20px;
     font-weight: bold;
+    height: 25%;
     background-color: rgb(247, 249, 249);
     border-radius: 16px;
     margin: 12px 0;
