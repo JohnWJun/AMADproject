@@ -30,6 +30,7 @@ type Props = {
             script: string
         }],
         likes: number,
+        commentsNum: number,
         content_1: string,
         content_2: string,
         content_3: string,
@@ -38,6 +39,7 @@ type Props = {
         myAmad:string,
         myAmadId: bigint,
         complete: boolean
+        whoLikesMyPost:BigInt[]
     },
 }
 
@@ -77,7 +79,7 @@ export default function SinglePost() {
 
             fetchPost();
         }
-    }, [postId]);
+    }, [postId, comments]);
 
     useEffect(() => {
         if (postId) {
@@ -120,35 +122,15 @@ export default function SinglePost() {
                 <h3>답글</h3>
                 {comments.length > 0 && (
                     <div className={style.commentInputSection}>
-                        <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[0]}/>
-                        {comments.length > 1 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[1]}/>
-                        )}
-                        {comments.length > 2 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[2]}/>
-                        )}
-                        {comments.length > 3 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[3]}/>
-                        )}
-                        {comments.length > 4 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[4]}/>
-                        )}
-                        {comments.length > 5 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[5]}/>
-                        )}
-                        {comments.length > 6 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[6]}/>
-                        )}
-                        {comments.length > 7 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[7]}/>
-                        )}
-                        {comments.length > 8 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[8]}/>
-                        )}
-                        {comments.length > 9 && (
-                            <Comment me={me} onCommentPatched={onCommentPatched} comment={comments[9]}/>
-                        )}
-                        {/* Empty Space needed*/}
+
+                {comments && (
+                        <>
+                            {comments.map((comment, index) => (
+                                <Comment key={index} me={me}onCommentPatched={onCommentPatched} comment={comment}/>
+                            ))}
+                            {/* <div ref={myRef} className={style.observer}></div> */}
+                        </>
+                    )}
 
                     </div>
                 )}

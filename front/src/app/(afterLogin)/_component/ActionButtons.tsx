@@ -1,24 +1,74 @@
 "use client"
+import { useRouter } from "next/navigation";
+import { postLike } from '../_lib/PostApi';
 import style from './post.module.css';
 import cx from 'classnames';
+import { useRecoilValue } from "recoil";
+import { Member } from "@/app/_component/MemberRecoilState";
+import { useEffect, useState } from "react";
 
 
 type Props = {
     white?: boolean,
-
+    likes:number,
+    commentsNum: number,
+    postId: bigint,
+    whoLikesMyPost: BigInt[]
 }
-export default function ActionButtons({ white }: Props) {
-    const commented = true;
-    const reposted = true;
-    const liked = false;
+export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesMyPost}: Props) {
+    const [commented, setCommented] = useState(false);
+    const [liked, setLiked] = useState(false);
+    // const reposted = true;
 
-    const onClickComment = () => {}
-    const onClickRepost = () => {}
-    const onClickHeart = () => {}
+    const router = useRouter();
+    const accessToken = localStorage.getItem('Authorization') || '';
+    const refreshToken = localStorage.getItem('Authorization') || '';
+    const userInfo = useRecoilValue(Member);
+    const nickname = userInfo.nickname;
+    const memberId = userInfo.id;
+
+    useEffect(() => {
+        if (commentsNum) {
+            setCommented(true); 
+        } 
+        if(commentsNum === 0){
+            setCommented(false);
+        }
+    }, [commentsNum]);
+    useEffect(() => {
+        if (whoLikesMyPost) {
+            if(whoLikesMyPost.includes(memberId)){
+                setLiked(true);
+            }
+        }
+    }, []);
+
+    const onClickComment = () => {
+        router.push(`/${nickname}/status/${postId}`);
+    }
+    // const onClickRepost = () => {}
+    const onClickHeart = () => {
+
+        if(userInfo && !liked){
+            const fetchPostLike = async () =>{
+        
+                const { success, data } = await postLike({ accessToken, refreshToken, postId, memberId});
+
+                if (success) {
+                    setLiked(true);
+                }
+            }
+            fetchPostLike();
+        }
+        router.replace(`/${nickname}/status/${postId}`);
+        router.refresh();
+
+    }
+    console.log(commentsNum);
 
     return (
         <div className={style.actionButtons}>
-            <div className={cx(style.commentButton, { [style.commented]: commented } && white && style.white)}>
+            <div className={cx(style.commentButton,   commented && style.commented , white && style.white)}>
                 <button onClick={onClickComment}>
                     <svg width={24} viewBox="0 0 24 24" aria-hidden="true">
                         <g>
@@ -27,19 +77,19 @@ export default function ActionButtons({ white }: Props) {
                         </g>
                     </svg>
                 </button>
-                <div className={style.count}>{1 || ''}</div>
+                <div className={style.count}>{commentsNum || ''}</div>
             </div>
-            <div className={cx(style.repostButton, reposted && style.reposted, white && style.white)}>
-                <button onClick={onClickRepost}>
-                    <svg width={24} viewBox="0 0 24 24" aria-hidden="true">
-                        <g>
-                            <path
-                                d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path>
-                        </g>
-                    </svg>
-                </button>
-                <div className={style.count}>{1 || ''}</div>
-            </div>
+            {/*<div className={cx(style.repostButton, reposted && style.reposted, white && style.white)}>*/}
+            {/*    <button onClick={onClickRepost}>*/}
+            {/*        <svg width={24} viewBox="0 0 24 24" aria-hidden="true">*/}
+            {/*            <g>*/}
+            {/*                <path*/}
+            {/*                    d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path>*/}
+            {/*            </g>*/}
+            {/*        </svg>*/}
+            {/*    </button>*/}
+            {/*    <div className={style.count}>{1 || ''}</div>*/}
+            {/*</div>*/}
             <div className={cx([style.heartButton, liked && style.liked, white && style.white])}>
                 <button onClick={onClickHeart}>
                     <svg width={24} viewBox="0 0 24 24" aria-hidden="true">
@@ -49,7 +99,7 @@ export default function ActionButtons({ white }: Props) {
                         </g>
                     </svg>
                 </button>
-                <div className={style.count}>{0 || ''}</div>
+                <div className={style.count}>{likes || ''}</div>
             </div>
         </div>
     )

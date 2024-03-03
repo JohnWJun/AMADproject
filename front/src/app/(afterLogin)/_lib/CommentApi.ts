@@ -23,25 +23,48 @@ export const postComment = async ({ content, accessToken,refreshToken, postId, m
             body: JSON.stringify(requestBody),
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${memberId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
                 body: JSON.stringify(requestBody),
                 credentials: 'include',
             });
-            if (response.status === 201) {
-                const data = await response.json();
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true, data };
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${memberId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        body: JSON.stringify(requestBody),
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");
@@ -85,25 +108,46 @@ export const getComments = async ({ accessToken,refreshToken, postId, page}:Prop
 
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=10`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
-
                 credentials: 'include',
             });
-            if (response.status === 200) {
-                const data = await response.json();
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true, data };
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=10`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");
@@ -148,25 +192,46 @@ export const deleteComment = async ({ accessToken,refreshToken, postId, commentI
 
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${commentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
-
                 credentials: 'include',
             });
-            if (response.status === 204) {
+
+            if (response.status === 302) {
 
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
 
-                return { success: true  };
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${commentId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");
@@ -216,26 +281,48 @@ export const patchComment = async ({ accessToken, refreshToken, postId,commentId
 
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${commentId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
                 body: JSON.stringify(requestBody),
-
                 credentials: 'include',
             });
-            if (response.status === 200) {
-                const data = await response.json();
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true, data };
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment/${commentId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        body: JSON.stringify(requestBody),
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");

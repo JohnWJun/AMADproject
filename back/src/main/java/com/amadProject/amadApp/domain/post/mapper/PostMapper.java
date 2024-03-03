@@ -135,6 +135,14 @@ public interface PostMapper {
         response.setStatusImg(post.getMember().getStatusImg());
         response.setMyAmadId(post.getAmad().getId());
         response.setComplete(post.getAmad().isComplete());
+        response.setCommentsNum(post.getComments().size());
+        List<Long> likers = post.getWhoLikesMyPost().stream().map(
+                likePost -> {
+                   Long liker = likePost.getLiker().getId();
+                   return liker;
+                }
+        ).collect(Collectors.toList());
+                response.setWhoLikesMyPost(likers);
         return response;
 
     }
@@ -159,6 +167,14 @@ public interface PostMapper {
         abstractResponse.setNickname(post.getMember().getNickname());
         abstractResponse.setStatusImg(post.getMember().getStatusImg());
         abstractResponse.setMyAmad(post.getAmad().getMission());
+        abstractResponse.setCommentsNum(post.getComments().size());
+        List<Long> likers = post.getWhoLikesMyPost().stream().map(
+                likePost -> {
+                    Long liker = likePost.getLiker().getId();
+                    return liker;
+                }
+        ).collect(Collectors.toList());
+        abstractResponse.setWhoLikesMyPost(likers);
 
         return abstractResponse;
     }

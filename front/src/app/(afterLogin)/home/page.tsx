@@ -9,7 +9,6 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import ComponentLoader from "@/app/_component/ComponentLoader";
-import {tr} from "@faker-js/faker";
 
 interface Post {
     id:bigint,
@@ -20,12 +19,26 @@ interface Post {
     createdAt:string,
     content_1:string,
     myAmad:string,
-    likes:string,
+    likes:number,
+    commentsNum:number
+    whoLikesMyPost:BigInt[];
 }
 export default function Home() {
+    
+    
 
-    const accessToken = localStorage.getItem("Authorization") || '';
-    const refreshToken = localStorage.getItem("Refresh") || '';
+    const [accessToken, setAcessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
+
+    useEffect(() => {
+    if(typeof window !== "undefined"){
+        const accessToken = localStorage.getItem("Authorization") || '';
+        const refreshToken = localStorage.getItem("Refresh") || '';
+
+        setAcessToken(accessToken);
+        setRefreshToken(refreshToken);}
+        },[]);
+
     const [posts, setPosts] = useState<Post[]>([]);
     const member = useRecoilValue(Member);
     const [memberInfo, setMemberInfo] = useRecoilState(Member);
@@ -53,6 +66,7 @@ export default function Home() {
             fetchUserData();
         }
     }, [member, setMemberInfo]);
+
 
     useEffect(() => {
         if (isTabtdy) {

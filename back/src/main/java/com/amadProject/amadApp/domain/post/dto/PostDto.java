@@ -132,6 +132,8 @@ public class PostDto {
         private LocalDateTime createdAt;
         private List<BibleResponse> scripts;
         private int likes;
+        private int commentsNum;
+        private List<Long> whoLikesMyPost;
         private String content_1;
         private String content_2;
         private String content_3;
@@ -155,6 +157,8 @@ public class PostDto {
         private String content_1;
         private String myAmad;
         private int likes;
+        private int commentsNum;
+        private List<Long> whoLikesMyPost;
 
     }
 

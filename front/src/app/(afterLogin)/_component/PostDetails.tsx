@@ -84,7 +84,7 @@ export default function Post({ noImage ,post, email }: Props) {
                                 <PostImages post={target}/>
                             </div>
                         </div>
-                        <ActionButtons/>
+                        <ActionButtons whoLikesMyPost={post.whoLikesMyPost} likes={post.likes} commentsNum={post.commentsNum} postId={post.id}/>
                     </div>
                 </div>
                 </article>

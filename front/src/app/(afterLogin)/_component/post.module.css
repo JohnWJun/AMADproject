@@ -241,6 +241,11 @@
     column-gap: 4px;
     margin-top: 12px;
 }
+@media screen and (max-width: 578px){
+    .actionButtons {
+        margin-right: 10px;
+    }
+}
 
 .actionButtons svg {
     fill: rgb(83, 100, 113);

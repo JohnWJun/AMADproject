@@ -1,12 +1,10 @@
 import React, {ReactNode} from "react";
-import Image from "next/image";
 import style from '@/app/(afterLogin)/layout.module.css';
 import FollowRecommend from "@/app/(afterLogin)/_component/FollowRecommend";
 import AmadSection from "@/app/(afterLogin)/_component/AmadSection";
 import Link from "next/link";
 import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
-import amadLogo from "../../../public/AMAD.png"
 import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
 import MainLogo from "@/app/_component/MainLogo";
 import PostButton from "@/app/(afterLogin)/_component/PostButton";

@@ -21,7 +21,9 @@ type Props = {
           createdAt:string,
           content_1:string,
           myAmad:string,
-          likes:string,
+          likes:number,
+          commentsNum: number,
+          whoLikesMyPost:BigInt[]
     }
 }
 
@@ -61,7 +63,8 @@ export default function PostAbstract({ post }: Props) {
                             {/*<PostImages post={post}/>*/}
                         </div>
                     </div>
-                    <ActionButtons/>
+                    
+                    <ActionButtons whoLikesMyPost={post.whoLikesMyPost}likes={post.likes} commentsNum={post.commentsNum} postId={post.id}/>
                 </div>
             </div>
         </PostArticle>

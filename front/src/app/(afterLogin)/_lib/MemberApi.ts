@@ -15,25 +15,46 @@ export const getCurrentUserInfo = async ({accessToken, refreshToken, setMemberIn
             },
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/me`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
                 credentials: 'include',
             });
-            if (response.status === 200) {
-                const data = await response.json();
 
-                setMemberInfo(data);
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true };
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/me`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");
@@ -71,24 +92,46 @@ export const getUserInfo = async ({accessToken, refreshToken, emailToFind}:any) 
             },
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${emailToFind}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
                 credentials: 'include',
             });
-            if (response.status === 200) {
-                const data = await response.json();
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true ,data};
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${emailToFind}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");
@@ -136,26 +179,48 @@ export const patchNickname = async ({accessToken, refreshToken, nickname, userId
             body: JSON.stringify(requestBody),
             credentials: 'include',
         });
-        if (response.status === 401 && refreshToken) {
+        if (response.status === 401 ) {
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${userId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ refreshToken
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
 
                 },
                 body: JSON.stringify(requestBody),
                 credentials: 'include',
             });
-            if (response.status === 200) {
-                const data = await response.json();
-                setMemberInfo(data);
 
-                localStorage.setItem("Authorization",refreshToken);
-                localStorage.removeItem("Refresh");
+            if (response.status === 302) {
 
-                return { success: true ,data};
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/members/${userId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        body: JSON.stringify(requestBody),
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
 
             } else{
                 alert("please login again");

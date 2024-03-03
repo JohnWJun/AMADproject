@@ -43,7 +43,25 @@
     display: none;
 }
 
+@media screen and (max-width: 912px){
+
+    .modal{top: 15%;}
+}
+@media screen and (max-width: 768px){
+    .modal {
+        min-width: 500px;
+    }
+}
+@media screen and (max-width: 578px){
+    .modal {
+        min-width: 200px;
+        max-height: 700px;
+    }
+}
+
+@media screen and (max-width: 280px){}
 @media all and (min-width: 1400px) {
+    
     .modal {
         background: #ffffff;
         position: relative;
@@ -158,6 +176,17 @@
     outline: none;
     font-size: 10px;
     height: 40px;
+}
+@media screen and (max-width: 420px){
+    .inputSection > span > div > input{
+        width: 5%;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 5px;
+    }
+    .inputSection > span > div > select{
+        width: 20%
+    }
 }
 
 .textArea {
