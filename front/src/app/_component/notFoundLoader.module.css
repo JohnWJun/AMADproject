@@ -1,0 +1,41 @@
+.Publications {
+    background-color: #385170; 
+  }
+
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.main h4{
+    text-align: center;
+    position: fixed;
+    color: #ececec;;
+    top: 45%;
+}
+.search {
+    height: 42px;
+    width: 200px;
+    border-radius: 21px;
+    background-color: #e0ebeb;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.search svg {
+    margin-left: 20px;
+    fill: rgb(83, 100, 113);
+}
+
+.search input {
+    outline: none;
+    background-color: inherit;
+    width: 100px;
+    border: none;
+    padding: 12px;
+    margin-left: 5px;
+    font-size: 15px;
+}
