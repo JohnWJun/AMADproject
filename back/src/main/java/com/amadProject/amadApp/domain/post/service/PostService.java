@@ -136,12 +136,15 @@ public class PostService {
         });
     }
 
-    public Post createLike(long postID, long memberId){
+    @Transactional
+    public Post createLike(long postId, long memberId){
 
-        Post post = postRepository.findById(postID).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Post post = postRepository.findById(postId).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         Member memberToLike = post.getMember();
         Member memberWhoLikes = memberRepository.findById(memberId).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
+        likePostRepository.findByPostNMember(post,memberWhoLikes).ifPresent(likePost->{
+            throw new BusinessLogicException(ExceptionCode.ALEADY_LIKED);
+                });
         LikePost likePost = new LikePost();
         likePost.setPost(post);
         likePost.setMember(memberToLike);
@@ -155,6 +158,22 @@ public class PostService {
         likePostRepository.save(likePost);
 
         return post;
+    }
+    @Transactional
+    public void deleteLikePost(long postId, long memberId){
+
+        Post post = postRepository.findById(postId).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Member memberWhoLikes = memberRepository.findById(memberId).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        LikePost likePost = likePostRepository.findByPostNMember(post,memberWhoLikes).orElseThrow( ()->new BusinessLogicException(ExceptionCode.LIKEPOST_NOT_FOUND));
+
+
+
+//        memberToLike.addPostsILike(likePost);
+//        post.addLikePost(likePost);
+//        memberRepository.save(memberToLike);
+//        postRepository.save(post);
+
+        likePostRepository.delete(likePost);
     }
 
     public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {

@@ -7,11 +7,13 @@ public enum ExceptionCode {
     POST_NOT_FOUND(404, "Post not found"),
     MEMBER_EXISTS(409, "Member exists"),
     POST_EXISTS(409, "Post exists"),
+    ALEADY_LIKED(409, "Already liked post"),
     ID_DOESNT_MATCH(403, "Id doesnt Match"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),
-    COMMENT_NOT_FOUND(404, "Comment not found");
+    COMMENT_NOT_FOUND(404, "Comment not found"),
+    LIKEPOST_NOT_FOUND(404, "likePost not found");
 
     @Getter
     private int status;

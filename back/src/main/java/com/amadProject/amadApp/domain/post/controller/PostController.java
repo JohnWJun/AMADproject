@@ -64,6 +64,12 @@ public class PostController {
         PostDto.Response response = mapper.postToResponse(service.createLike(postId,memberId));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @DeleteMapping("{post-id}/{member-id}/dislike")
+    public ResponseEntity postDislikePost(@PathVariable("post-id") long postId,
+                                       @PathVariable("member-id") long memberId){
+        service.deleteLikePost(postId,memberId);
+        return new ResponseEntity<>("disliked the post", HttpStatus.OK);
+    }
 
     @PatchMapping("/{post-id}/{bibleChapterVerse-id}/{amad-id}")
     public ResponseEntity patchPost(@PathVariable("post-id") long postId,

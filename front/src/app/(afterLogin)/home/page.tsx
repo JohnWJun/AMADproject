@@ -103,34 +103,41 @@ export default function Home() {
     }, [page]);
 
     const fetchTdyPost = async () => {
+        if(!isLastPost) {
         setIsLoading(true);
-        const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
+       const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
 
         if (success) {
 
             setPosts(prevPosts => [...prevPosts, ...data]);
-            if (data.length < 3) {
+            if (data.length < 3 || data.length === 0) {
                 setIsLastPost(true);
                 console.log('its the last page', page);
             }
             setIsLoading(false);
             console.log('infinite getTodayPosts activated: ', data);
-        }
+        } else{
+            setIsLastPost(true);
+        }}
     };
 
     const fetchPost = async () => {
+        if(!isLastPost) {
         setIsLoading(true);
         const { success, data } = await getPosts({ accessToken, refreshToken, page });
 
         if (success) {
             setPosts(prevPosts => [...prevPosts, ...data]);
-            if (data.length < 3) {
+            if (data.length < 3|| data.length === 0) {
                 setIsLastPost(true);
                 console.log('its the last page', page);
             }
             setIsLoading(false);
             console.log('infinite getPosts activated: ', data);
+        } else{
+            setIsLastPost(true);
         }
+    }
     };
 
     return (

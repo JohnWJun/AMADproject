@@ -39,7 +39,9 @@ export default function PatchAmadPage() {
     type typeForContent = string;
     const memberInfo = useRecoilValue(Member);
     const email = memberInfo.email;
-    const id = BigInt(parseInt(usePathname().replace('/patch/amad/','')));
+    const parts = usePathname().split("/"); // Split the URL by "/"
+    const lastPart = parts[parts.length - 1];
+    const postId = BigInt(parseInt(lastPart));
     const accessToken = localStorage.getItem('Authorization');
     const refreshToken = localStorage.getItem('Refresh');
     const [post, setPost] = useState<Props | null>(null);
@@ -64,11 +66,12 @@ export default function PatchAmadPage() {
     const router = useRouter();
 
     useEffect(() => {
-        if (email) {
+        if (postId) {
+            console.log(postId)
             const fetchPost = async () => {
                 const accessToken = localStorage.getItem("Authorization");
                 const refreshToken = localStorage.getItem("Refresh");
-                const {success, data} = await getPostDetail({accessToken, refreshToken, email});
+                const {success, data} = await getPostDetail({accessToken, refreshToken, postId});
 
                 if (success) {
                     setPost(data);
@@ -121,7 +124,7 @@ export default function PatchAmadPage() {
         };
 
         if (accessToken && refreshToken !== null){
-        const {success, data} = await patchPost({requestBody, accessToken, refreshToken, id,bibleChapterVerseId,amadId });
+        const {success, data} = await patchPost({requestBody, accessToken, refreshToken, postId,bibleChapterVerseId,amadId });
         if (success) {
             router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
             router.refresh();

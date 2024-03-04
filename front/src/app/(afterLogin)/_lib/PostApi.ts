@@ -294,16 +294,16 @@ type PatchProps ={
     },
     accessToken: string,
     refreshToken: string,
-    id: bigint,
+    postId: bigint,
     bibleChapterVerseId: bigint,
     amadId: bigint
 }
 
-export async function patchPost ({requestBody, accessToken,refreshToken, id, bibleChapterVerseId,amadId}:PatchProps) {
+export async function patchPost ({requestBody, accessToken,refreshToken, postId, bibleChapterVerseId,amadId}:PatchProps) {
 
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${id}/${bibleChapterVerseId}/${amadId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -316,7 +316,7 @@ export async function patchPost ({requestBody, accessToken,refreshToken, id, bib
         });
         if (response.status === 401 ) {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${id}/${bibleChapterVerseId}/${amadId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -340,7 +340,7 @@ export async function patchPost ({requestBody, accessToken,refreshToken, id, bib
 
                     localStorage.setItem("Authorization", newAccessToken);
                     localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${id}/${bibleChapterVerseId}/${amadId}`, {
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
