@@ -9,7 +9,7 @@ import {postComment} from "@/app/(afterLogin)/_lib/CommentApi";
 import {useRouter} from "next/navigation";
 
 type Props = {
-    postId: bigint,
+    postId: BigInt,
     onCommentAdded: () => void // Callback function to notify parent about newly added comment
 }
 

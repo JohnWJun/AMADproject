@@ -50,7 +50,7 @@ export default function SinglePost() {
     // const [postId, setPostId] = useState(BigInt(0));
     const pathname = usePathname();
     const parts = pathname.split("/"); // Split the pathname by "/"
-    const postId = BigInt(parts[parts.length - 1]);
+    const [postId, setPostId] = useState<bigint>(BigInt(0));
     const [email, setEmail] = useState('');
     const [comments, setComments]= useState([]);
     const accessToken = localStorage.getItem("Authorization") ||'';
@@ -59,6 +59,12 @@ export default function SinglePost() {
 
     const [isPatched, setIsPatched] = useState(false);
 
+    useEffect(() => {
+
+    if(parts[parts.length - 1] != 'amad'){
+        setPostId(BigInt(parts[parts.length - 1]))
+    }
+    },[])
     const onCommentPatched = () => {
         // Set a flag to indicate that comments have changed
         setIsPatched(true);

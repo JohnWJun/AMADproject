@@ -115,7 +115,6 @@ export default function MyAmad() {
 
                 <div className={style.container}>
                         <BackButton/>
-                    <div/>
                     <div className={style.container}>
                         <h3>오늘 나의 묵상</h3>
                         &nbsp;

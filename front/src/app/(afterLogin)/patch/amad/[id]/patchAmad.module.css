@@ -1,15 +1,24 @@
-.modalBackground {
-    width: 100vw;
-    height: 100%;
+.main {
+    width: inherit;
+    border-color: rgb(239, 243, 244);
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-right-style: solid;
     display: flex;
-    justify-content: center;
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    flex-direction: column;
+    align-items: stretch;
+}
+.header {
+    display: flex;
+    height: 53px;
+    align-items: center;
+}
+
+.headerTitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 30px;
 }
 .postUserSection {
     display: none;
@@ -28,14 +37,12 @@
 .modalForm {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    justify-content: flex-start;
 }
 
 .modalBody {
-    font-size: 60%;
+    font-size: 100%;
     padding: 0 16px;
-    flex: 1;
-    margin-top: 54px;
     display: flex;
     flex-direction: row;
 }
@@ -43,7 +50,25 @@
     display: none;
 }
 
+@media screen and (max-width: 912px){
+
+   
+}
+@media screen and (max-width: 768px){
+    .modal {
+        min-width: 500px;
+    }
+}
+@media screen and (max-width: 578px){
+    .modal {
+        min-width: 200px;
+        max-height: 700px;
+    }
+}
+
+@media screen and (max-width: 280px){}
 @media all and (min-width: 1400px) {
+    
     .modal {
         background: #ffffff;
         position: relative;
@@ -61,19 +86,8 @@
         margin-right: 12px;
         width: 40px;
     }
-    .modalForm {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
-
     .modalBody {
         font-size: 100%;
-        padding: 0 16px;
-        flex: 1;
-        margin-top: 54px;
-        display: flex;
-        flex-direction: row;
     }
     .inputDiv > h4 {
         /*padding-top: 10px;*/
@@ -159,6 +173,23 @@
     font-size: 10px;
     height: 40px;
 }
+@media screen and (max-width: 768px){
+    .inputSection > span > div > input{
+        width: 5%;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 5px;
+    }
+    .inputSection > span > div > select{
+        width: 20%
+    }
+}
+@media screen and (max-width: 578px){
+   
+}
+@media screen and (max-width: 420px){
+ 
+}
 
 .textArea {
     width: 100%;
@@ -223,6 +254,8 @@
 .actionButton:disabled {
     opacity: 0.5;
 }
+
+
 
 
 
