@@ -24,7 +24,9 @@
 }
 
 .postInputSection {
-    flex: 1;
+    /* flex: 1; */
+    width: 85%;
+    word-wrap: break-word;
 }
 .postButtonSection {
     width: 100%;
@@ -60,6 +62,12 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(29, 155, 240, 0.01);
+}
+.patchDeleteButtons {
+    margin-left: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
 }
 .patchDeleteButtons button{
     background: none;

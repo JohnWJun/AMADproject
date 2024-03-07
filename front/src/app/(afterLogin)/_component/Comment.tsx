@@ -77,8 +77,8 @@ export default function Comment({comment, me,onCommentPatched}:Props) {
                 </div>
             </div>
                 <div className={style.postInputSection}>
-                    {!isEdit &&(<><strong>{comment.nickname}</strong>: {comment.mention}</>)}
-                    {isEdit &&(<><textarea value={content} onChange={onChange} placeholder="답글 게시하기"/></>)}
+                    {!isEdit &&(<><strong>{comment.nickname}</strong> <br/> {comment.mention}</>)}
+                    {isEdit &&(<><textarea value={content} onChange={onChange}/></>)}
                 </div>
             {isMe && (
                 <div className={style.patchDeleteButtons}>

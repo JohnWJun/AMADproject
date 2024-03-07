@@ -131,7 +131,7 @@ export default function SinglePost() {
                 {comments && (
                         <>
                             {comments.map((comment, index) => (
-                                <Comment key={index} me={me}onCommentPatched={onCommentPatched} comment={comment}/>
+                                <Comment key={index} me={me} onCommentPatched={onCommentPatched} comment={comment}/>
                             ))}
                             {/* <div ref={myRef} className={style.observer}></div> */}
                         </>
