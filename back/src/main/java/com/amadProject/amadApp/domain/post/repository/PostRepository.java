@@ -20,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query(value = "SELECT p FROM Post p where p.publishedDate = :writtenDate")
     Page<Post> findAllByWrittenDate(LocalDate writtenDate,  Pageable pageable);
+    @Query(value = "SELECT p FROM Post p where p.member.id =:memberId AND p.publishedDate = :date")
+    Optional<Post> findByMemberIdNDate(long memberId, LocalDate date);
 }

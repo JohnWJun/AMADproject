@@ -6,12 +6,10 @@ import AmadDetail from "./_component/AmadDetail";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState";
 import {useEffect, useState} from "react";
-import {getLastPosts, getPostDetail, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
-import Loader from "@/app/_component/Loader";
+import {getLastPosts, getPostTdyDetail} from "@/app/(afterLogin)/_lib/PostApi";
 import PostArticle from "@/app/(afterLogin)/_component/PostArticle";
 import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import {patchAmadAccomplished} from "@/app/(afterLogin)/_lib/AmadApi";
-import {da} from "@faker-js/faker";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import ComponentLoader from "@/app/_component/ComponentLoader";
 
@@ -22,6 +20,7 @@ export default function MyAmad() {
 
     const member = useRecoilValue(Member);
     const email = member.email;
+    const memberId = member.id;
     const [isClient, setIsClient] = useState(false);
 
     const [post, setPost] = useState<Props | null>(null);
@@ -35,6 +34,9 @@ export default function MyAmad() {
     const [refreshToken, setRefreshToken] = useState('');
     const [createdAt, setCreatedAt ] = useState('');
     const [posts, setPosts] = useState([]);
+
+    // const parts = usePathname().split("/");
+    // const [postId, setPostId] = useState<bigint>(BigInt(0));
 
     const tdy = new Date();
     const year = tdy.getFullYear();
@@ -59,6 +61,8 @@ export default function MyAmad() {
             fetchPost();
     }
 
+ 
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
         setIsClient(true)
@@ -81,10 +85,10 @@ export default function MyAmad() {
     }, [accessToken, refreshToken]);
 
     useEffect(() => {
-        if (email) {
+        if (memberId) {
             const fetchPost = async () => {
 
-                const { success, data } = await getPostDetail({ accessToken, refreshToken, email });
+                const { success, data } = await getPostTdyDetail({ accessToken, refreshToken, memberId });
 
                 if (success) {
                     setPost(data);
@@ -99,7 +103,7 @@ export default function MyAmad() {
 
             fetchPost();
         }
-    }, []); // Run only when email changes
+    }, [memberId]);
 
 
 

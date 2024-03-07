@@ -1,6 +1,11 @@
 
 import {redirect} from "next/navigation";
 
+const tdy = new Date();
+const year = tdy.getFullYear();
+const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
+const localDateForm = year+'-'+month+'-'+day;
 
 type Props ={
     requestBody: {
@@ -192,11 +197,7 @@ if (response.status === 200) {
 
 export async function getPostDetail ({accessToken,refreshToken, postId}:any) {
 
-    const tdy = new Date();
-    const year = tdy.getFullYear();
-    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
-    const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
-    const localDateForm = year+'-'+month+'-'+day;
+
     console.log(localDateForm);
     console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`);
     try {
@@ -428,6 +429,92 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
                     localStorage.setItem("Authorization", newAccessToken);
                     localStorage.setItem("Refresh", newRefreshToken);
                     const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "ngrok-skip-browser-warning": "69420",
+                            "Authorization": "Bearer "+ newAccessToken
+
+                        },
+                        credentials: 'include',
+                    });
+
+                    const data = await finalResponse.json();
+                    return { success: true, data };
+                }
+
+
+            } else{
+                alert("please login again");
+                redirect('/');
+            }
+        }
+
+        if (response.status === 200) {
+            const data = await response.json();
+
+            return { success: true , data};
+
+
+        } else {
+            const data = await response.json();
+            return { success: false, error: data.error };
+        }
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'An error occurred' };
+    }
+
+}
+
+type Props5 ={
+    accessToken: string,
+    refreshToken: string,
+    memberId: bigint
+
+}
+
+
+export async function getPostTdyDetail ({accessToken,refreshToken, memberId}:Props5) {
+
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": "Bearer "+ accessToken
+
+            },
+            credentials: 'include',
+        });
+        if (response.status === 401 ) {
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "ngrok-skip-browser-warning": "69420",
+                    "Authorization": "Bearer "+ accessToken,
+                    "Refresh": "Bearer "+ refreshToken
+
+                },
+                credentials: 'include',
+            });
+
+            if (response.status === 302) {
+
+
+                const newAccessToken = response.headers.get('Authorization') || '';
+                const newRefreshToken = response.headers.get('Refresh') || '';
+
+
+                if (newAccessToken != null) {
+
+                    localStorage.setItem("Authorization", newAccessToken);
+                    localStorage.setItem("Refresh", newRefreshToken);
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',

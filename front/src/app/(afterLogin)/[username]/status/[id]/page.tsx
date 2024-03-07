@@ -47,7 +47,6 @@ export default function SinglePost() {
     const loginUser = useRecoilValue(Member);
     const me = loginUser.email;
     const [post, setPost] = useState<Props | null>(null);
-    // const [postId, setPostId] = useState(BigInt(0));
     const pathname = usePathname();
     const parts = pathname.split("/"); // Split the pathname by "/"
     const [postId, setPostId] = useState<bigint>(BigInt(0));

@@ -94,6 +94,20 @@ public class PostController {
 
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+
+    @GetMapping("my/{member-id}/{local-date}")
+    public ResponseEntity getMyTdyPost(@PathVariable("member-id") long memberId,
+                                       @PathVariable("local-date") String writtenDate){
+        LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
+        Post post = service.findMyTdyPost(memberId, date);
+        List<PostDto.BibleResponse> scriptures = service.getScripture(post.getBibleChapterVerses());
+
+
+        PostDto.PostBibleResponse response = mapper.postToPostBibleResponse(post,scriptures);
+
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
     @GetMapping("/today/{local-date}")
     public ResponseEntity getTodayPosts(@PathVariable("local-date") String writtenDate,
                                         @Positive @RequestParam int page,

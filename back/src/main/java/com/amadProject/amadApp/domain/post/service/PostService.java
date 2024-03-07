@@ -103,6 +103,11 @@ public class PostService {
         return optionalPost.orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
+    public Post findMyTdyPost(long memberId, LocalDate date) {
+        Optional<Post> optionalPost = postRepository.findByMemberIdNDate(memberId, date);
+        return optionalPost.orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
+
 
     public void deletePost(long postId){
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));

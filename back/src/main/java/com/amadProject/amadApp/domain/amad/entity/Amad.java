@@ -29,6 +29,8 @@ public class Amad extends Auditable {
     @Column(nullable = false)
     private String mission;
 
+    private LocalDate publishedDate= LocalDate.now();
+
 //    @Column(nullable = false)
 //    private String description;
 

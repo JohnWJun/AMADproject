@@ -60,5 +60,9 @@ public class AmadService {
         amadRepository.delete(amadToDelete);
     }
 
+    public Amad findTdyAmad(LocalDate writtenDate,long memberId){
+        return amadRepository.findByDateNMemberId(writtenDate, memberId).orElseThrow(()-> new RuntimeException("No AMAD found"));
+    }
+
 
 }

@@ -42,13 +42,11 @@ export default function PatchAmadPage() {
     const memberInfo = useRecoilValue(Member);
     const email = memberInfo.email;
     const parts = usePathname().split("/"); // Split the URL by "/"
-    const lastPart = parts[parts.length - 1];
-    const postId = BigInt(parseInt(lastPart));
     const accessToken = localStorage.getItem('Authorization');
     const refreshToken = localStorage.getItem('Refresh');
     const [post, setPost] = useState<Props | null>(null);
+    const [postId, setPostId] = useState<bigint>(BigInt(0));
 
-    const bibles = [];
     const [book, setBook] = useState<typeForContent>('');
     const [chapter, setChapter] = useState<number>(0);
     const [from, setFrom] = useState<number>(0);
@@ -66,9 +64,16 @@ export default function PatchAmadPage() {
 
     const imageRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
+    
+    useEffect(() => {
+
+        if(parts[parts.length - 1] != 'amad'){
+            setPostId(BigInt(parts[parts.length - 1]))
+        }
+        },[])
 
     useEffect(() => {
-        if (postId) {
+        if (postId != BigInt(0)) {
             console.log(postId)
             const fetchPost = async () => {
                 const accessToken = localStorage.getItem("Authorization");
@@ -97,7 +102,7 @@ export default function PatchAmadPage() {
 
             fetchPost();
         }
-    }, [email,bibleChapterVerseId,amadId]);
+    }, [email,bibleChapterVerseId,amadId,postId]);
 
 
 

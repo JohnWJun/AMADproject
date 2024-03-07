@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 @RequestMapping("/amad")
 @Validated
@@ -42,12 +45,20 @@ public class AmadController {
     @GetMapping("/{amad-id}")
     public ResponseEntity getAmad(@PathVariable("amad-id") long amadId){
         AmadDto.Response response = mapper.amadToResponse(service.findAmad(amadId));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @DeleteMapping("/{amad-id}")
     public ResponseEntity deleteAmad(@PathVariable("amad-id") long amadId){
         service.deleteAmad(amadId);
         return new ResponseEntity<>("AMAD is deleted",HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/today/{local-date}/{member-id}")
+    public ResponseEntity getTdyAmad(@PathVariable("local-date") String writtenDate,
+                                     @PathVariable("member-id") long memberId){
+        LocalDate date = LocalDate.parse(writtenDate, DateTimeFormatter.ISO_DATE);
+        AmadDto.Response response = mapper.amadToResponse(service.findTdyAmad(date,memberId));
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 }
