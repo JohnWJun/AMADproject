@@ -1,5 +1,11 @@
 import {redirect} from "next/navigation";
 
+const tdy = new Date();
+const year = tdy.getFullYear();
+const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
+const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
+const localDateForm = year+'-'+month+'-'+day;
+
 type Props ={
     requestBody:{
         mission: string,
@@ -87,24 +93,29 @@ export const patchAmadAccomplished = async ({ requestBody,accessToken,refreshTok
     }
 
 }
+type Props2 ={
+    accessToken: string,
+    refreshToken: string,
+    memberId: bigint
+}
 
-export const getTdyAmad = async ({ requestBody,accessToken,refreshToken, myAmadId}:Props)=>{
+export const getTdyAmad = async ({ accessToken,refreshToken, memberId}:Props2)=>{
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/${myAmadId}`, {
-            method: 'PATCH',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/today/${localDateForm}/${memberId}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 "ngrok-skip-browser-warning": "69420",
                 "Authorization": "Bearer "+ accessToken
 
             },
-            body: JSON.stringify(requestBody),
+    
             credentials: 'include',
         });
         if (response.status === 401 ) {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/${myAmadId}`, {
-                method: 'PATCH',
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/today/${localDateForm}/${memberId}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     "ngrok-skip-browser-warning": "69420",
@@ -112,7 +123,7 @@ export const getTdyAmad = async ({ requestBody,accessToken,refreshToken, myAmadI
                     "Refresh": "Bearer "+ refreshToken
 
                 },
-                body: JSON.stringify(requestBody),
+                
                 credentials: 'include',
             });
 
@@ -127,15 +138,15 @@ export const getTdyAmad = async ({ requestBody,accessToken,refreshToken, myAmadI
 
                     localStorage.setItem("Authorization", newAccessToken);
                     localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/${myAmadId}`, {
-                        method: 'PATCH',
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/today/${localDateForm}/${memberId}`, {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                             "ngrok-skip-browser-warning": "69420",
                             "Authorization": "Bearer "+ newAccessToken
 
                         },
-                        body: JSON.stringify(requestBody),
+                
                         credentials: 'include',
                     });
 
