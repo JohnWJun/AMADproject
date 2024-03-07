@@ -21,7 +21,9 @@
     margin-left: 30px;
 }
 .postUserSection {
-    display: none;
+    display: inline-block;
+    margin-right: 12px;
+    width: 40px;
 }
 .modal {
     background: #ffffff;
@@ -47,7 +49,9 @@
     flex-direction: row;
 }
 .inputDiv > h4 {
-    display: none;
+    /*padding-top: 10px;*/
+    display: inline-block;
+    font-size: 20px;
 }
 
 @media screen and (max-width: 912px){
@@ -66,7 +70,11 @@
     }
 }
 
-@media screen and (max-width: 280px){}
+@media screen and (max-width: 280px){
+    .modalBody {
+        font-size: 60%;
+    }
+}
 @media all and (min-width: 1400px) {
     
     .modal {
@@ -81,19 +89,11 @@
         flex-direction: column;
         scroll-behavior: inherit;
     }
-    .postUserSection {
-        display: inline-block;
-        margin-right: 12px;
-        width: 40px;
-    }
+    
     .modalBody {
         font-size: 100%;
     }
-    .inputDiv > h4 {
-        /*padding-top: 10px;*/
-        display: inline-block;
-        font-size: 20px;
-    }
+   
 
 }
 

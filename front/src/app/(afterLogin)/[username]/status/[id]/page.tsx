@@ -123,7 +123,7 @@ export default function SinglePost() {
             </div>
             <PostDetails post={post} email={email} />
             <CommentForm postId={postId} onCommentAdded={fetchComments}/>
-            <div>
+            <div className={style.commentSection}>
                 <h3>답글</h3>
                 {comments.length > 0 && (
                     <div className={style.commentInputSection}>

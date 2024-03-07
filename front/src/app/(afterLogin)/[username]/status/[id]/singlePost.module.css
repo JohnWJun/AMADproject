@@ -30,7 +30,9 @@
 /*        width: 264px;*/
 /*    }*/
 /*}*/
-
+.commentSection{
+    padding: 16px 16px;
+}
 .header {
     display: flex;
     height: 53px;
