@@ -22,8 +22,10 @@ spring:
       client:
         registration:
           google:
-            clientId: ${G_CLIENT_ID}
-            clientSecret: ${G_CLIENT_SECRET}
+            clientId: 347987644897-oknopga4cnbtkc9nb4f1pogu5i1dt3sa.apps.googleusercontent.com
+#            clientId: ${G_CLIENT_ID}
+            clientSecret: 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
+#            clientSecret: ${G_CLIENT_SECRET}
             scope:
               - email
               - profile
@@ -42,6 +44,10 @@ mail:
     admin: admin@gmail.com
 jwt:
   key:
-    secret: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
+#    secret: ${JWT_SECRET_KEY}
+    secret: asdasdfawer23123efgsdfgsdfasdfgadfh
+  access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 420
+  # for test #
+#  access-token-expiration-minutes: 1
+#  refresh-token-expiration-minutes: 2
