@@ -9,9 +9,9 @@
     transition-duration: 0.2s;
     cursor: pointer;
 }
-.post:hover {
+/* .post:hover {
     background-color: rgba(0, 0, 0, 0.03);
-}
+} */
 @media screen and (max-width: 912px){
 }
 @media screen and (max-width: 768px){
@@ -39,6 +39,7 @@
     border-color: rgb(239, 243, 244);
     border-bottom-width: 1px;
     border-bottom-style: solid;
+    padding: 15px 15px;
 }
 @media screen and (max-width: 912px){
 }
@@ -116,9 +117,9 @@
     text-decoration: underline;
 }
 
-.postImageSection {
+/* .postImageSection {
 
-}
+} */
 
 .postBody {
     display: flex;

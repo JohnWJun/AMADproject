@@ -124,7 +124,7 @@ export default function MyAmad() {
                         &nbsp;
                         {post && <>
                             <PostArticle post={post}>
-                                <PostDetails post={post} email={email}/>
+                                <PostDetails post={post}/>
                             </PostArticle>
 
                             <div className={style.container}>
@@ -159,38 +159,29 @@ export default function MyAmad() {
                 </>}
                 {posts.length > 0 && (
                     <>
-                        <PostAbstract post={posts[0]}/>
-                        {posts.length > 1 && (
-                            <PostAbstract post={posts[1]}/>
-                        )}
-                        {posts.length > 2 && (
-                            <PostAbstract post={posts[2]}/>
-                        )}
-                        {posts.length > 3 && (
-                            <PostAbstract post={posts[3]}/>
-                        )}
-                        {posts.length > 4 && (
-                            <PostAbstract post={posts[4]}/>
-                        )}
-                        {posts.length > 5 && (
-                            <PostAbstract post={posts[5]}/>
-                        )}
-                        {posts.length > 6 && (
-                            <PostAbstract post={posts[6]}/>
-                        )}
-                        {posts.length > 7 && (
-                            <PostAbstract post={posts[7]}/>
-                        )}
-                        {posts.length > 8 && (
-                            <PostAbstract post={posts[8]}/>
-                        )}
-                        {posts.length > 9 && (
-                            <PostAbstract post={posts[9]}/>
-                        )}
-                        {/* Empty Space needed*/}
-
+                    <div className={style.myLastPostsContainer}>
+                    <div className={style.postAbstract}>
+                        {posts.map((post, index) => (
+                            <PostAbstract key={index} post={post}/>
+                        ))}
+                    </div>
+                    <div className={style.deleteButtonSection}>
+                        <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.0" id="Layer_1" width="20px" height="20px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" >
+                        <g>
+                            <path d="M56,4H40c0-2.211-1.789-4-4-4h-8c-2.211,0-4,1.789-4,4H8C5.789,4,4,5.789,4,8v5c0,0.553,0.447,1,1,1h54   c0.553,0,1-0.447,1-1V8C60,5.789,58.211,4,56,4z"/>
+                            <path d="M20,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C21,24.447,20.553,24,20,24z"/>
+                            <path d="M32,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C33,24.447,32.553,24,32,24z"/>
+                            <path d="M44,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C45,24.447,44.553,24,44,24z"/>
+                            <path d="M9,16H7v44c0,2.211,1.789,4,4,4h42c2.211,0,4-1.789,4-4V16h-2H9z M23,51c0,1.657-1.343,3-3,3s-3-1.343-3-3   V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M35,51c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M47,51   c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z"/>
+                        </g>
+                        </svg>
+                        </button>
+                    </div>
+                    </div>
                     </>
                 )}
+                
             </div>
         </main>
 );

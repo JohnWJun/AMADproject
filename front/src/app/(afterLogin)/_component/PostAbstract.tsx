@@ -32,7 +32,7 @@ export default function PostAbstract({ post }: Props) {
 
 
     return (
-        <PostArticle post={post}>
+        
             <div className={style.postWrapper}>
                 <div className={style.postUserSection}>
                     <Link href={`/${post.writer}`} className={style.postUserImage}>
@@ -41,6 +41,7 @@ export default function PostAbstract({ post }: Props) {
                     </Link>
                 </div>
                 <div className={style.postBody}>
+                <PostArticle post={post}>
                     <div className={style.postMeta}>
                         <Link href={`/${post.writer}`}>
                             <span className={style.postUserName}>{post.nickname}</span>
@@ -52,6 +53,7 @@ export default function PostAbstract({ post }: Props) {
                         </Link>
                         <span className={style.postDate}>{dayjs(post.createdAt).fromNow(true)}</span>
                     </div>
+                    
                     <div className={style.postContent}>
                         <h4>말씀하시는 하나님은...</h4>
 
@@ -63,10 +65,10 @@ export default function PostAbstract({ post }: Props) {
                             {/*<PostImages post={post}/>*/}
                         </div>
                     </div>
-                    
+                    </PostArticle>
                     <ActionButtons whoLikesMyPost={post.whoLikesMyPost}likes={post.likes} commentsNum={post.commentsNum} postId={post.id}/>
                 </div>
             </div>
-        </PostArticle>
+        
     )
 }

@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { postLike } from '../_lib/PostApi';
+import { postLike , postDislike} from '../_lib/PostApi';
 import style from './post.module.css';
 import cx from 'classnames';
 import { useRecoilValue } from "recoil";
@@ -19,6 +19,7 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
     const [commented, setCommented] = useState(false);
     const [liked, setLiked] = useState(false);
     // const reposted = true;
+    const [currentLike, setCurrentLike] = useState(likes);
 
     const router = useRouter();
     const accessToken = localStorage.getItem('Authorization') || '';
@@ -59,12 +60,33 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
                 }
             }
             fetchPostLike();
+            setCurrentLike(currentLike+1);
         }
-        router.replace(`/${nickname}/status/${postId}`);
-        router.refresh();
+
+        if(userInfo && liked){
+
+            const fetchPostDislike = async () =>{
+                
+                const { success } = await postDislike({ accessToken, refreshToken, postId, memberId});
+
+                if (success) {
+                    setLiked(false);
+                }
+                    }
+                    fetchPostDislike();
+                    if(currentLike > 0){
+                        setCurrentLike(currentLike-1);
+                    }
+                }
+
+                // router.replace(`/${nickname}/status/${postId}`);
+                router.refresh();
 
     }
-    console.log(commentsNum);
+
+
+
+    console.log(currentLike);
 
     return (
         <div className={style.actionButtons}>
@@ -99,7 +121,7 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
                         </g>
                     </svg>
                 </button>
-                <div className={style.count}>{likes || ''}</div>
+                <div className={style.count}>{currentLike || ''}</div>
             </div>
         </div>
     )

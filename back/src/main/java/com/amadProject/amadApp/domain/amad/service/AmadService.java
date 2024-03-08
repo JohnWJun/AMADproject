@@ -50,7 +50,7 @@ public class AmadService {
 
         return amadRepository.save(findAmad);
     }
-
+///businessLogicException 적용
     public Amad findAmad(long amadId){
         return amadRepository.findById(amadId).orElseThrow(()-> new RuntimeException("No AMAD found"));
     }
