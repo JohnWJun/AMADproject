@@ -6,9 +6,6 @@
     display: flex;
     justify-content: center;
     --master: 16px;
-    --background: #e3e3e3;
-    --cardbackground: white;
-    --cardhoverbackground: #fff;
     --color: #111;
     --margin: calc(var(--master) / 2) 0 calc(var(--master) + (var(--master) / 2)) 0;
     --shadow: 0 2px 3px rgba(0,0,0,0.1);
@@ -27,17 +24,12 @@
 }
 
 .card {
-    background: var(--cardbackground);
-    font-size: var(--master);
+
     text-align: center;
     width: 100%;
     position: relative; /* Position the card absolutely */
 }
 
-.loaderRoot .h1:hover {
-    background: var(--cardhoverbackground);
-    box-shadow: var(--hovershadow);
-}
 
 .loaderRoot h1 {
     color: var(--color);

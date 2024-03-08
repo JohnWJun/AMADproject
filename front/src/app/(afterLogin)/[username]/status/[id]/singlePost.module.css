@@ -46,5 +46,31 @@
 }
 .commentInputSection {
     flex: 1;
-    margin-bottom: 150px;
+    margin-bottom: 50px;
+}
+.seeMoreButtonSection{
+    width: inherit;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.seeMoreButton {
+    border-radius: 20%;
+    padding-top: 5px;
+    margin-left: 20px;
+    border: none;
+    background: none;
+
+}
+.seeMoreButtonSection button:hover {
+    background-color: rgb(201, 201, 201);
+}
+@media screen and (max-width: 912px){
+    .seeMoreButton {
+        margin-bottom: 100px;
+    
+    }
 }

@@ -55,7 +55,8 @@ public class CommentController {
                                       @PathVariable("post-id") long postId){
 
         Page<Comment> pages = service.findComments(page,size,postId);
-        List<CommentDto.Response> responses = mapper.commentsToResponses(pages.getContent());
+        int totalPage = pages.getTotalPages();
+        CommentDto.PageResponse responses = mapper.responsesToPageResponse(mapper.commentsToResponses(pages.getContent()),totalPage);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 

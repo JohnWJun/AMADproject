@@ -55,6 +55,8 @@ export default function SinglePost() {
     const accessToken = localStorage.getItem("Authorization") ||'';
     const refreshToken = localStorage.getItem("Refresh") ||'';
     const router = useRouter();
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
 
     const [isPatched, setIsPatched] = useState(false);
 
@@ -90,7 +92,7 @@ export default function SinglePost() {
         if (postId) {
             fetchComments(); // Fetch comments initially
         }
-    }, [postId]);
+    }, [postId, page]);
 
     useEffect(() => {
         if (isPatched) {
@@ -100,13 +102,23 @@ export default function SinglePost() {
     }, [isPatched]);
 
     const fetchComments = async () => {
-        let page = 1;
+        
         const { success, data } = await getComments({ accessToken, refreshToken, postId, page });
 
         if (success) {
-            setComments(data);
+            setComments(data.responses);
+            setTotalPage(data.totalPage)
         }
     };
+
+    const onClickButtonNext = () => {
+        setPage((prevPage)=> prevPage+1);
+    }
+    const onClickButtonPrev = () => {
+        if(page != 1){
+        setPage((prevPage)=> prevPage-1);
+        }
+    }
 
 
 
@@ -121,7 +133,7 @@ export default function SinglePost() {
                 <BackButton />
                 <h3 className={style.headerTitle}>게시하기</h3>
             </div>
-            <PostDetails post={post} email={email} />
+            <PostDetails post={post} />
             <CommentForm postId={postId} onCommentAdded={fetchComments}/>
             <div className={style.commentSection}>
                 <h3>답글</h3>
@@ -139,9 +151,25 @@ export default function SinglePost() {
 
                     </div>
                 )}
-
-
             </div>
+           {comments.length > 0 && ( 
+            <>
+            <div className={style.seeMoreButtonSection}>
+
+            <button disabled={page === 1} className={style.seeMoreButton} onClick={onClickButtonPrev}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                <polyline fill="none" stroke={page !== 1 ? "#000000" : "#e3e3e3"} strokeWidth="2" points="7 2 17 12 7 22" transform="matrix(-1 0 0 1 24 0)" />
+            </svg>
+            </button>
+               <button disabled={page===totalPage} className={style.seeMoreButton} onClick={onClickButtonNext}>
+               <svg xmlns="http://www.w3.org/2000/svg" fill={page !== totalPage ? "#000000" : "#e3e3e3"} height="20px" width="20px" version="1.1" id="XMLID_287_" viewBox="0 0 24 24" >
+                <g id="next"><g>
+		        <polygon points="6.8,23.7 5.4,22.3 15.7,12 5.4,1.7 6.8,0.3 18.5,12   "/></g></g>
+                </svg>
+                </button>
+            </div>
+            </>
+            )}
         </div>
     )
 }

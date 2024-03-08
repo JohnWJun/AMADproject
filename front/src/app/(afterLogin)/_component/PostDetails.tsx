@@ -16,11 +16,10 @@ dayjs.extend(relativeTime)
 
 type Props = {
     noImage?: boolean,
-    post: any,
-    email: string
+    post: any
 
 }
-export default function Post({ noImage ,post, email }: Props) {
+export default function Post({ noImage ,post }: Props) {
     const target = post
     const memberInfo = useRecoilValue(Member);
     const loginEmail = memberInfo.email;
@@ -41,7 +40,7 @@ export default function Post({ noImage ,post, email }: Props) {
                             <Link href={`/${target.writer}`}>
                                 <span className={style.postUserName}>{target.nickname}</span>
                                 &nbsp;
-                                <span className={style.postUserId}>@{target.writer}</span>
+                                <span className={style.postUserId}>@{target.writer.replace('@gmail.com','')}</span>
                                 &nbsp;
                                 ·
                                 &nbsp;

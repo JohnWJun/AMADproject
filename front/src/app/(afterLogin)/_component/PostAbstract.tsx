@@ -45,7 +45,7 @@ export default function PostAbstract({ post }: Props) {
                         <Link href={`/${post.writer}`}>
                             <span className={style.postUserName}>{post.nickname}</span>
                             &nbsp;
-                            <span className={style.postUserId}>@{post.writer}</span>
+                            <span className={style.postUserId}>@{post.writer.replace('@gmail.com','')}</span>
                             &nbsp;
                             ·
                             &nbsp;

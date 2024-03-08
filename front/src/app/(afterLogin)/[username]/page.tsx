@@ -138,7 +138,7 @@ export default function Profile() {
                             </div>)}
 
                     </div>
-                    <div>@{member.email}</div>
+                    <div>{member.email}</div>
                 </div>
             </div>
             <div className={style.statusContainer}>
@@ -176,7 +176,7 @@ export default function Profile() {
                     </div>
                     <div className={style.userName}>
                         <div>{userToFind.nickname}</div>
-                        <div>@{userToFind.email}</div>
+                        <div>{userToFind.email}</div>
                     </div>
                     <button className={style.followButton}>팔로우</button>
                 </div>

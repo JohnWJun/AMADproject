@@ -7,6 +7,7 @@ import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 import { useRecoilValue } from 'recoil';
 import {getTdyAmad} from '@/app/(afterLogin)/_lib/AmadApi'
+import ComponentLoader from '@/app/_component/ComponentLoader';
 
 
 
@@ -46,7 +47,8 @@ export default function AmadSection() {
         <div className={style.amadBg}>
             <div className={style.amad}>
                 <h3>나의 AMAD</h3>
-               {myAmad && (<AmadAbstract myAmad={myAmad}/>)}
+                {myAmad ? (<AmadAbstract myAmad={myAmad}/>) :
+          (<ComponentLoader header='아직 아마드가 없습니다.' body='오늘의 묵상을 완료하세요!' />)}
 
             </div>
         </div>

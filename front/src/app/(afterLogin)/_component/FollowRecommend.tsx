@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import style from './followRecommend.module.css';
 import {getRecommendedFriend} from '../_lib/MemberApi'
 
+
 interface Members {
 
     id:bigint,
@@ -56,7 +57,7 @@ export default function FollowRecommend() {
                         </div>
                         <div className={style.userInfo}>
                             <div className={style.title}>{recommendedMember.nickname}</div>
-                            <div className={style.count}>@{recommendedMember.email}</div>
+                            <div className={style.count}>@{recommendedMember.email.replace('@gmail.com','')}</div>
                         </div>
                         <div className={style.followButtonSection}>
                             <button onClick={() => onFollow()}>팔로우</button>

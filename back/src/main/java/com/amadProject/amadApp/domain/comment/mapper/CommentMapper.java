@@ -26,6 +26,13 @@ public interface CommentMapper {
         };
         List<CommentDto.Response> commentsToResponses (List<Comment> comments);
 
+        default CommentDto.PageResponse responsesToPageResponse (List<CommentDto.Response> responses, int totalPage){
+            CommentDto.PageResponse pageResponse = new CommentDto.PageResponse();
+            pageResponse.setResponses(responses);
+            pageResponse.setTotalPage(totalPage);
+            return pageResponse;
+        };
+
         Comment patchToComment(CommentDto.Patch patch);
 }
 

@@ -97,7 +97,7 @@ type Props2 ={
 export const getComments = async ({ accessToken,refreshToken, postId, page}:Props2)=>{
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=5`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export const getComments = async ({ accessToken,refreshToken, postId, page}:Prop
         });
         if (response.status === 401 ) {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=10`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=5`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export const getComments = async ({ accessToken,refreshToken, postId, page}:Prop
 
                     localStorage.setItem("Authorization", newAccessToken);
                     localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=10`, {
+                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${postId}/comment?page=${page}&size=5`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
