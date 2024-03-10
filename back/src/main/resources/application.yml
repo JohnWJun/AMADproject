@@ -22,8 +22,8 @@ spring:
       client:
         registration:
           google:
-            clientId: ${G_CLIENT_ID}
-            clientSecret: ${G_CLIENT_SECRET}
+
+#            clientSecret: ${G_CLIENT_SECRET}
             scope:
               - email
               - profile
@@ -42,9 +42,10 @@ mail:
     admin: admin@gmail.com
 jwt:
   key:
-    secret: ${JWT_SECRET_KEY}
+#    secret: ${JWT_SECRET_KEY}
+
   access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 420
   # for test #
 #  access-token-expiration-minutes: 1
-#  refresh-token-expiration-minutes: 2
+#  refresh-token-expiration-minutes: 200
