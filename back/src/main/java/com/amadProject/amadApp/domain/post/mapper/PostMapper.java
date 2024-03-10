@@ -110,6 +110,7 @@ public interface PostMapper {
         response.setContent_4(post.getContent_4());
         response.setContent_5(post.getContent_5());
         response.setLikes(post.getWhoLikesMyPost().size());
+        response.setNickname(post.getMember().getNickname());
 
         return response;
 

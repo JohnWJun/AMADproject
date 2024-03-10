@@ -153,6 +153,14 @@ public class MemberDummyLoader implements CommandLineRunner {
 
         repository.save(dummyMember16);
 
+        Member me = new Member();
+        me.setEmail("tbvjdngus@gmail.com");
+        me.setNickname("어드민");
+        me.setStatusImg("/David.png");
+        me.setRoles(roles);
+
+        repository.save(me);
+
 
     }
 }

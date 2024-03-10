@@ -774,7 +774,7 @@ export async function postDislike ({accessToken, refreshToken, postId, memberId}
             }
         }
 
-        if (response.status === 200) {
+        if (response.status === 204) {
 
             return { success: true };
 
@@ -847,8 +847,8 @@ export async function deletePost ({accessToken, refreshToken, postId}:Props6) {
                         credentials: 'include',
                     });
 
-                    const data = await finalResponse.json();
-                    return { success: true, data };
+                
+                    return { success: true };
                 }
 
 
@@ -858,15 +858,14 @@ export async function deletePost ({accessToken, refreshToken, postId}:Props6) {
             }
         }
 
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
+        if (response.status === 204) {
+        
+            return { success: true };
 
 
         } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
+           
+            return { success: false};
         }
     } catch (error) {
         console.error(error);

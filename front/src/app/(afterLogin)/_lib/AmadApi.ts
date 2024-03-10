@@ -244,7 +244,7 @@ export async function deleteAmad ({accessToken, refreshToken, amadId}:Props3) {
             }
         }
 
-        if (response.status === 200) {
+        if (response.status === 204) {
             const data = await response.json();
 
             return { success: true , data};

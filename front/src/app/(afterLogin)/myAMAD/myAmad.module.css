@@ -36,6 +36,13 @@
 .postAbstract{
     flex: 1;
 }
+.lastPostBox{
+    display: flex;
+    flex-direction: row;
+}
+.contentBox{
+    flex: 1;
+}
 .deleteButtonSection{
     flex: 0.1;
     display: flex;

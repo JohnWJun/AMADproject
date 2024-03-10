@@ -87,6 +87,7 @@ public class PostDto {
         private long id;
         private String title;
         private String writer;
+        private String nickname;
         private LocalDateTime createdAt;
         private LocalDateTime lastModifiedAt;
         private List<BibleChapterVerseResponse> ScriptureForToday;

@@ -9,6 +9,8 @@
     transition-duration: 0.2s;
     cursor: pointer;
 }
+
+
 /* .post:hover {
     background-color: rgba(0, 0, 0, 0.03);
 } */
@@ -59,9 +61,21 @@
     right: 5%;
 }
 
-.postFixButton:hover {
-    fill: rgb(83, 100, 113);
+.postFixButton button{
+    background: none;
+    border: none;
+    margin: 5px 5px;
 }
+.postFixButton svg:hover{
+    fill: #e0ebeb;
+    cursor: pointer;
+}
+
+.postFixButton button:hover{
+    fill: #e0ebeb;
+    cursor: pointer;
+}
+
 .postReposted {
     display: flex;
     align-items: center;

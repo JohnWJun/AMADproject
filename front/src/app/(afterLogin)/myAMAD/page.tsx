@@ -6,15 +6,29 @@ import AmadDetail from "./_component/AmadDetail";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState";
 import {useEffect, useState} from "react";
-import {getLastPosts, getPostTdyDetail} from "@/app/(afterLogin)/_lib/PostApi";
+import {getLastPosts, getPostTdyDetail, deletePost} from "@/app/(afterLogin)/_lib/PostApi";
 import PostArticle from "@/app/(afterLogin)/_component/PostArticle";
 import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import {patchAmadAccomplished} from "@/app/(afterLogin)/_lib/AmadApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import ComponentLoader from "@/app/_component/ComponentLoader";
+import { useRouter} from "next/navigation";
 
 type Props = {
     post: any,
+}
+interface Post{
+    id:bigint,
+    title:string,
+    writer:string,
+    nickname:string,
+    statusImg:string,
+    createdAt:string,
+    content_1:string,
+    myAmad:string,
+    likes:number,
+    commentsNum: number,
+    whoLikesMyPost:BigInt[]
 }
 export default function MyAmad() {
 
@@ -33,8 +47,8 @@ export default function MyAmad() {
     const [accessToken, setAccessToken] = useState('');
     const [refreshToken, setRefreshToken] = useState('');
     const [createdAt, setCreatedAt ] = useState('');
-    const [posts, setPosts] = useState([]);
-
+    const [posts, setPosts] = useState<Post[]|null>(null);
+    const router = useRouter();
     // const parts = usePathname().split("/");
     // const [postId, setPostId] = useState<bigint>(BigInt(0));
 
@@ -82,7 +96,7 @@ export default function MyAmad() {
         };
 
         fetchPosts();
-    }, [accessToken, refreshToken]);
+    }, [accessToken, refreshToken, router]);
 
     useEffect(() => {
         if (memberId) {
@@ -96,16 +110,30 @@ export default function MyAmad() {
                     setMyAmadId(data.myAmadId);
                     setMyAmadIsComplete(data.complete);
                     const createdAt = data.createdAt.split("T")[0];
-                    setCreatedAt(createdAt)
+                    setCreatedAt(createdAt);
                     // console.log(data.complete);
                 }
             };
 
             fetchPost();
         }
-    }, [memberId]);
+    }, [memberId, router]);
 
 
+    const onClickDelete = (id:bigint)=>{
+        if(confirm('삭제하시면 복구할수 없습니다.\n정말로 삭제하시겠습니까??')){
+            fetchDeletePost(id);
+        }
+        
+    }
+    const fetchDeletePost = async(id:bigint) => {
+        const postId = id;
+        const {success} = await deletePost({accessToken,refreshToken, postId});
+        if(success) {
+            router.push('/myAMAD');
+            router.refresh();
+          }
+    }
 
 
     // if (!post) {
@@ -123,9 +151,9 @@ export default function MyAmad() {
                         <h3>오늘 나의 묵상</h3>
                         &nbsp;
                         {post && <>
-                            <PostArticle post={post}>
+                            {/* <PostArticle post={post}> */}
                                 <PostDetails post={post}/>
-                            </PostArticle>
+                            {/* </PostArticle> */}
 
                             <div className={style.container}>
                                 <h3>오늘 나의 AMAD</h3>
@@ -152,32 +180,37 @@ export default function MyAmad() {
                 </div>
             <div className={style.container}>
                 <h3>지난 묵상들</h3>
-                {posts.length ===0&& <>
+                {posts !== null && posts.length ===0&& <>
                     <div className={style.noPostContainer}>
                         <ComponentLoader header={'지난 묵상이 없습니다. '} body={'매일의 묵상을 통해 하나님과 친밀한 관계를 유지하세요.'}/>
                     </div>
                 </>}
-                {posts.length > 0 && (
+                {posts !== null && posts.length > 0 && (
                     <>
                     <div className={style.myLastPostsContainer}>
                     <div className={style.postAbstract}>
                         {posts.map((post, index) => (
+                        <div className={style.lastPostBox}>
+                            <div className={style.contentBox}>
                             <PostAbstract key={index} post={post}/>
+                            </div>
+                            <div className={style.deleteButtonSection}>
+                            <button onClick={() => onClickDelete(post.id)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.0" id="Layer_1" width="20px" height="20px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" >
+                                <g>
+                                    <path d="M56,4H40c0-2.211-1.789-4-4-4h-8c-2.211,0-4,1.789-4,4H8C5.789,4,4,5.789,4,8v5c0,0.553,0.447,1,1,1h54   c0.553,0,1-0.447,1-1V8C60,5.789,58.211,4,56,4z"/>
+                                    <path d="M20,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C21,24.447,20.553,24,20,24z"/>
+                                    <path d="M32,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C33,24.447,32.553,24,32,24z"/>
+                                    <path d="M44,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C45,24.447,44.553,24,44,24z"/>
+                                    <path d="M9,16H7v44c0,2.211,1.789,4,4,4h42c2.211,0,4-1.789,4-4V16h-2H9z M23,51c0,1.657-1.343,3-3,3s-3-1.343-3-3   V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M35,51c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M47,51   c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z"/>
+                                </g>
+                                </svg>
+                                </button>
+                            </div>
+                    </div>
                         ))}
                     </div>
-                    <div className={style.deleteButtonSection}>
-                        <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" version="1.0" id="Layer_1" width="20px" height="20px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" >
-                        <g>
-                            <path d="M56,4H40c0-2.211-1.789-4-4-4h-8c-2.211,0-4,1.789-4,4H8C5.789,4,4,5.789,4,8v5c0,0.553,0.447,1,1,1h54   c0.553,0,1-0.447,1-1V8C60,5.789,58.211,4,56,4z"/>
-                            <path d="M20,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C21,24.447,20.553,24,20,24z"/>
-                            <path d="M32,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C33,24.447,32.553,24,32,24z"/>
-                            <path d="M44,24c-0.553,0-1,0.447-1,1v26c0,0.553,0.447,1,1,1s1-0.447,1-1V25C45,24.447,44.553,24,44,24z"/>
-                            <path d="M9,16H7v44c0,2.211,1.789,4,4,4h42c2.211,0,4-1.789,4-4V16h-2H9z M23,51c0,1.657-1.343,3-3,3s-3-1.343-3-3   V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M35,51c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z M47,51   c0,1.657-1.343,3-3,3s-3-1.343-3-3V25c0-1.657,1.343-3,3-3s3,1.343,3,3V51z"/>
-                        </g>
-                        </svg>
-                        </button>
-                    </div>
+                
                     </div>
                     </>
                 )}
