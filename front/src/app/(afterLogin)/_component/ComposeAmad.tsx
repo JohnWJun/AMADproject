@@ -226,11 +226,11 @@ export default function ComposeAmad() {
                                     <option value='rev'>rev (요한계시록)</option>
 
                                     </select>
-                                    <input name={"chapter"} onChange={onChangeChapter} placeholder={'1'}>
+                                    <input name={"chapter"} value={chapter} onChange={onChangeChapter} placeholder={'1'}>
                                     </input> 장
-                                    <input name={"from"} onChange={onChangeFrom} placeholder={'1'}>
+                                    <input name={"from"} value={from} onChange={onChangeFrom} placeholder={'1'}>
                                     </input> 절 ~
-                                    <input name={"to"} onChange={onChangeTo} placeholder={'1'}>
+                                    <input name={"to"} value={to} onChange={onChangeTo} placeholder={'1'}>
                                     </input> 절
                                 </div>
                                 <div>
@@ -308,7 +308,7 @@ export default function ComposeAmad() {
                                     </svg>
                                 </button>
                             </div>
-                            <button type={"submit"} className={style.actionButton} disabled={!content_1}>게시하기</button>
+                            <button type={"submit"} className={style.actionButton} disabled={!book||!chapter||!from || !to || !content_1 || !content_2 || !content_3 || !content_4 || !content_5 || !amad}>게시하기</button>
                         </div>
                     </div>
                 </form>

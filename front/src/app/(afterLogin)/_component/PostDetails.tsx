@@ -39,7 +39,7 @@ export default function Post({ noImage ,post }: Props) {
     const fetchDeletePost = async() => {
         const {success} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
-            router.push('/myAMAD');
+            router.push('/compose/amad');
             router.refresh();}
     }
 

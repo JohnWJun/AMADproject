@@ -49,8 +49,7 @@ export default function MyAmad() {
     const [createdAt, setCreatedAt ] = useState('');
     const [posts, setPosts] = useState<Post[]|null>(null);
     const router = useRouter();
-    // const parts = usePathname().split("/");
-    // const [postId, setPostId] = useState<bigint>(BigInt(0));
+    const [isFetched, setIsFetched] = useState(false);
 
     const tdy = new Date();
     const year = tdy.getFullYear();
@@ -96,7 +95,7 @@ export default function MyAmad() {
         };
 
         fetchPosts();
-    }, [accessToken, refreshToken, router]);
+    }, [accessToken, refreshToken, isFetched]);
 
     useEffect(() => {
         if (memberId) {
@@ -117,7 +116,7 @@ export default function MyAmad() {
 
             fetchPost();
         }
-    }, [memberId, router]);
+    }, [memberId, isFetched]);
 
 
     const onClickDelete = (id:bigint)=>{
@@ -130,8 +129,7 @@ export default function MyAmad() {
         const postId = id;
         const {success} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
-            router.push('/myAMAD');
-            router.refresh();
+            setIsFetched(true);
           }
     }
 

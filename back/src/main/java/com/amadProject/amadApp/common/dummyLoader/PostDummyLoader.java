@@ -182,38 +182,6 @@ public class PostDummyLoader implements CommandLineRunner {
 
 
 
-        Post myPost2 = new Post();
-        Amad myAmad2 = new Amad();
-        BibleChapterVerse bibleChapterVerse6 = new BibleChapterVerse();
-        Member me2 = memberRepository.findByEmail("tbvjdngus@gmail.com").get();
-        bibleChapterVerse6.setPost(myPost2);
-        bibleChapterVerse6.setBible("eph");
-        bibleChapterVerse6.setBibleChapter(3);
-        bibleChapterVerse6.setBibleVerseFrom(12);
-        bibleChapterVerse6.setBibleVerseTo(12);
-
-        myAmad2.setPost(myPost2);
-        myAmad2.setMember(me2);
-        myAmad2.setMission("걱정하지 않기");
-
-        myPost2.setMember(me2);
-        myPost2.setTitle("힘되시는 하나님");
-        myPost2.setContent_1("힘되시는 하나님");
-        myPost2.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost2.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
-                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost2.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
-                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost2.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
-        myPost2.setAmad(myAmad2);
-        LocalDate time2 = LocalDate.now().minusDays(2);
-        myPost2.setPublishedDate(time2);
-
-        repository.save(myPost2);
-        amadRepository.save(myAmad2);
-        bibleChapterVerseRepository.save(bibleChapterVerse6);
-
-
 
     }
 }

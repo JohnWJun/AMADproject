@@ -161,7 +161,6 @@ public class MemberDummyLoader implements CommandLineRunner {
 
         repository.save(me);
 
-
     }
 }
 
