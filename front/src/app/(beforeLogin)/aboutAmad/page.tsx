@@ -2,6 +2,7 @@
 import {useRouter} from "next/navigation";
 import style from './aboutAmad.module.css';
 import Link from "next/link";
+import GoogleLogo from "@/app/_component/GoogleLogo"
 
 
 export default function Login(){
@@ -38,11 +39,15 @@ export default function Login(){
                     </div>
                     <div className={style.tutorialSection}>
                         <div className={style.tutorialBody}>
-                            
+                            <div className={style.buttons}>
                                 <Link href={'/tutorial'} className={style.tutorialLink}>
-                                    튜토리얼
+                                    AMAD 묵상 배우기
                                 </Link>
-                                
+                                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`}
+                                className={style.tutorialLink}>
+                                    <GoogleLogo width={'20px'} height={'20px'}/>
+                                    Login with Google</Link>
+                            </div>
                         </div>
                     </div>
             </div>    

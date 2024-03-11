@@ -68,6 +68,9 @@
 .exampleBox{
     margin-bottom: 20px;
     line-height: 1.5;
+    background-color: #d3f4ed; 
+    padding: 10px 10px;
+    border-radius: 5px;
 }
 .actionButton {
     width: 100%;
