@@ -393,7 +393,7 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
 
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=5`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -405,7 +405,7 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
         });
         if (response.status === 401 ) {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=5`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

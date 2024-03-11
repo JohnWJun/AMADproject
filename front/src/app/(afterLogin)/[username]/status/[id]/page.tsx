@@ -156,11 +156,11 @@ export default function SinglePost() {
             <>
             <div className={style.seeMoreButtonSection}>
 
-            <button disabled={page === 1} className={style.seeMoreButton} onClick={onClickButtonPrev}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
-                <polyline fill="none" stroke={page !== 1 ? "#000000" : "#e3e3e3"} strokeWidth="2" points="7 2 17 12 7 22" transform="matrix(-1 0 0 1 24 0)" />
-            </svg>
-            </button>
+                <button disabled={page === 1} className={style.seeMoreButton} onClick={onClickButtonPrev}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                    <polyline fill="none" stroke={page !== 1 ? "#000000" : "#e3e3e3"} strokeWidth="2" points="7 2 17 12 7 22" transform="matrix(-1 0 0 1 24 0)" />
+                </svg>
+                </button>
                <button disabled={page===totalPage} className={style.seeMoreButton} onClick={onClickButtonNext}>
                <svg xmlns="http://www.w3.org/2000/svg" fill={page !== totalPage ? "#000000" : "#e3e3e3"} height="20px" width="20px" version="1.1" id="XMLID_287_" viewBox="0 0 24 24" >
                 <g id="next"><g>

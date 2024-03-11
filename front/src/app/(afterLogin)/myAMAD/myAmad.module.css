@@ -49,10 +49,31 @@
     justify-content: center;
     align-items: center;
 }
+.paginationButtonSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 50px 0px;
+    margin-bottom: 150px;
+}
+
+.paginationButton{
+    background: none;
+    border: none;
+    margin: 0px 30px;
+}
+
+.paginationButton:hover{
+    padding-top: 4px;
+    background-color: #e0ebeb;
+    cursor: pointer;
+    border-radius: 6px;
+}
 .deleteButtonSection button{
     background: none;
     border: none;
 }
+
 .deleteButtonSection button:hover{
     fill: #e0ebeb;
     cursor: pointer;

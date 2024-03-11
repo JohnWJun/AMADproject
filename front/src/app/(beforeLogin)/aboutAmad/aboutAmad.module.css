@@ -14,10 +14,54 @@
 
 }
 .titleSection h2{
+    color: aliceblue;
     text-align: center;
     font-size: 50px;  
 }
 .bodySection{
     flex: 1;
+}
+
+.bodySection {
+    padding: 30px 30px;
+}
+
+.aboutUsBody h4 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.aboutUsBody h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.aboutUsBodyPart{
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.aboutUsBodyHighlightedSection{
+    text-align: center;
+    border-radius: 5px;
+    background-color:#e7eaf6 ;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+}
+
+.tutorialSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.tutorialLink {
+    padding: 4px 70px;
+    border: 1px solid #9fd3c7;
+    border-radius: 15px;
+}
+.tutorialLink:hover {
+    
+    background-color: #e7eaf6;
+    cursor: pointer;
 }
 

@@ -28,7 +28,8 @@ interface Post{
     myAmad:string,
     likes:number,
     commentsNum: number,
-    whoLikesMyPost:BigInt[]
+    whoLikesMyPost:BigInt[],
+    totalPage: number
 }
 export default function MyAmad() {
 
@@ -50,6 +51,8 @@ export default function MyAmad() {
     const [posts, setPosts] = useState<Post[]|null>(null);
     const router = useRouter();
     const [isFetched, setIsFetched] = useState(false);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
 
     const tdy = new Date();
     const year = tdy.getFullYear();
@@ -86,16 +89,17 @@ export default function MyAmad() {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            let page = 1;
+            
             const { success, data } = await getLastPosts({ accessToken, refreshToken, page, email });
 
             if (success) {
                 setPosts(data);
+                setTotalPage(data.totalPage);
             }
         };
 
         fetchPosts();
-    }, [accessToken, refreshToken, isFetched]);
+    }, [accessToken, refreshToken, isFetched, page]);
 
     useEffect(() => {
         if (memberId) {
@@ -133,11 +137,14 @@ export default function MyAmad() {
           }
     }
 
-
-    // if (!post) {
-    //     return(
-    //         <Loader header = {'오늘 묵상을 완료하세요!'} body={'매일의 묵상을 통해 하나님과 친밀한 관계를 유지하세요.'}/>)
-    // }
+    const onClickButtonNext = () => {
+        setPage((prevPage)=> prevPage+1);
+    }
+    const onClickButtonPrev = () => {
+        if(page != 1){
+        setPage((prevPage)=> prevPage-1);
+        }
+    }
 
 
     return (
@@ -205,8 +212,24 @@ export default function MyAmad() {
                                 </svg>
                                 </button>
                             </div>
+                            
                     </div>
                         ))}
+                        {posts.length > 0 && (
+                            <div className={style.paginationButtonSection}>
+                            <button disabled={page === 1} className={style.paginationButton} onClick={onClickButtonPrev}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                                    <polyline fill="none" stroke={page !== 1 ? "#000000" : "#e3e3e3"} strokeWidth="2" points="7 2 17 12 7 22" transform="matrix(-1 0 0 1 24 0)" />
+                                </svg>
+                            </button>
+                            <button disabled={page===totalPage} className={style.paginationButton} onClick={onClickButtonNext}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill={page !== totalPage ? "#000000" : "#e3e3e3"} height="20px" width="20px" version="1.1" id="XMLID_287_" viewBox="0 0 24 24" >
+                                <g id="next"><g>
+                                <polygon points="6.8,23.7 5.4,22.3 15.7,12 5.4,1.7 6.8,0.3 18.5,12   "/></g></g>
+                                </svg>
+                            </button>
+                            </div>
+                            )}
                     </div>
                 
                     </div>
