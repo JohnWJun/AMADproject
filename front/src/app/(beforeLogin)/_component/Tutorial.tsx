@@ -4,7 +4,8 @@ import style from "@/app/(beforeLogin)/_component/tutorial.module.css";
 import {useRouter} from "next/navigation";
 import BackButton from "./BackButton";
 import { useState } from "react";
-
+import MainLogo from "@/app/_component/MainLogo";
+import Image from "next/image";
 export default function Tutorial() {
     const router = useRouter();
     const [page, setPage] = useState(1);
@@ -27,6 +28,7 @@ export default function Tutorial() {
         <div className={style.modal}>
             <div className={style.modalHeader}>
                 <BackButton/>
+                <MainLogo width={"50px"} height={"50px"}/>
             </div>
             <div className={style.modalBody}>
             {page ===1 &&(   
@@ -43,13 +45,17 @@ export default function Tutorial() {
                 질문한다. <br/> 그 하나님이 느껴지는대로 기록하고 어떤 하나님과 동행할지 다시한번 묻고 결정한다.
                 <br/>
                 </div>
-                <div className={style.exampleBox}>
+                &emsp;
+                <div className={style.exampleBox}>   
                     <strong>Example</strong><br/>
-                    골로새서 1:1~8 중<br/>
-                    
-                    <strong>7. 이와 같이 우리와 함께 종 된 사랑하는 에바브라에게 너희가 배웠나니 그는 너희를 위한 그리스도의 신실한 일꾼이요.</strong>
-                    <br/>
-                    <strong>말씀하시는 하나님:</strong> “주의 종을 통해 일하시는 하나님”
+                    &emsp;
+                    <div className={style.textBox}>
+                    <h4>오늘 내게 주신 말씀</h4>
+                    <div>eph 3.12 우리가 그 안에서 그를 믿음으로 말미암아 담대함과 확신을 가지고 하나님께 나아감을 얻느니라</div>
+                    &emsp;
+                    <h4>1. 말씀하시는 하나님은...</h4>
+                    “나의 힘이되시는 하나님”
+                    </div>
                 </div>
                 </>
                 )}
@@ -60,15 +66,22 @@ export default function Tutorial() {
                 &emsp;
                 <h3>Q2. 하시고싶으신 말씀은?</h3>
                 &emsp;
+                <h5>대화</h5>
+                &emsp;
                 <div className={style.descriptionBox}>
-                1번에서 결정한 말씀하시는 하나님을 부른다. "(&emsp;)하나님,이 말씀을 통해 저에게 하시고 싶으신 말씀이 있으십니까?"<br/>
-                질문하고 기다린다. 대화를 하는 방식으로 묻고 응답을 듣고 기록한다. 하나님은 다양한 방법으로 우리에게 말씀하신다. <br/> 때로는 이미지로, 단어로, 문장으로...
+                1번에서 결정한 말씀하시는 하나님을 부른다. <strong>"(&emsp;)하나님,이 말씀을 통해 저에게 하시고 싶으신 말씀이 있으십니까?"</strong><br/>
+                질문하고 기다린다. <strong>대화를 하는 방식으로 묻고 응답을 듣고 기록한다.</strong> 하나님은 다양한 방법으로 우리에게 말씀하신다. <br/> 때로는 이미지로, 단어로, 문장으로...
                 느낌같은 말씀에, 주시는 마음에 집중하자. 
-                <br/>5가지 질문중 가장 중요한 부분이며 충분한 시간을 가지고 응답하심을 기다리자.<br/>(대화)
+                5가지 질문중 가장 중요한 부분이며 충분한 시간을 가지고 응답하심을 기다리자.<br/>
                 </div>
+                &emsp;
                 <div className={style.exampleBox}>
-                    <strong>Example</strong><br/>
-                    ...
+                <strong>Example</strong><br/>
+                    &emsp;
+                    <div className={style.textBox}>
+                    <h4>2. 이 말씀을 통해 하시고 싶은 말씀은?</h4>
+                    하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.
+                    </div>
                 </div>
                 </>
                 )}
@@ -79,13 +92,19 @@ export default function Tutorial() {
                 &emsp;
                 <h3>Q3. 저의 삶은?</h3>
                 &emsp;
+                <h5>회개</h5>
+                &emsp;
                 <div className={style.descriptionBox}>
                 <strong>"(&emsp;)하나님, 이 말씀에 비추어 저는 어떤 삶을 살았습니까?" </strong>질문하고 다시 기다린다. <br/>하나님의 눈으로 자신의 문제를 보며 하나님이 주시는 찔림에 대한 무조건적인 인정이 선행되어야 한다.
-                <br/>(회개)
+                &emsp;
                 </div>
                 <div className={style.exampleBox}>
                 <strong>Example</strong><br/>
-                    ...
+                    &emsp;
+                    <div className={style.textBox}>
+                    <h4>3. ... 저는 어떤 삶을 살았습니까?</h4>
+                    하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다. 하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.
+                    </div>
                 </div>
                 </>
                 )}
