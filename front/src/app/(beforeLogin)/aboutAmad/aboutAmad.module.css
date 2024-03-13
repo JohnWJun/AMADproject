@@ -1,28 +1,33 @@
+
 .main{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 .titleSection{
     flex: 0.7;
     display: flex;
-    height: 100%;
+    width: 100%;
+    height: 10%;
     align-items: center;
     justify-content: center;
-    background-color: #9fd3c7; 
+    background-color: #9fd3c7;
+    position: fixed;
+    top: 0;
 
 }
+
 .titleSection h2{
     color: aliceblue;
     text-align: center;
     font-size: 50px;  
 }
-.bodySection{
-    flex: 1;
-}
+
 
 .bodySection {
+    margin-top: 250px;
     padding: 30px 30px;
 }
 
@@ -36,11 +41,12 @@
     margin-bottom: 10px;
 }
 .aboutUsBodyPart{
-    line-height: 1.5;
+    line-height: 2.0;
     margin-bottom: 10px;
 }
 .aboutUsBodyHighlightedSection{
     text-align: center;
+    line-height: 2.0;
     border-radius: 5px;
     background-color:#e7eaf6 ;
     padding: 10px 10px;
@@ -48,14 +54,14 @@
 }
 
 .tutorialSection{
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 .buttons{
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 .tutorialLink {
     display: flex;
@@ -74,4 +80,108 @@
     background-color: #e7eaf6;
     cursor: pointer;
 }
+@media screen and (min-width: 1024px){
+    .main{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .titleSection{
+        position: relative;
+        height: 100%;
+        flex: 0.7;
+        align-items: center;
+        justify-content: center;
+        background-color: #9fd3c7; 
+    
+    }
+    .bodySection{
+        font-size: 82%;
+        margin-top: 20px;
+        flex: 1;
+        width: 90%;
+    }
+}
+
+
+@media screen and (max-width: 912px){
+    .main{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    .titleSection{
+        width: 100%;
+    }
+    .bodySection{
+        margin-top: 70px;
+        width: 80%;
+    }
+}
+@media screen and (max-width: 850px){
+    .buttons{
+        display: flex;
+        flex-direction: column;
+    }
+    .tutorialLink{
+        padding: 0%;
+        width: 90%;
+        font-size: 90%;
+    }
+}
+@media screen and (max-width: 578px){
+    .tutorialLink{
+
+        font-size: 80%;
+    }
+    .aboutUsBody{
+        font-size: 80%;
+    }
+    .aboutUsBody h4 {
+        font-size: 20px;
+    }
+    .aboutUsBody h5 {
+        font-size: 15px;
+    }
+}
+@media screen and (max-width: 460px){
+    .buttonText {
+        display: none;
+    }
+
+    .aboutUsBody{
+        font-size: 70%;
+    }
+    .aboutUsBody h4 {
+        font-size: 15px;
+    }
+    .aboutUsBody h5 {
+        font-size: 10px;
+    }
+}
+
+
+@media screen and (max-width: 280px){
+
+    .aboutUsBody{
+        font-size: 60%;
+    }
+    .aboutUsBody h4 {
+        font-size: 10px;
+    }
+    .aboutUsBody h5 {
+        font-size: 7px;
+    }
+}
+@media screen and (max-width: 578px) and (max-height:720px){
+
+}
+@media screen and (max-width: 360px) and (max-height:740px){
+
+}
+@media screen and (max-width: 1024px) and (max-height:600px){
+}
+
 

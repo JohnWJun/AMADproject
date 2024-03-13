@@ -38,7 +38,7 @@ export default function Login(){
                         </div>
                     </div>
                     <div className={style.tutorialSection}>
-                        <div className={style.tutorialBody}>
+                        
                             <div className={style.buttons}>
                                 <Link href={'/tutorial'} className={style.tutorialLink}>
                                     AMAD 묵상 배우기
@@ -46,9 +46,11 @@ export default function Login(){
                                 <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`}
                                 className={style.tutorialLink}>
                                     <GoogleLogo width={'20px'} height={'20px'}/>
-                                    Login with Google</Link>
+                                    &nbsp;
+                                    <div className={style.buttonText}>Login with Google</div>
+                                    </Link>
                             </div>
-                        </div>
+                    
                     </div>
             </div>    
         </main>
