@@ -28,7 +28,7 @@ export default function Main() {
                     <GoogleLogo width={'20px'} height={'20px'}/>
                     Login with Google</Link>
 
-                    <Link href='/aboutAmad' className={styles.howToUse}>How to use AMAD</Link>
+                    <Link href='/aboutAmad' className={styles.login}>How to use AMAD</Link>
             </div>
         </>
     )

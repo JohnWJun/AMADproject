@@ -26,6 +26,9 @@
 @media screen and (min-height: 750px){
     .modal{max-height: 800px;}
 }
+@media screen and (max-height: 800px){
+    .modal{max-height: 700px;}
+}
 
 .modalHeader {
     display: flex;

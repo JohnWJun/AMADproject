@@ -69,12 +69,15 @@ export default function Home() {
 
 
     useEffect(() => {
-        if (isTabtdy) {
+        if(accessToken)
+        {
+            if (isTabtdy) {
             fetchTdyPost();
         } else {
             fetchPost();
-        }
-    }, [page]);
+        }}
+        console.log(posts)
+    }, [page,accessToken]);
 
     useEffect(() => {
         const entryCallback = (entries:any) => {
