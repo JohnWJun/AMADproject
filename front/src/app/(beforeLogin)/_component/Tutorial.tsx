@@ -29,7 +29,7 @@ export default function Tutorial() {
         <div className={style.modal}>
             <div className={style.modalHeader}>
                 <BackButton/>
-                <MainLogo width={"50px"} height={"50px"}/>
+                <MainLogo width={'50px'} height={'50px'}/>
             </div>
             <div className={style.modalBody}>
             {page ===1 &&(   

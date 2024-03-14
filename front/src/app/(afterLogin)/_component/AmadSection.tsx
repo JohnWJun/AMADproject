@@ -20,7 +20,6 @@ interface MyAmad {
 }
 export default function AmadSection() {
     const pathname = usePathname();
-    if(pathname === '/explore') return null;
     const memberInfo = useRecoilValue(Member);
     const memberId = memberInfo.id;
     const accessToken = localStorage.getItem("Authorization") ||'';
@@ -40,9 +39,9 @@ export default function AmadSection() {
 
             fetchPost();
         }
-    }, [memberId]);
+    }, [memberId, accessToken, refreshToken]);
 
-
+    if(pathname === '/explore') return null;
     return (
         <div className={style.amadBg}>
             <div className={style.amad}>

@@ -195,7 +195,7 @@ export default function MyAmad() {
                     <div className={style.myLastPostsContainer}>
                     <div className={style.postAbstract}>
                         {posts.map((post, index) => (
-                        <div className={style.lastPostBox}>
+                        <div key={post.id} className={style.lastPostBox}>
                             <div className={style.contentBox}>
                             <PostAbstract key={index} post={post}/>
                             </div>
