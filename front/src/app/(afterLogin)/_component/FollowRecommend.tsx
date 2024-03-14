@@ -41,7 +41,6 @@ export default function FollowRecommend() {
             fetchUserData();
 
     }, []);
-    console.log(recommendedMembers);
 
 
     return (

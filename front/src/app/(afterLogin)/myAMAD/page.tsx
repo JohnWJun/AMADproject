@@ -114,7 +114,7 @@ export default function MyAmad() {
                     setMyAmadIsComplete(data.complete);
                     const createdAt = data.createdAt.split("T")[0];
                     setCreatedAt(createdAt);
-                    // console.log(data.complete);
+
                 }
             };
 

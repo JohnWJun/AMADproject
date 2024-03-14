@@ -34,23 +34,6 @@ export default function SignupModal() {
             setError(error);
         }
 
-        // fetch('http://localhost:8080/members/sign-up', {
-        //     method: 'post',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         email: email
-        //     }),
-        //     credentials: 'include',
-        // }).then((response: Response) => {
-        //     console.log(response.status);
-        //     if (response.status === 201) {
-        //         router.replace('/home');
-        //     }
-        // }).catch((err) => {
-        //     console.error(err);
-        // });
     }
 
     return (

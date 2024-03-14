@@ -68,7 +68,6 @@ export default function ComposeAmad() {
 
         };
 
-        console.log(requestBody);
         const accessToken = localStorage.getItem("Authorization") || '';
         const refreshToken = localStorage.getItem("Refresh") || '';
         const email = memberInfo.email
@@ -76,7 +75,7 @@ export default function ComposeAmad() {
         // Call the postPost function with the updated requestBody
         const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
         if (success) {
-            console.log(data);
+    
             router.replace(`/${data.nickname}/status/${data.id}/`);
             router.refresh();
         }

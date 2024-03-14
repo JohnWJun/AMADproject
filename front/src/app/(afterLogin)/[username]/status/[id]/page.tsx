@@ -69,7 +69,6 @@ export default function SinglePost() {
     const onCommentPatched = () => {
         // Set a flag to indicate that comments have changed
         setIsPatched(true);
-        console.log(isPatched)
     };
 
     useEffect(() => {

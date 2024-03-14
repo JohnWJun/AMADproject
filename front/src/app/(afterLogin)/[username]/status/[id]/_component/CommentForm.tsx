@@ -26,12 +26,10 @@ export default function CommentForm({ postId, onCommentAdded }: Props) {
         const accessToken = localStorage.getItem("Authorization") || '';
         const refreshToken = localStorage.getItem("Refresh") || '';
 
-        console.log(memberId);
-        console.log()
 
         const {success,data} = await postComment({content, accessToken, refreshToken, postId, memberId});
         if (success) {
-            console.log(data);
+
             // Call the callback function provided by the parent component
             onCommentAdded();
             // Clear the content of the comment form after submission

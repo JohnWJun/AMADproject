@@ -119,7 +119,6 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
     const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
     const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
     const localDateForm = year+'-'+month+'-'+day;
-    console.log(`${localDateForm}?page=${page}&size=3`)
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/today/${localDateForm}?page=${page}&size=3`, {
             method: 'GET',
@@ -198,8 +197,6 @@ if (response.status === 200) {
 export async function getPostDetail ({accessToken,refreshToken, postId}:any) {
 
 
-    console.log(localDateForm);
-    console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`);
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/detail/${postId}`, {
             method: 'GET',
@@ -211,7 +208,7 @@ export async function getPostDetail ({accessToken,refreshToken, postId}:any) {
             },
             credentials: 'include',
         });
-        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`)
+
         if (response.status === 401 ) {
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/detail/${postId}`, {

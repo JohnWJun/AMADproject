@@ -74,7 +74,7 @@ export default function PatchAmadPage() {
 
     useEffect(() => {
         if (postId != BigInt(0)) {
-            console.log(postId)
+
             const fetchPost = async () => {
                 const accessToken = localStorage.getItem("Authorization");
                 const refreshToken = localStorage.getItem("Refresh");

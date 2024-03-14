@@ -70,7 +70,6 @@ export default function Profile() {
             if (success) {
                 setUserToFind(data);
                 setNickname(data.nickname);
-                console.log(data);
             }
         };
         fetchUserInfo();

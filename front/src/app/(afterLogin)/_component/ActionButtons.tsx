@@ -85,9 +85,6 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
     }
 
 
-
-    console.log(currentLike);
-
     return (
         <div className={style.actionButtons}>
             <div className={cx(style.commentButton,   commented && style.commented , white && style.white)}>

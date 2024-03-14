@@ -76,7 +76,7 @@ export default function Home() {
         } else {
             fetchPost();
         }}
-        console.log(posts)
+
     }, [page,accessToken]);
 
     useEffect(() => {
@@ -86,8 +86,6 @@ export default function Home() {
                 setPage(prevPage => prevPage + 1);
 
 
-                console.log('page: ', page);
-                console.log('entry: ', entry);
             }
         };
 
@@ -115,10 +113,10 @@ export default function Home() {
             setPosts(prevPosts => [...prevPosts, ...data]);
             if (data.length < 3 || data.length === 0) {
                 setIsLastPost(true);
-                console.log('its the last page', page);
+
             }
             setIsLoading(false);
-            console.log('infinite getTodayPosts activated: ', data);
+
         } else{
             setIsLastPost(true);
         }}
@@ -133,10 +131,10 @@ export default function Home() {
             setPosts(prevPosts => [...prevPosts, ...data]);
             if (data.length < 3|| data.length === 0) {
                 setIsLastPost(true);
-                console.log('its the last page', page);
+
             }
             setIsLoading(false);
-            console.log('infinite getPosts activated: ', data);
+   
         } else{
             setIsLastPost(true);
         }
