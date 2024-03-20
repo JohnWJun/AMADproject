@@ -32,6 +32,28 @@
 .innerModal{
     overflow-y: scroll;
 }
+
+/* width */
+.innerModal::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  .innerModal::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .innerModal::-webkit-scrollbar-thumb {
+    background: #d3f4ed; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .innerModal::-webkit-scrollbar-thumb:hover {
+    background: #e3e3e3; 
+  }
+
 .modalForm {
     display: flex;
     flex-direction: column;

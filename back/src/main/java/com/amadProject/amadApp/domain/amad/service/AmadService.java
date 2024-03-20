@@ -1,5 +1,7 @@
 package com.amadProject.amadApp.domain.amad.service;
 
+import com.amadProject.amadApp.common.exception.BusinessLogicException;
+import com.amadProject.amadApp.common.exception.ExceptionCode;
 import com.amadProject.amadApp.domain.amad.entity.Amad;
 import com.amadProject.amadApp.domain.amad.repository.AmadRepository;
 import com.amadProject.amadApp.domain.member.entity.Member;
@@ -52,7 +54,7 @@ public class AmadService {
     }
 ///businessLogicException 적용
     public Amad findAmad(long amadId){
-        return amadRepository.findById(amadId).orElseThrow(()-> new RuntimeException("No AMAD found"));
+        return amadRepository.findById(amadId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.AMAD_NOT_FOUND));
     }
 
     public void deleteAmad(long amadId){
@@ -61,7 +63,7 @@ public class AmadService {
     }
 
     public Amad findTdyAmad(LocalDate writtenDate,long memberId){
-        return amadRepository.findByDateNMemberId(writtenDate, memberId).orElseThrow(()-> new RuntimeException("No AMAD found"));
+        return amadRepository.findByDateNMemberId(writtenDate, memberId).orElseThrow(()->  new BusinessLogicException(ExceptionCode.AMAD_NOT_FOUND));
     }
 
 

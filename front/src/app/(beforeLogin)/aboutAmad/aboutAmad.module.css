@@ -16,6 +16,8 @@
     background-color: #9fd3c7;
     position: fixed;
     top: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
 }
 
@@ -93,6 +95,8 @@
         align-items: center;
         justify-content: center;
         background-color: #9fd3c7; 
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     
     }
     .bodySection{
@@ -101,6 +105,7 @@
         flex: 1;
         width: 90%;
     }
+    
 }
 
 
