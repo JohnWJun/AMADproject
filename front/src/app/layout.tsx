@@ -10,7 +10,7 @@ const inter = pretendard(
 )
 export const metadata: Metadata = {
   title: "AMAD:A Mission A Day",
-  description: "Have a mission a day in God",
+  description: "Have a daily mission in God"
 };
 
 export default function RootLayout({children

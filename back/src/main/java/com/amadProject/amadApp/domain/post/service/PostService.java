@@ -196,4 +196,8 @@ public class PostService {
         LocalDate tdy = LocalDate.now();
         return postRepository.findAll(PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
     }
+
+    public Page<Post> findPostsByKeyword(String keyword, int page, int size) {
+        return postRepository.findAllByKeyword(keyword, PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+    }
 }

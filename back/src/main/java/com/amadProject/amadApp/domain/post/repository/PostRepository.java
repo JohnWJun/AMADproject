@@ -22,4 +22,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     Page<Post> findAllByWrittenDate(LocalDate writtenDate,  Pageable pageable);
     @Query(value = "SELECT p FROM Post p where p.member.id =:memberId AND p.publishedDate = :date")
     Optional<Post> findByMemberIdNDate(long memberId, LocalDate date);
+
+    @Query(value = "SELECT p FROM Post p where p.content_1 LIKE %:keyword% OR p.content_2 LIKE %:keyword% OR p.content_3 LIKE %:keyword% OR p.content_4 LIKE %:keyword% OR p.content_5 LIKE %:keyword% OR p.amad LIKE %:keyword% OR p.member.nickname LIKE %:keyword% OR p.member.email LIKE %:keyword%")
+    Page<Post> findAllByKeyword( String keyword, Pageable createdAt);
+
 }
