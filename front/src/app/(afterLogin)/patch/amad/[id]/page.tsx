@@ -78,7 +78,7 @@ export default function PatchAmadPage() {
             const fetchPost = async () => {
                 const accessToken = localStorage.getItem("Authorization");
                 const refreshToken = localStorage.getItem("Refresh");
-                const {success, data} = await getPostDetail({accessToken, refreshToken, postId});
+                const {success, data, error} = await getPostDetail({accessToken, refreshToken, postId});
 
                 if (success) {
                     setPost(data);
@@ -97,6 +97,10 @@ export default function PatchAmadPage() {
                     setAmad(data.myAmad);
 
 
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             };
 
@@ -131,10 +135,14 @@ export default function PatchAmadPage() {
         };
 
         if (accessToken && refreshToken !== null){
-        const {success, data} = await patchPost({requestBody, accessToken, refreshToken, postId,bibleChapterVerseId,amadId });
+        const {success, data, error} = await patchPost({requestBody, accessToken, refreshToken, postId,bibleChapterVerseId,amadId });
         if (success) {
             router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
             router.refresh();
+        }
+        if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
         }
     }
     }

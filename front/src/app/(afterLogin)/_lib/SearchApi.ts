@@ -1,4 +1,4 @@
-import {redirect} from "next/navigation";
+
 
 type Props2 = {
     accessToken: string,
@@ -62,8 +62,7 @@ export async function getPostBySearch ({accessToken,refreshToken,keyword, page}:
 
 
     } else{
-        alert("please login again");
-        redirect('/');
+        return {success: false, error: '409'}
     }
 }
 

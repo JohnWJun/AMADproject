@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import { useRecoilValue } from 'recoil';
 import {getTdyAmad} from '@/app/(afterLogin)/_lib/AmadApi'
 import ComponentLoader from '@/app/_component/ComponentLoader';
+import {useRouter} from 'next/navigation';
 
 
 
@@ -25,16 +26,22 @@ export default function AmadSection() {
     const accessToken = localStorage.getItem("Authorization") ||'';
     const refreshToken = localStorage.getItem("Refresh") ||'';
     const [myAmad, setMyAmad] = useState<MyAmad | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (memberId) {
             const fetchPost = async () => {
 
-                const { success, data } = await getTdyAmad({ accessToken, refreshToken, memberId});
+                const { success, data, error } = await getTdyAmad({ accessToken, refreshToken, memberId});
 
                 if (success) {
                     setMyAmad(data)
                 }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
+                }
+                
             };
 
             fetchPost();

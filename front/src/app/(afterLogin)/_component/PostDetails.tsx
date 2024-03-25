@@ -34,10 +34,14 @@ export default function Post({ noImage ,post }: Props) {
     }
 
     const fetchDeletePost = async() => {
-        const {success} = await deletePost({accessToken,refreshToken, postId});
+        const {success, error} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
             router.push('/compose/amad');
             router.refresh();}
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
+            }
     }
 
         return (

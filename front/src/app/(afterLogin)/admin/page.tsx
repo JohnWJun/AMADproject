@@ -7,6 +7,7 @@ import {getPosts,deletePost} from '@/app/(afterLogin)/_lib/PostApi';
 import { Member } from '@/app/_component/MemberRecoilState';
 import BackButton from '../_component/BackButton';
 import PostAbstract from '../_component/PostAbstract';
+import {useRouter} from 'next/navigation';
 
 interface Member {
 
@@ -42,7 +43,7 @@ export default function Admin() {
     const [postTotalPage, setPostTotalPage] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [isFetched, setIsFetched] = useState(false);
-   
+    const router = useRouter();
 
     const onClickDelete = (id:bigint)=>{
         if(confirm('삭제하시면 복구할수 없습니다.\n정말로 삭제하시겠습니까??')){
@@ -60,17 +61,25 @@ export default function Admin() {
         const postId = id;
         const accessToken = storedAccessToken;
         const refreshToken = storedRefreshToken;
-        const {success} = await deletePost({accessToken,refreshToken, postId});
+        const {success, error} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
             setIsFetched(true);
           }
+          if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
+        }
     }
     const fetchDeleteMember = async(id:bigint) => {
         const memberId = id;
-        const {success} = await deleteMember({storedAccessToken,storedRefreshToken, memberId});
+        const {success, error} = await deleteMember({storedAccessToken,storedRefreshToken, memberId});
         if(success) {
             setIsFetched(true);
           }
+          if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
+        }
     }
     const onClickButtonNext = () => {
         setPage((prevPage)=> prevPage+1);
@@ -93,13 +102,17 @@ export default function Admin() {
         const fetchUserData = async () => {
         
             
-                const { success, data } = await getMembers({
+                const { success, data, error } = await getMembers({
                     accessToken: storedAccessToken,
                     refreshToken: storedRefreshToken,page
                 });
                 if(success){
                     setMembers(data.members);
                     setTotalPage(data.totalPage);
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             
         };
@@ -115,11 +128,15 @@ export default function Admin() {
             const refreshToken = storedRefreshToken;
             const page = postPage;
             
-            const { success, data } =  await getPosts({ accessToken, refreshToken, page });
+            const { success, data, error } =  await getPosts({ accessToken, refreshToken, page });
 
             if (success) {
                 setPosts(data.posts);
                 setPostTotalPage(data.totalPage);
+            }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
         };
 

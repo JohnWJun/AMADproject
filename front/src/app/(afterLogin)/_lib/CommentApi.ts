@@ -1,4 +1,4 @@
-import {redirect} from "next/navigation";
+
 
 type Props ={
     content: string,
@@ -67,8 +67,7 @@ export const postComment = async ({ content, accessToken,refreshToken, postId, m
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -150,8 +149,7 @@ export const getComments = async ({ accessToken,refreshToken, postId, page}:Prop
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -234,8 +232,7 @@ export const deleteComment = async ({ accessToken,refreshToken, postId, commentI
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -325,8 +322,7 @@ export const patchComment = async ({ accessToken, refreshToken, postId,commentId
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 

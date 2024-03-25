@@ -73,11 +73,15 @@ export default function ComposeAmad() {
         const email = memberInfo.email
 
         // Call the postPost function with the updated requestBody
-        const {success,data} = await postPost({requestBody, accessToken, refreshToken, email});
+        const {success,data, error} = await postPost({requestBody, accessToken, refreshToken, email});
         if (success) {
     
             router.replace(`/${data.nickname}/status/${data.id}/`);
             router.refresh();
+        }
+        if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
         }
     };
     const onClickClose = () => {

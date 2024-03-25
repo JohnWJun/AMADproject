@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import style from './followRecommend.module.css';
-import {getRecommendedFriend} from '../_lib/MemberApi'
+import {getRecommendedFriend} from '../_lib/MemberApi';
+import {useRouter} from 'next/navigation';
 
 
 interface Members {
@@ -22,19 +23,23 @@ export default function FollowRecommend() {
     const storedAccessToken = localStorage.getItem("Authorization") || '';
     const storedRefreshToken = localStorage.getItem("Refresh") || '';
     const [recommendedMembers, setMembers] = useState<Members[] >([]);
-
+    const router = useRouter();
 
     
     useEffect(() => {
         const fetchUserData = async () => {
         
             
-                const { success, data } = await getRecommendedFriend({
+                const { success, data, error } = await getRecommendedFriend({
                     accessToken: storedAccessToken,
                     refreshToken: storedRefreshToken,
                 });
                 if(success){
                     setMembers(data);
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             
         };

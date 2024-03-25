@@ -58,6 +58,9 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
                 if (success) {
                     setLiked(true);
                 }
+                if(!success){
+                    router.replace('/')
+                }
             }
             fetchPostLike();
             setCurrentLike(currentLike+1);
@@ -71,6 +74,8 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
 
                 if (success) {
                     setLiked(false);
+                } if(!success){
+                    router.replace('/')
                 }
                     }
                     fetchPostDislike();

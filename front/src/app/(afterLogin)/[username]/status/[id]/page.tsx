@@ -75,11 +75,15 @@ export default function SinglePost() {
         if (postId) {
             const fetchPost = async () => {
 
-                const { success, data } = await getPostDetail({ accessToken, refreshToken, postId});
+                const { success, data, error } = await getPostDetail({ accessToken, refreshToken, postId});
 
                 if (success) {
                     setPost(data);
                     setEmail(data.writer);
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             };
 
@@ -102,11 +106,15 @@ export default function SinglePost() {
 
     const fetchComments = async () => {
         
-        const { success, data } = await getComments({ accessToken, refreshToken, postId, page });
+        const { success, data, error } = await getComments({ accessToken, refreshToken, postId, page });
 
         if (success) {
             setComments(data.responses);
             setTotalPage(data.totalPage)
+        }
+        if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
         }
     };
 

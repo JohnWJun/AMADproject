@@ -14,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -159,23 +160,30 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse5.setBibleVerseFrom(12);
         bibleChapterVerse5.setBibleVerseTo(12);
 
-        myAmad.setPost(myPost);
-        myAmad.setMember(me);
-        myAmad.setMission("걱정하지 않기");
-
-        myPost.setMember(me);
-        myPost.setTitle("힘되시는 하나님");
-        myPost.setContent_1("힘되시는 하나님");
-        myPost.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
-                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
-                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
-        myPost.setAmad(myAmad);
-
         LocalDate time = LocalDate.now().minusDays(1);
         myPost.setPublishedDate(time);
+
+        List<BibleChapterVerse> bibleChapterVerseList5 = new ArrayList<>();
+        bibleChapterVerseList5.add(bibleChapterVerse5);
+        myPost.setBibleChapterVerses(bibleChapterVerseList5);
+
+        myAmad.setPost(myPost);
+        myAmad.setMember(me);
+        myAmad.setMission("걱정하지 않기 test1");
+        myAmad.setPublishedDate(time);
+
+        myPost.setMember(me);
+        myPost.setTitle("힘되시는 하나님 test1");
+        myPost.setContent_1("힘되시는 하나님 test1");
+        myPost.setContent_2("test1 하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost.setContent_3("test1 하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
+        myPost.setContent_4("test1 그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
+        myPost.setContent_5("test1 하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost.setAmad(myAmad);
+
+
 
         repository.save(myPost);
         amadRepository.save(myAmad);
@@ -191,23 +199,29 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse6.setBibleVerseFrom(12);
         bibleChapterVerse6.setBibleVerseTo(12);
 
-        myAmad2.setPost(myPost2);
-        myAmad2.setMember(me);
-        myAmad2.setMission("걱정하지 않기");
-
-        myPost2.setMember(me);
-        myPost2.setTitle("힘되시는 하나님");
-        myPost2.setContent_1("힘되시는 하나님");
-        myPost2.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost2.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
-                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost2.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
-                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost2.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
-        myPost2.setAmad(myAmad2);
-
         LocalDate time2 = LocalDate.now().minusDays(2);
         myPost2.setPublishedDate(time2);
+
+        List<BibleChapterVerse> bibleChapterVerseList6 = new ArrayList<>();
+        bibleChapterVerseList6.add(bibleChapterVerse6);
+        myPost2.setBibleChapterVerses(bibleChapterVerseList6);
+
+        myAmad2.setPost(myPost2);
+        myAmad2.setMember(me);
+        myAmad2.setMission("걱정하지 않기 test2");
+        myAmad2.setPublishedDate(time2);
+
+        myPost2.setMember(me);
+        myPost2.setTitle("test2 힘되시는 하나님");
+        myPost2.setContent_1("test2힘되시는 하나님");
+        myPost2.setContent_2("test2하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost2.setContent_3("test2하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
+        myPost2.setContent_4("test2그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
+        myPost2.setContent_5("test2하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost2.setAmad(myAmad2);
+
 
 
         repository.save(myPost2);
@@ -223,23 +237,29 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse7.setBibleVerseFrom(12);
         bibleChapterVerse7.setBibleVerseTo(12);
 
-        myAmad3.setPost(myPost3);
-        myAmad3.setMember(me);
-        myAmad3.setMission("걱정하지 않기");
-
-        myPost3.setMember(me);
-        myPost3.setTitle("힘되시는 하나님");
-        myPost3.setContent_1("힘되시는 하나님");
-        myPost3.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost3.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
-                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost3.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
-                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost3.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
-        myPost3.setAmad(myAmad3);
+        List<BibleChapterVerse> bibleChapterVerseList7 = new ArrayList<>();
+        bibleChapterVerseList7.add(bibleChapterVerse7);
+        myPost3.setBibleChapterVerses(bibleChapterVerseList7);
 
         LocalDate time3 = LocalDate.now().minusDays(3);
-        myPost3.setPublishedDate(time3);
+        myPost2.setPublishedDate(time3);
+
+        myAmad3.setPublishedDate(time3);
+
+        myAmad3.setPost(myPost3);
+        myAmad3.setMember(me);
+        myAmad3.setMission("걱정하지 않기 test3");
+
+        myPost3.setMember(me);
+        myPost3.setTitle("test3힘되시는 하나님");
+        myPost3.setContent_1("test3힘되시는 하나님");
+        myPost3.setContent_2("test3하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost3.setContent_3("test3하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+                "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
+        myPost3.setContent_4("test3그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+                "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
+        myPost3.setContent_5("test3하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost3.setAmad(myAmad3);
 
         repository.save(myPost3);
         amadRepository.save(myAmad3);
@@ -255,22 +275,29 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse8.setBibleVerseFrom(12);
         bibleChapterVerse8.setBibleVerseTo(12);
 
+
+        List<BibleChapterVerse> bibleChapterVerseList8 = new ArrayList<>();
+        bibleChapterVerseList8.add(bibleChapterVerse8);
+        myPost4.setBibleChapterVerses(bibleChapterVerseList8);
+        LocalDate time4 = LocalDate.now().minusDays(4);
+        myAmad4.setPublishedDate(time4);
+
+        myAmad3.setPublishedDate(time3);
         myAmad4.setPost(myPost4);
         myAmad4.setMember(me);
-        myAmad4.setMission("걱정하지 않기");
+        myAmad4.setMission("걱정하지 않기 test4");
 
         myPost4.setMember(me);
-        myPost4.setTitle("힘되시는 하나님");
-        myPost4.setContent_1("힘되시는 하나님");
-        myPost4.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost4.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+        myPost4.setTitle("test4힘되시는 하나님");
+        myPost4.setContent_1("test4힘되시는 하나님");
+        myPost4.setContent_2("test4하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost4.setContent_3("test4하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
                 "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost4.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+        myPost4.setContent_4("test4그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
                 "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost4.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost4.setContent_5("test4하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
         myPost4.setAmad(myAmad4);
 
-        LocalDate time4 = LocalDate.now().minusDays(4);
         myPost4.setPublishedDate(time4);
 
 
@@ -287,22 +314,27 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse9.setBibleVerseFrom(12);
         bibleChapterVerse9.setBibleVerseTo(12);
 
+        List<BibleChapterVerse> bibleChapterVerseList9 = new ArrayList<>();
+        bibleChapterVerseList9.add(bibleChapterVerse9);
+        myPost5.setBibleChapterVerses(bibleChapterVerseList9);
+        LocalDate time5 = LocalDate.now().minusDays(5);
+        myAmad5.setPublishedDate(time5);
+
         myAmad5.setPost(myPost5);
         myAmad5.setMember(me);
-        myAmad5.setMission("걱정하지 않기");
+        myAmad5.setMission("걱정하지 않기 test5");
 
         myPost5.setMember(me);
-        myPost5.setTitle("힘되시는 하나님");
-        myPost5.setContent_1("힘되시는 하나님");
-        myPost5.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost5.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+        myPost5.setTitle("test5힘되시는 하나님");
+        myPost5.setContent_1("test5힘되시는 하나님");
+        myPost5.setContent_2("test5하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost5.setContent_3("test5하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
                 "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost5.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+        myPost5.setContent_4("test5그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
                 "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost5.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost5.setContent_5("test5하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
         myPost5.setAmad(myAmad5);
 
-        LocalDate time5 = LocalDate.now().minusDays(5);
         myPost5.setPublishedDate(time5);
 
 
@@ -320,22 +352,25 @@ public class PostDummyLoader implements CommandLineRunner {
         bibleChapterVerse10.setBibleVerseFrom(12);
         bibleChapterVerse10.setBibleVerseTo(12);
 
+        LocalDate time6= LocalDate.now().minusDays(6);
+        myAmad6.setPublishedDate(time6);
         myAmad6.setPost(myPost6);
         myAmad6.setMember(me);
-        myAmad6.setMission("걱정하지 않기");
-
+        myAmad6.setMission("걱정하지 않기 test6");
+        List<BibleChapterVerse> bibleChapterVerseList10 = new ArrayList<>();
+        bibleChapterVerseList10.add(bibleChapterVerse10);
+        myPost6.setBibleChapterVerses(bibleChapterVerseList10);
         myPost6.setMember(me);
-        myPost6.setTitle("힘되시는 하나님");
-        myPost6.setContent_1("힘되시는 하나님");
-        myPost6.setContent_2("하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
-        myPost6.setContent_3("하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
+        myPost6.setTitle("test6힘되시는 하나님");
+        myPost6.setContent_1("test6힘되시는 하나님");
+        myPost6.setContent_2("test6하나님께서는 오늘 담대하라고 말씀하십니다. 하나님의 뜻안에서 우리에게 불가능한 일은 없습니다.");
+        myPost6.setContent_3("test6하나님께서는 우리를 세상이 감당하지 못할자라 하시고 걱정하지 말고 담대히 세상에 나가 싸우라 하셨습니다." +
                 "하지만 저는 세상이 주는 걱정과 고난들에 늘 이리저리 치이기만 하였습니다.");
-        myPost6.setContent_4("그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
+        myPost6.setContent_4("test6그럼에도 오늘 하나님께서는 말씀하십니다. 하나님을 아는것이 또 하나님의 뜻을 아는것이 나의 힘이라고," +
                 "그분의 뜻을 온전히 구하고 순종할때 불가능한 일을 없다고 말씀하십니다. 내가 아닌 하나님이 하시니까요.");
-        myPost6.setContent_5("하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
+        myPost6.setContent_5("test6하나님께서는 제게 오늘 걱정하지않고 세상에서 얻은 걱정과 문제들을 진솔하게 하나님께 내려놓기 원하십니다.");
         myPost6.setAmad(myAmad6);
 
-        LocalDate time6 = LocalDate.now().minusDays(6);
         myPost6.setPublishedDate(time6);
 
 

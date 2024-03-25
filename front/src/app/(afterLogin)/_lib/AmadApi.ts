@@ -72,8 +72,7 @@ export const patchAmadAccomplished = async ({ requestBody,accessToken,refreshTok
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -100,6 +99,7 @@ type Props2 ={
 }
 
 export const getTdyAmad = async ({ accessToken,refreshToken, memberId}:Props2)=>{
+    let shouldRedirect = false;
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/today/${localDateForm}/${memberId}`, {
             method: 'GET',
@@ -156,8 +156,7 @@ export const getTdyAmad = async ({ accessToken,refreshToken, memberId}:Props2)=>
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -239,8 +238,7 @@ export async function deleteAmad ({accessToken, refreshToken, amadId}:Props3) {
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 

@@ -30,13 +30,15 @@ export default function Comment({comment, me,onCommentPatched}:Props) {
 
     const onClickDeleteButton = () => {
         const fetchComment = async () => {
-            const { success } = await deleteComment ({ accessToken, refreshToken, postId,commentId});
+            const { success, error } = await deleteComment ({ accessToken, refreshToken, postId,commentId});
 
             if (success) {
                 onCommentPatched();
                 setIsEdit(false);
-
-
+            }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
         }
         fetchComment();
@@ -46,13 +48,15 @@ export default function Comment({comment, me,onCommentPatched}:Props) {
     const onClickSubmitButton = () => {
 
         const fetchComment = async () => {
-            const { success, data } = await patchComment({ accessToken, refreshToken, postId,commentId, content});
+            const { success, data, error } = await patchComment({ accessToken, refreshToken, postId,commentId, content});
 
             if (success) {
                 onCommentPatched();
                 setIsEdit(false);
-
-
+            }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
         }
         fetchComment();

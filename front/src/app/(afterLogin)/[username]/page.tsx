@@ -45,12 +45,16 @@ export default function Profile() {
         //refresh
         //the nickname must be updated in recoil when it is patched.
             const fetchUserInfo = async () => {
-                const { success, data } = await patchNickname({ accessToken, refreshToken, nickname, userId ,setMemberInfo});
+                const { success, data, error } = await patchNickname({ accessToken, refreshToken, nickname, userId ,setMemberInfo});
 
                 if (success) {
                     setIsEdit(false);
                     setIsPatched(true);
                     router.refresh();
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             }
         fetchUserInfo();
@@ -65,11 +69,15 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            const { success, data } = await getUserInfo({ accessToken, refreshToken, emailToFind });
+            const { success, data, error } = await getUserInfo({ accessToken, refreshToken, emailToFind });
 
             if (success) {
                 setUserToFind(data);
                 setNickname(data.nickname);
+            }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
         };
         fetchUserInfo();

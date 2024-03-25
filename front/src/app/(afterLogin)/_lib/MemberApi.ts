@@ -1,5 +1,4 @@
 
-import {redirect} from "next/navigation";
 
 export const getCurrentUserInfo = async ({accessToken, refreshToken, setMemberInfo}:any) => {
 
@@ -57,8 +56,7 @@ export const getCurrentUserInfo = async ({accessToken, refreshToken, setMemberIn
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -134,8 +132,7 @@ export const getUserInfo = async ({accessToken, refreshToken, emailToFind}:any) 
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -223,8 +220,7 @@ export const patchNickname = async ({accessToken, refreshToken, nickname, userId
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -299,9 +295,8 @@ export const getRecommendedFriend = async ({accessToken, refreshToken}:any) => {
                 }
 
 
-            } else{
-                alert("please login again");
-                redirect('/');
+            }else{
+                return {success: false, error: '409'}
             }
         }
 
@@ -376,8 +371,7 @@ export const getMembers = async ({accessToken, refreshToken, page}:any) => {
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -457,8 +451,7 @@ export async function deleteMember ({storedAccessToken, storedRefreshToken, memb
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 

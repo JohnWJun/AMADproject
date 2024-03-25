@@ -9,6 +9,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {getPosts, getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import ComponentLoader from "@/app/_component/ComponentLoader";
+import { useRouter} from "next/navigation";
 
 interface Post {
     id:bigint,
@@ -25,7 +26,7 @@ interface Post {
 }
 export default function Home() {
     
-    
+    const router = useRouter();
 
     const [accessToken, setAcessToken] = useState('');
     const [refreshToken, setRefreshToken] = useState('');
@@ -54,13 +55,20 @@ export default function Home() {
             const storedRefreshToken = localStorage.getItem("Refresh") || '';
 
             if (member.email === '') {
-                const { success } = await getCurrentUserInfo({
+                const { success, data, error } = await getCurrentUserInfo({
                     accessToken: storedAccessToken,
                     refreshToken: storedRefreshToken,
                     setMemberInfo
                 });
+
+                if(!success && error === '409'){
+                    console.log("login falied");
+                    router.replace('/')
+                }
             }
+            
         };
+        
 
         if (typeof window !== 'undefined') {
             fetchUserData();
@@ -106,7 +114,7 @@ export default function Home() {
     const fetchTdyPost = async () => {
         if(!isLastPost) {
         setIsLoading(true);
-       const { success, data } = await getTodayPosts({ accessToken, refreshToken, page });
+       const { success, data, error } = await getTodayPosts({ accessToken, refreshToken, page });
 
         if (success) {
 
@@ -119,13 +127,19 @@ export default function Home() {
 
         } else{
             setIsLastPost(true);
-        }}
+        }
+    
+        if(!success && error === '409'){
+            console.log("login falied");
+            router.replace('/')
+        }
+    }
     };
 
     const fetchPost = async () => {
         if(!isLastPost) {
         setIsLoading(true);
-        const { success, data } = await getPosts({ accessToken, refreshToken, page });
+        const { success, data, error } = await getPosts({ accessToken, refreshToken, page });
 
         if (success) {
             setPosts(prevPosts => [...prevPosts, ...data.posts]);
@@ -137,6 +151,10 @@ export default function Home() {
    
         } else{
             setIsLastPost(true);
+        }
+        if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
         }
     }
     };

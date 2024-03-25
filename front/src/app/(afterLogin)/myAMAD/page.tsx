@@ -65,11 +65,15 @@ export default function MyAmad() {
                 complete: true
             }
             const fetchPost = async () => {
-                const { success, data } = await patchAmadAccomplished({ requestBody,accessToken, refreshToken, myAmadId });
+                const { success, data, error } = await patchAmadAccomplished({ requestBody,accessToken, refreshToken, myAmadId });
 
                 if (success) {
                     setMyAmadIsComplete(data.complete);
 
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
 
             };
@@ -89,11 +93,15 @@ export default function MyAmad() {
     useEffect(() => {
         const fetchPosts = async () => {
             
-            const { success, data } = await getLastPosts({ accessToken, refreshToken, page, email });
+            const { success, data, error } = await getLastPosts({ accessToken, refreshToken, page, email });
 
             if (success) {
                 setPosts(data.posts);
                 setTotalPage(data.totalPage);
+            }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
         };
 
@@ -105,7 +113,7 @@ export default function MyAmad() {
         if (memberId) {
             const fetchPost = async () => {
 
-                const { success, data } = await getPostTdyDetail({ accessToken, refreshToken, memberId });
+                const { success, data, error } = await getPostTdyDetail({ accessToken, refreshToken, memberId });
 
                 if (success) {
                     setPost(data);
@@ -115,6 +123,10 @@ export default function MyAmad() {
                     const createdAt = data.createdAt.split("T")[0];
                     setCreatedAt(createdAt);
 
+                }
+                if(!success && error === '409'){
+                    console.log("login failed");
+                    router.replace('/')
                 }
             };
 
@@ -132,10 +144,14 @@ export default function MyAmad() {
     }
     const fetchDeletePost = async(id:bigint) => {
         const postId = id;
-        const {success} = await deletePost({accessToken,refreshToken, postId});
+        const {success, error} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
             setIsFetched(true);
           }
+          if(!success && error === '409'){
+            console.log("login failed");
+            router.replace('/')
+        }
     }
 
     const onClickButtonNext = () => {

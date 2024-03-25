@@ -1,5 +1,4 @@
 
-import {redirect} from "next/navigation";
 
 const tdy = new Date();
 const year = tdy.getFullYear();
@@ -85,8 +84,7 @@ export const postPost = async ({requestBody, accessToken,refreshToken, email}:Pr
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -172,8 +170,7 @@ export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
 
 
     } else{
-        alert("please login again");
-        redirect('/');
+        return {success: false, error: '409'}
     }
 }
 
@@ -251,8 +248,7 @@ export async function getPostDetail ({accessToken,refreshToken, postId}:any) {
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -355,9 +351,8 @@ export async function patchPost ({requestBody, accessToken,refreshToken, postId,
                 }
 
 
-            } else{
-                alert("please login again");
-                redirect('/');
+            }else{
+                return {success: false, error: '409'}
             }
         }
 
@@ -442,8 +437,7 @@ export async function getLastPosts ({accessToken,refreshToken, page, email}:Prop
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -528,8 +522,7 @@ export async function getPostTdyDetail ({accessToken,refreshToken, memberId}:Pro
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -605,8 +598,7 @@ export async function getPosts ({accessToken,refreshToken, page}:Props2) {
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -690,8 +682,7 @@ export async function postLike ({accessToken, refreshToken, postId, memberId}:Pr
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -766,8 +757,7 @@ export async function postDislike ({accessToken, refreshToken, postId, memberId}
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
@@ -850,8 +840,7 @@ export async function deletePost ({accessToken, refreshToken, postId}:Props6) {
 
 
             } else{
-                alert("please login again");
-                redirect('/');
+                return {success: false, error: '409'}
             }
         }
 
