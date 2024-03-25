@@ -11,7 +11,8 @@ interface Members {
     nickname:string,
     statusImg:string,
     email:string,
-    intimacy:number
+    intimacy:number,
+    roles:[]
 }
 
 export default function FollowRecommend() {

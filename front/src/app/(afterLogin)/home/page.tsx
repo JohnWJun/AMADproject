@@ -128,8 +128,8 @@ export default function Home() {
         const { success, data } = await getPosts({ accessToken, refreshToken, page });
 
         if (success) {
-            setPosts(prevPosts => [...prevPosts, ...data]);
-            if (data.length < 3|| data.length === 0) {
+            setPosts(prevPosts => [...prevPosts, ...data.posts]);
+            if (data.length < 3|| data.posts.length === 0) {
                 setIsLastPost(true);
 
             }

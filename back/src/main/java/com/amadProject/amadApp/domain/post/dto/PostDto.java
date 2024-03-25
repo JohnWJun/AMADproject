@@ -162,7 +162,12 @@ public class PostDto {
         private List<Long> whoLikesMyPost;
 
     }
+    @Getter
+    @Setter
+    public static class AbstractPageResponse {
 
-
+        private List<AbstractResponse> posts;
+        private int totalPage;
+    }
 
 }

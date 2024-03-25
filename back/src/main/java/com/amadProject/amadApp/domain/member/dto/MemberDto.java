@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class MemberDto {
 
     @Getter
@@ -14,6 +16,14 @@ public class MemberDto {
         private String statusImg;
         private String email;
         private int intimacy;
+        private List<String> roles;
+    }
+
+    @Getter
+    @Setter
+    public static class ResponsesPage{
+        private List<Response> members;
+        private int totalPage;
     }
     @Getter
     @Setter

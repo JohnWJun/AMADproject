@@ -108,6 +108,8 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private void saveMember(String email, String pic) {
         if (memberService.isExistsEmail(email)) {
             Member member = new Member();
+            List<String> roles = authorityUtils.createRoles(email);
+            member.setRoles(roles);
             member.setEmail(email);
             member.setStatusImg(pic);
             memberService.createMember(member);

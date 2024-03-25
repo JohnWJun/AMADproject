@@ -181,5 +181,12 @@ public interface PostMapper {
     }
 
     List<PostDto.AbstractResponse> postsToAbstractResponses(List<Post> posts);
+   default PostDto.AbstractPageResponse postsToAbstractPageResponses(List<PostDto.AbstractResponse> posts, int totalPage){
+       PostDto.AbstractPageResponse pageResponse = new PostDto.AbstractPageResponse();
+       pageResponse.setPosts(posts);
+       pageResponse.setTotalPage(totalPage);
+       return pageResponse;
+   };
+
 
 }

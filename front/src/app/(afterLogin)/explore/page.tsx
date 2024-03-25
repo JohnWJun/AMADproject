@@ -5,7 +5,7 @@ import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import Link from "next/link";
 import YoutubeVideo from "../_component/YouTubeVideo";
 
-export default function Home() {
+export default function Explore() {
     return (
         <main className={style.main}>
             <div className={style.formZone}>

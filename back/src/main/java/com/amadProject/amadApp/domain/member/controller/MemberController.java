@@ -68,7 +68,8 @@ public class MemberController {
     public ResponseEntity getMembers(@Positive @RequestParam int page,
                                      @Positive @RequestParam int size){
         Page<Member> pages = memberService.findMembers(page,size);
-        List<MemberDto.Response> responses = memberMapper.membersToMemberResponses(pages.getContent());
+        int totalPage = pages.getTotalPages();
+        MemberDto.ResponsesPage responses = memberMapper.membersToMemberResponsePage(pages.getContent(),totalPage);
         return new ResponseEntity<>(responses,HttpStatus.OK);
     }
 

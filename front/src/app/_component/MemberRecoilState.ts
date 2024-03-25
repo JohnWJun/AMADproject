@@ -34,7 +34,8 @@ export const Member = atom({
         nickname:'',
         statusImg: '',
         email:'',
-        intimacy: 0
+        intimacy: 0,
+        roles: []
     },
     effects_UNSTABLE: [persistAtom]
 });

@@ -28,8 +28,7 @@ interface Post{
     myAmad:string,
     likes:number,
     commentsNum: number,
-    whoLikesMyPost:BigInt[],
-    totalPage: number
+    whoLikesMyPost:BigInt[]
 }
 export default function MyAmad() {
 
@@ -93,12 +92,13 @@ export default function MyAmad() {
             const { success, data } = await getLastPosts({ accessToken, refreshToken, page, email });
 
             if (success) {
-                setPosts(data);
+                setPosts(data.posts);
                 setTotalPage(data.totalPage);
             }
         };
 
         fetchPosts();
+        setIsFetched(false);
     }, [accessToken, refreshToken, isFetched, page]);
 
     useEffect(() => {
@@ -119,6 +119,7 @@ export default function MyAmad() {
             };
 
             fetchPost();
+            setIsFetched(false);
         }
     }, [memberId, isFetched]);
 

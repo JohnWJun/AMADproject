@@ -121,9 +121,11 @@ public class PostController {
     public ResponseEntity getPosts(@Positive @RequestParam int page,
                                    @Positive @RequestParam int size){
 
-        Page<Post> todayPosts = service.findAllPosts(page, size);
-        List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
-        return new ResponseEntity<>(responses, HttpStatus.OK);
+        Page<Post> posts = service.findAllPosts(page, size);
+        List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(posts.toList());
+        int totalPage = posts.getTotalPages();
+        PostDto.AbstractPageResponse finalResponses = mapper.postsToAbstractPageResponses(responses,totalPage);
+        return new ResponseEntity<>(finalResponses, HttpStatus.OK);
     }
 
     @GetMapping("/last/{member-email}")
@@ -133,7 +135,9 @@ public class PostController {
 
         Page<Post> todayPosts = service.findPosts(email,page, size);
         List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(todayPosts.toList());
-        return new ResponseEntity<>(responses, HttpStatus.OK);
+        int totalPage = todayPosts.getTotalPages();
+        PostDto.AbstractPageResponse finalResponses = mapper.postsToAbstractPageResponses(responses,totalPage);
+        return new ResponseEntity<>(finalResponses, HttpStatus.OK);
     }
 
     @DeleteMapping("/{post-id}")
