@@ -58,6 +58,7 @@ export default function Explore() {
             <div className={style.explorePost}>
                 <div className={style.recommendPostBox}>
                 <h3>친구들의 묵상을 찾아보세요.</h3>
+                <h4>인기 AMAD</h4>
                 </div>
             
             <div>
