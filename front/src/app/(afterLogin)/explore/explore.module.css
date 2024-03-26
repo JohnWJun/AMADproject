@@ -16,6 +16,40 @@
     width: 566px;
     margin-bottom: 60px;
 }
+.bibleSubmitForm{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+}
+.bibleSubmitForm select {
+    width: 20%; 
+    margin: 10px 10px;
+    border-radius: 5px;
+}
+.bibleSubmitForm input {
+    width: 10%;
+    margin: 10px 10px;
+    border-radius: 5px;
+}
+.bibleSubmitForm button {
+    background: none;
+    border: none;
+    padding: 4px 6px;
+}
+.bibleSubmitForm button:hover {
+    background-color: gainsboro;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.bibleContentBox{
+    border-radius: 5px ;
+    border: solid 1px  gainsboro;
+    margin: 10px;
+    margin-bottom: 150px;
+    padding: 20px 20px;
+}
 
 .trendBg {
     margin-top: 60px;
@@ -35,7 +69,18 @@
     padding-right: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid  rgb(239, 243, 244);
-}
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (height: width) */
+  }
+  
+  .videoBox iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
 .recommendPostBox{
     padding-bottom: 20px;
     border-bottom: 1px solid  rgb(239, 243, 244); 
@@ -50,19 +95,42 @@
         font-size: 15px;
         text-align: center;
     }
+    
+    
 }
 @media screen and (max-width: 768px){
     .formZone {
         width: 394px;
+    }
+    .bibleSubmitForm{
+        font-size: 50%;
     }
 }
 @media screen and (max-width: 578px){
     .formZone {
         width: 294px;
     }
+    .bibleSubmitForm select {
+        width: 10%; 
+        margin: 10px 10px;
+    }
+    .bibleSubmitForm input {
+        width: 5%;
+        margin: 10px 10px;
+    }
+    .bibleSubmitForm button {
+        background: none;
+        border: none;
+        padding: 4px 6px;
+    }
+    
 }
 @media screen and (max-width: 280px){
     .formZone {
         width: 264px;
+    }
+
+    .bibleSubmitForm svg {
+        width: 100%;
     }
 }

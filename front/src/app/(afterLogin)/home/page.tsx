@@ -62,7 +62,7 @@ export default function Home() {
                 });
 
                 if(!success && error === '409'){
-                    console.log("login falied");
+                    console.log("login failed");
                     router.replace('/')
                 }
             }
@@ -130,7 +130,7 @@ export default function Home() {
         }
     
         if(!success && error === '409'){
-            console.log("login falied");
+            console.log("login failed");
             router.replace('/')
         }
     }

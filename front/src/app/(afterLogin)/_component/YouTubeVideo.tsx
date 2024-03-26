@@ -28,7 +28,6 @@ const YouTubeVideo = ({videoId}: Props) => {
 
     // Define 'opts' outside of the useEffect
     const opts = {
-        height: "390",
         width: "100%",
         playerVars: {
             autoplay: 0,

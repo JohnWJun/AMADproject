@@ -99,7 +99,7 @@ type Props2 ={
 }
 
 export const getTdyAmad = async ({ accessToken,refreshToken, memberId}:Props2)=>{
-    let shouldRedirect = false;
+    
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/amad/today/${localDateForm}/${memberId}`, {
             method: 'GET',
