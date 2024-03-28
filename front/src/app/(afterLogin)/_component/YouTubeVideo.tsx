@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import YouTube from "react-youtube";
-import { inherits } from "util";
+
 
 type Props ={
     videoId: string
@@ -31,12 +31,12 @@ const YouTubeVideo = ({videoId}: Props) => {
         width: "100%",
         playerVars: {
             autoplay: 0,
+            origin: null
         },
     };
 
     return (
         <div>
-            
             <YouTube videoId={videoId} opts={opts} onReady={onReady} ref={playerRef} />
         </div>
     );

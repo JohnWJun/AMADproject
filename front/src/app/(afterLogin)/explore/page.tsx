@@ -168,7 +168,8 @@ export default function Explore() {
                 <div className={style.bibleContentBox}>
                 {bibleHtml && (
                     <div>
-                    {bibleHtml.html.split(/(\d+:\d+)/).map((part, index) => (
+                        {bible} {chapter}장 {from}절 - {to}절
+                        {bibleHtml.html.split(/(\d+:\d+)/).map((part, index) => (
                         <span key={index}>
                         {index % 2 === 0 ? part.trim() : <><br /><br />{part}</>} {/* Add line break after each verse number */}
                         </span>
