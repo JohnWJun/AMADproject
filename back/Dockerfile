@@ -4,7 +4,7 @@ COPY . .
 RUN ./gradlew bootJar -x test --no-daemon && \
     find build/libs -name '*.jar' ! -name '*plain*' -exec cp {} build/libs/app.jar \;
 
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jre-jammy
 WORKDIR /app
 COPY --from=builder /app/build/libs/app.jar app.jar
 EXPOSE 8080
