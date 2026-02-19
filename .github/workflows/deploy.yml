@@ -36,6 +36,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/amad-frontend:latest
 
+
       - name: Deploy (pull & restart containers)
         run: |
           cd /opt/amad
