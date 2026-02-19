@@ -30,9 +30,9 @@ export default function ComposeAmad() {
     }
     const bibles = [];
     const [book, setBook] = useState<typeForContent>(Post.bibleVerses[0].bible);
-    const [chapter, setChapter] = useState<number>(Post.bibleVerses[0].bibleChapter);
-    const [from, setFrom] = useState<number>(Post.bibleVerses[0].bibleVerseFrom);
-    const [to, setTo] = useState<number>(Post.bibleVerses[0].bibleVerseTo);
+    const [chapter, setChapter] = useState<string>('');
+    const [from, setFrom] = useState<string>('');
+    const [to, setTo] = useState<string>('');
     const [title, setTitle] = useState<typeForContent>(Post.title);
 
     const [content_1, setContent_1] = useState<typeForContent>(Post.content_1);
@@ -53,9 +53,9 @@ export default function ComposeAmad() {
                 bibleVerses: [
                     {
                         bible: book,
-                        bibleChapter: chapter,
-                        bibleVerseFrom: from,
-                        bibleVerseTo: to
+                        bibleChapter: parseInt(chapter) || 0,
+                        bibleVerseFrom: parseInt(from) || 0,
+                        bibleVerseTo: parseInt(to) || 0
                     }
                 ],
                 title: title,
@@ -95,13 +95,13 @@ export default function ComposeAmad() {
         setBook(e.target.value);
     }
     const onChangeChapter : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setChapter(parseInt(e.target.value));
+        setChapter(e.target.value);
     }
     const onChangeFrom : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setFrom(parseInt(e.target.value));
+        setFrom(e.target.value);
     }
     const onChangeTo : ChangeEventHandler<HTMLInputElement> =(e) => {
-        setTo(parseInt(e.target.value));
+        setTo(e.target.value);
     }
     const onChangeAmad : ChangeEventHandler<HTMLTextAreaElement> =(e) => {
         setAmad(e.target.value);
@@ -229,12 +229,12 @@ export default function ComposeAmad() {
                                     <option value='rev'>rev (요한계시록)</option>
 
                                     </select>
-                                    <input name={"chapter"} value={chapter} onChange={onChangeChapter} placeholder={'1'}>
-                                    </input> 장
-                                    <input name={"from"} value={from} onChange={onChangeFrom} placeholder={'1'}>
-                                    </input> 절 ~
-                                    <input name={"to"} value={to} onChange={onChangeTo} placeholder={'1'}>
-                                    </input> 절
+                                    <input type="number" min="1" name={"chapter"} value={chapter} onChange={onChangeChapter} placeholder={'장'} />
+                                    장
+                                    <input type="number" min="1" name={"from"} value={from} onChange={onChangeFrom} placeholder={'절'} />
+                                    절 ~
+                                    <input type="number" min="1" name={"to"} value={to} onChange={onChangeTo} placeholder={'절'} />
+                                    절
                                 </div>
                                 <div>
 

@@ -50,7 +50,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
                  log.info(request.getHeader("Refresh"));
 
              Map<String, Object> claims = verifyJws(request);
-             String username = (String) claims.get("sub");
+             String username = (String) claims.get("username");
              List<String> roles = authorityUtils.createRoles(username);
              claims.put("roles", roles);
 
@@ -81,7 +81,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("sub");
+        String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(username,null,authorities);

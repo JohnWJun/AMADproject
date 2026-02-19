@@ -22,11 +22,16 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
     const [currentLike, setCurrentLike] = useState(likes);
 
     const router = useRouter();
-    const accessToken = localStorage.getItem('Authorization') || '';
-    const refreshToken = localStorage.getItem('Authorization') || '';
+    const [accessToken, setAccessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
     const userInfo = useRecoilValue(Member);
     const nickname = userInfo.nickname;
     const memberId = userInfo.id;
+
+    useEffect(() => {
+        setAccessToken(localStorage.getItem('Authorization') || '');
+        setRefreshToken(localStorage.getItem('Refresh') || '');
+    }, []);
 
     useEffect(() => {
         if (commentsNum) {

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ${DOCKERHUB_USERNAME}/amad-backend:latest
+    container_name: amad-backend
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  frontend:
+    image: ${DOCKERHUB_USERNAME}/amad-frontend:latest
+    container_name: amad-frontend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - backend

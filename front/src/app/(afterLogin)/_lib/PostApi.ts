@@ -1,861 +1,120 @@
-
+'use client'
+import { apiFetch } from './apiClient';
 
 const tdy = new Date();
 const year = tdy.getFullYear();
-const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
-const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
-const localDateForm = year+'-'+month+'-'+day;
-
-type Props ={
-    requestBody: {
-        bibleVerses: {
-            bible: string,
-            bibleChapter: number,
-            bibleVerseFrom: number,
-            bibleVerseTo: number
-
-        }[],
-        title: string,
-        content_1: string,
-        content_2: string,
-        content_3: string,
-        content_4: string,
-        content_5: string,
-        myAmad: string,
-    },
-    accessToken: string,
-    refreshToken: string,
-    email: string
-}
-export const postPost = async ({requestBody, accessToken,refreshToken, email}:Props)=>{
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            body: JSON.stringify(requestBody),
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                body: JSON.stringify(requestBody),
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${email}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        body: JSON.stringify(requestBody),
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 201) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-type Props2 = {
-    accessToken: string,
-    refreshToken: string,
-    page: number
-}
-export async function getTodayPosts ({accessToken,refreshToken, page}:Props2) {
-
-    const tdy = new Date();
-    const year = tdy.getFullYear();
-    const month = tdy.getMonth()+1 <10 ? '0'+(tdy.getMonth()+1): tdy.getMonth()+1;
-    const day = tdy.getDate()<10 ? '0'+(tdy.getDate()): tdy.getDate();
-    const localDateForm = year+'-'+month+'-'+day;
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/today/${localDateForm}?page=${page}&size=3`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-                const response =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/today/${localDateForm}?page=${page}&size=3`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "ngrok-skip-browser-warning": "69420",
-                        "Authorization": "Bearer "+ accessToken,
-                        "Refresh": "Bearer "+ refreshToken
-
-                    },
-                    credentials: 'include',
-                });
-
-    if (response.status === 302) {
-
-
-        const newAccessToken = response.headers.get('Authorization') || '';
-        const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-        if (newAccessToken != null) {
-
-            localStorage.setItem("Authorization", newAccessToken);
-            localStorage.setItem("Refresh", newRefreshToken);
-        const finalResponse =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/today/${localDateForm}?page=${page}&size=10`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ newAccessToken
-
-            },
-            credentials: 'include',
-        });
-
-        const data = await finalResponse.json();
-        return { success: true, data };
-        }
-
-
-    } else{
-        return {success: false, error: '409'}
-    }
-}
-
-if (response.status === 200) {
-    const data = await response.json();
-
-    return { success: true , data};
-
-
-} else {
-
-    return { success: false };
-}
-} catch (error) {
-    console.error(error);
-    return { success: false, error: 'An error occurred' };
-}
-
-}
-
-export async function getPostDetail ({accessToken,refreshToken, postId}:any) {
-
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/detail/${postId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/detail/${postId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/detail/${postId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-type PatchProps ={
-    requestBody: {
-        bibleVerses: {
-            bible: string,
-            bibleChapter: number,
-            bibleVerseFrom: number,
-            bibleVerseTo: number
-
-        }[],
-        title: string,
-        content_1: string,
-        content_2: string,
-        content_3: string,
-        content_4: string,
-        content_5: string,
-        myAmad: string,
-    },
-    accessToken: string,
-    refreshToken: string,
-    postId: bigint,
-    bibleChapterVerseId: bigint,
-    amadId: bigint
-}
-
-export async function patchPost ({requestBody, accessToken,refreshToken, postId, bibleChapterVerseId,amadId}:PatchProps) {
-
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            body: JSON.stringify(requestBody),
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                body: JSON.stringify(requestBody),
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        body: JSON.stringify(requestBody),
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            }else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-
-type Props3 ={
-    accessToken:string,
-    refreshToken: string,
-    page: number,
-    email: string
-}
-
-export async function getLastPosts ({accessToken,refreshToken, page, email}:Props3) {
-
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=5`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=5`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/last/${email}?page=${page}&size=10`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-type Props5 ={
-    accessToken: string,
-    refreshToken: string,
-    memberId: bigint
-
-}
-
-
-export async function getPostTdyDetail ({accessToken,refreshToken, memberId}:Props5) {
-
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/my/${memberId}/${localDateForm}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-export async function getPosts ({accessToken,refreshToken, page}:Props2) {
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=3`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=3`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/all?page=${page}&size=3`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-type Props4 = {
-    accessToken: string,
-    refreshToken: string,
-    postId: bigint,
-    memberId: bigint
-}
-
-
-export async function postLike ({accessToken, refreshToken, postId, memberId}:Props4) {
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/like`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    const data = await finalResponse.json();
-                    return { success: true, data };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 200) {
-            const data = await response.json();
-
-            return { success: true , data};
-
-
-        } else {
-            const data = await response.json();
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-export async function postDislike ({accessToken, refreshToken, postId, memberId}:Props4) {
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/dislike`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/dislike`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}/${memberId}/dislike`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                    return { success: true };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 204) {
-
-            return { success: true };
-
-
-        } else {
-           
-            return { success: false};
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
-
-
-
-type Props6 ={
-    accessToken: string,
-    refreshToken: string,
-    postId: bigint
-}
-
-export async function deletePost ({accessToken, refreshToken, postId}:Props6) {
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                "ngrok-skip-browser-warning": "69420",
-                "Authorization": "Bearer "+ accessToken
-
-            },
-            credentials: 'include',
-        });
-        if (response.status === 401 ) {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "ngrok-skip-browser-warning": "69420",
-                    "Authorization": "Bearer "+ accessToken,
-                    "Refresh": "Bearer "+ refreshToken
-
-                },
-                credentials: 'include',
-            });
-
-            if (response.status === 302) {
-
-
-                const newAccessToken = response.headers.get('Authorization') || '';
-                const newRefreshToken = response.headers.get('Refresh') || '';
-
-
-                if (newAccessToken != null) {
-
-                    localStorage.setItem("Authorization", newAccessToken);
-                    localStorage.setItem("Refresh", newRefreshToken);
-                    const finalResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/post/${postId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "ngrok-skip-browser-warning": "69420",
-                            "Authorization": "Bearer "+ newAccessToken
-
-                        },
-                        credentials: 'include',
-                    });
-
-                
-                    return { success: true };
-                }
-
-
-            } else{
-                return {success: false, error: '409'}
-            }
-        }
-
-        if (response.status === 204) {
-        
-            return { success: true };
-
-
-        } else {
-           
-            return { success: false};
-        }
-    } catch (error) {
-        console.error(error);
-        return { success: false, error: 'An error occurred' };
-    }
-
-}
+const month = tdy.getMonth() + 1 < 10 ? '0' + (tdy.getMonth() + 1) : tdy.getMonth() + 1;
+const day = tdy.getDate() < 10 ? '0' + tdy.getDate() : tdy.getDate();
+const localDateForm = `${year}-${month}-${day}`;
+
+type BibleVerse = {
+    bible: string;
+    bibleChapter: number;
+    bibleVerseFrom: number;
+    bibleVerseTo: number;
+};
+
+type PostBody = {
+    bibleVerses: BibleVerse[];
+    title: string;
+    content_1: string;
+    content_2: string;
+    content_3: string;
+    content_4: string;
+    content_5: string;
+    myAmad: string;
+};
+
+type TokenProps = { accessToken: string; refreshToken: string };
+
+export const postPost = ({
+    requestBody, accessToken, refreshToken, email,
+}: { requestBody: PostBody; email: string } & TokenProps) =>
+    apiFetch(`/post/${email}`, {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        accessToken,
+        refreshToken,
+    });
+
+export const getTodayPosts = ({
+    accessToken, refreshToken, page,
+}: TokenProps & { page: number }) =>
+    apiFetch(`/post/today/${localDateForm}?page=${page}&size=3`, {
+        method: 'GET',
+        accessToken,
+        refreshToken,
+    });
+
+export const getPostDetail = ({
+    accessToken, refreshToken, postId,
+}: TokenProps & { postId: bigint }) =>
+    apiFetch(`/post/detail/${postId}`, {
+        method: 'GET',
+        accessToken,
+        refreshToken,
+    });
+
+export const patchPost = ({
+    requestBody, accessToken, refreshToken, postId, bibleChapterVerseId, amadId,
+}: { requestBody: PostBody; postId: bigint; bibleChapterVerseId: bigint; amadId: bigint } & TokenProps) =>
+    apiFetch(`/post/${postId}/${bibleChapterVerseId}/${amadId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(requestBody),
+        accessToken,
+        refreshToken,
+    });
+
+export const getLastPosts = ({
+    accessToken, refreshToken, page, email,
+}: TokenProps & { page: number; email: string }) =>
+    apiFetch(`/post/last/${email}?page=${page}&size=5`, {
+        method: 'GET',
+        accessToken,
+        refreshToken,
+    });
+
+export const getPostTdyDetail = ({
+    accessToken, refreshToken, memberId,
+}: TokenProps & { memberId: bigint }) =>
+    apiFetch(`/post/my/${memberId}/${localDateForm}`, {
+        method: 'GET',
+        accessToken,
+        refreshToken,
+    });
+
+export const getPosts = ({
+    accessToken, refreshToken, page,
+}: TokenProps & { page: number }) =>
+    apiFetch(`/post/all?page=${page}&size=3`, {
+        method: 'GET',
+        accessToken,
+        refreshToken,
+    });
+
+export const postLike = ({
+    accessToken, refreshToken, postId, memberId,
+}: TokenProps & { postId: bigint; memberId: bigint }) =>
+    apiFetch(`/post/${postId}/${memberId}/like`, {
+        method: 'POST',
+        accessToken,
+        refreshToken,
+    });
+
+export const postDislike = ({
+    accessToken, refreshToken, postId, memberId,
+}: TokenProps & { postId: bigint; memberId: bigint }) =>
+    apiFetch(`/post/${postId}/${memberId}/dislike`, {
+        method: 'DELETE',
+        accessToken,
+        refreshToken,
+    });
+
+export const deletePost = ({
+    accessToken, refreshToken, postId,
+}: TokenProps & { postId: bigint }) =>
+    apiFetch(`/post/${postId}`, {
+        method: 'DELETE',
+        accessToken,
+        refreshToken,
+    });

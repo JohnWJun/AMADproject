@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,7 +53,7 @@ public class PostService {
 
 
     @Transactional
-    public Post createPost(Post post, LocalDate date){
+    public Post createPost(Post post, LocalDateTime date){
 
         verifyExistPost(post.getMember().getEmail(), date);
         Member member = memberRepository.findByEmail(post.getMember().getEmail()).get();
@@ -104,7 +105,9 @@ public class PostService {
     }
         
     public Post findMyTdyPost(long memberId, LocalDate date) {
-        Optional<Post> optionalPost = postRepository.findByMemberIdNDate(memberId, date);
+        LocalDateTime startDate = date.atStartOfDay();
+        LocalDateTime endDate = startDate.plusDays(1);
+        Optional<Post> optionalPost = postRepository.findByMemberIdNDate(memberId, startDate, endDate);
         return optionalPost.orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
@@ -135,8 +138,10 @@ public class PostService {
 
         return scriptures;
     }
-    private void verifyExistPost(String email, LocalDate date) {
-        postRepository.findByEmailNDate(email, date).ifPresent(post -> {
+    private void verifyExistPost(String email, LocalDateTime date) {
+        LocalDateTime startDate = date.toLocalDate().atStartOfDay();
+        LocalDateTime endDate = startDate.plusDays(1);
+        postRepository.findByEmailNDate(email, startDate, endDate).ifPresent(post -> {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         });
     }
@@ -182,14 +187,16 @@ public class PostService {
     }
 
     public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {
-
-        return postRepository.findAllByWrittenDate( writtenDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
-
+        LocalDateTime startDate = writtenDate.atStartOfDay();
+        LocalDateTime endDate = startDate.plusDays(1);
+        return postRepository.findAllByWrittenDate(startDate, endDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
     }
 
     public Page<Post> findPosts(String email, int page, int size) {
         LocalDate tdy = LocalDate.now();
-        return postRepository.findAllByEmailExcToday(tdy,email,PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+        LocalDateTime startDate = tdy.atStartOfDay();
+        LocalDateTime endDate = startDate.plusDays(1);
+        return postRepository.findAllByEmailExcToday(startDate, endDate, email, PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
     }
 
     public Page<Post> findAllPosts( int page, int size) {

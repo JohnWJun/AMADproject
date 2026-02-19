@@ -23,7 +23,7 @@ export default function Main() {
                 {/*<h3>Already signed up?</h3>*/}
                 {/*<Link href='/login' className={styles.login}>log in</Link>*/}
 
-                    <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`}
+                    <Link href="/api/oauth2/authorization/google"
                       className={styles.login}>
                     <GoogleLogo width={'20px'} height={'20px'}/>
                     Login with Google</Link>

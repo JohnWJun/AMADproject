@@ -7,7 +7,7 @@ import LogoutButton from "@/app/(afterLogin)/_component/LogoutButton";
 import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
 import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
 import MainLogo from "@/app/_component/MainLogo";
-import PostButton from "@/app/(afterLogin)/_component/PostButton";
+import ComposeButton from "@/app/(afterLogin)/_component/ComposeButton";
 
 type Props = { children: ReactNode, modal: ReactNode };
 export default async function AfterLoginLayout({children, modal}: Props) {
@@ -27,10 +27,7 @@ export default async function AfterLoginLayout({children, modal}: Props) {
                                 <NavMenu/>
                             </ul>
 
-                            <Link href="/compose/amad" className={style.postButton}>
-                                <span>묵상하기</span>
-                                <PostButton/>
-                            </Link>
+                            <ComposeButton className={style.postButton} />
 
                         </nav>
                         <LogoutButton/>
@@ -52,10 +49,7 @@ export default async function AfterLoginLayout({children, modal}: Props) {
                         </div>
                     </section>
                     <div className={style.mobilePostButtonContainer}>
-                    <Link href="/compose/amad" className={style.mobilePostButton}>
-                        <span>묵상하기</span>
-                        <PostButton/>
-                    </Link>
+                    <ComposeButton className={style.mobilePostButton} />
                     </div>
                     <div className={style.mobileMenu}>
                         <nav>

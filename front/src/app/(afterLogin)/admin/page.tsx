@@ -34,8 +34,8 @@ interface Post{
 
 export default function Admin() {
 
-    const storedAccessToken = localStorage.getItem("Authorization") || '';
-    const storedRefreshToken = localStorage.getItem("Refresh") || '';
+    const [storedAccessToken, setStoredAccessToken] = useState('');
+    const [storedRefreshToken, setStoredRefreshToken] = useState('');
     const [members, setMembers] = useState<Member[] >([]);
     const [posts, setPosts] = useState<Post[] >([]);
     const [page, setPage] = useState(1);
@@ -44,6 +44,11 @@ export default function Admin() {
     const [totalPage, setTotalPage] = useState(0);
     const [isFetched, setIsFetched] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        setStoredAccessToken(localStorage.getItem("Authorization") || '');
+        setStoredRefreshToken(localStorage.getItem("Refresh") || '');
+    }, []);
 
     const onClickDelete = (id:bigint)=>{
         if(confirm('삭제하시면 복구할수 없습니다.\n정말로 삭제하시겠습니까??')){
@@ -99,9 +104,10 @@ export default function Admin() {
         }
     }
     useEffect(() => {
+        if (!storedAccessToken) return;
         const fetchUserData = async () => {
-        
-            
+
+
                 const { success, data, error } = await getMembers({
                     accessToken: storedAccessToken,
                     refreshToken: storedRefreshToken,page
@@ -123,6 +129,7 @@ export default function Admin() {
     }, [isFetched,page,storedAccessToken,storedRefreshToken]);
 
     useEffect(() => {
+        if (!storedAccessToken) return;
         const fetchPosts = async () => {
             const accessToken = storedAccessToken;
             const refreshToken = storedRefreshToken;

@@ -88,11 +88,12 @@ export default function MyAmad() {
             setAccessToken( localStorage.getItem("Authorization") || '');
             setRefreshToken(localStorage.getItem("Refresh") || '');
             }
-    }, [isClient]);
+    }, []);
 
     useEffect(() => {
+        if (!accessToken) return;
         const fetchPosts = async () => {
-            
+
             const { success, data, error } = await getLastPosts({ accessToken, refreshToken, page, email });
 
             if (success) {
@@ -110,7 +111,7 @@ export default function MyAmad() {
     }, [accessToken, refreshToken, isFetched, page]);
 
     useEffect(() => {
-        if (memberId) {
+        if (memberId && accessToken) {
             const fetchPost = async () => {
 
                 const { success, data, error } = await getPostTdyDetail({ accessToken, refreshToken, memberId });
@@ -133,7 +134,7 @@ export default function MyAmad() {
             fetchPost();
             setIsFetched(false);
         }
-    }, [memberId, isFetched]);
+    }, [memberId, accessToken, isFetched]);
 
 
     const onClickDelete = (id:bigint)=>{

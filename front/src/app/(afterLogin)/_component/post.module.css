@@ -59,6 +59,7 @@
 .postFixButton{
     position: absolute;
     right: 5%;
+    top:-3%
 }
 
 .postFixButton button{

@@ -1,3 +1,4 @@
+'use client';
 import style from './post.module.css';
 import Link from "next/link";
 import dayjs from 'dayjs';
@@ -36,7 +37,7 @@ export default function Post({ noImage ,post }: Props) {
     const fetchDeletePost = async() => {
         const {success, error} = await deletePost({accessToken,refreshToken, postId});
         if(success) {
-            router.push('/compose/amad');
+            router.push('/home');
             router.refresh();}
             if(!success && error === '409'){
                 console.log("login failed");

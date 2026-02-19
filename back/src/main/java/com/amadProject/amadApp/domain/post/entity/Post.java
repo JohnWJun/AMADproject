@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Post extends Auditable {
     private Member member;
 
     @JoinColumn(nullable = false)
-    private LocalDate publishedDate= LocalDate.now();
+    private LocalDateTime publishedDate= LocalDateTime.now();
 
     @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<BibleChapterVerse> bibleChapterVerses = new ArrayList<>();

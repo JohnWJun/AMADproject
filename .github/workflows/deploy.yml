@@ -1,0 +1,43 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Write application-deploy.yml
+        run: |
+          echo "${{ secrets.APPLICATION_DEPLOY_YML }}" | base64 -d > back/src/main/resources/application-deploy.yml
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./back
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/amad-backend:latest
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./front
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/amad-frontend:latest
+
+      - name: Deploy (pull & restart containers)
+        run: |
+          cd /opt/amad
+          docker-compose pull
+          docker-compose up -d --remove-orphans

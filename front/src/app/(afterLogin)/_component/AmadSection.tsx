@@ -23,30 +23,37 @@ export default function AmadSection() {
     const pathname = usePathname();
     const memberInfo = useRecoilValue(Member);
     const memberId = memberInfo.id;
-    const accessToken = localStorage.getItem("Authorization") ||'';
-    const refreshToken = localStorage.getItem("Refresh") ||'';
+    const [accessToken, setAccessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
     const [myAmad, setMyAmad] = useState<MyAmad | null>(null);
+
+    useEffect(() => {
+        setAccessToken(localStorage.getItem("Authorization") || '');
+        setRefreshToken(localStorage.getItem("Refresh") || '');
+    }, []);
     const router = useRouter();
 
     useEffect(() => {
-        if (memberId) {
+        if (memberId && accessToken) {
             const fetchPost = async () => {
 
                 const { success, data, error } = await getTdyAmad({ accessToken, refreshToken, memberId});
 
                 if (success) {
                     setMyAmad(data)
+                } else {
+                    setMyAmad(null);
                 }
                 if(!success && error === '409'){
                     console.log("login failed");
                     router.replace('/')
                 }
-                
+
             };
 
             fetchPost();
         }
-    }, [memberId, accessToken, refreshToken]);
+    }, [memberId, accessToken, refreshToken, pathname]);
 
     if(pathname === '/explore') return null;
     return (

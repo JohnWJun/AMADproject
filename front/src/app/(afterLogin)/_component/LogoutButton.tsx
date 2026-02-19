@@ -21,7 +21,7 @@ export default function LogoutButton() {
             </div>
             <div className={style.logOutUserName}>
                 <div>{member.nickname}</div>
-                <div>@{member.email}</div>
+                <div>@{member.email} Log Out Now</div>
             </div>
         </button>
     )

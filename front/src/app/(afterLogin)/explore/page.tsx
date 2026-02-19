@@ -5,7 +5,7 @@ import AmadAbstract from "@/app/(afterLogin)/_component/AmadAbstract";
 import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import Link from "next/link";
 import YoutubeVideo from "../_component/YouTubeVideo";
-import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
 import {getBible} from './_lib/bibleApi';
 import { useRouter} from "next/navigation";
 
@@ -18,10 +18,15 @@ export default function Explore() {
     const [chapter, setChapter] = useState('');
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
-    const [bibleHtml, setBibleHtml] = useState<Bible>(); 
+    const [bibleHtml, setBibleHtml] = useState<Bible>();
     const router = useRouter();
-    const accessToken = localStorage.getItem("Authorization") || '';
-    const refreshToken = localStorage.getItem("Refresh") || '';
+    const [accessToken, setAccessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
+
+    useEffect(() => {
+        setAccessToken(localStorage.getItem("Authorization") || '');
+        setRefreshToken(localStorage.getItem("Refresh") || '');
+    }, []);
 
     
 

@@ -47,7 +47,7 @@ export default function Login(){
                                 <Link href={'/tutorial'} className={style.tutorialLink}>
                                     AMAD 묵상 배우기
                                 </Link>
-                                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`}
+                                <Link href="/api/oauth2/authorization/google"
                                 className={style.tutorialLink}>
                                     <GoogleLogo width={'20px'} height={'20px'}/>
                                     &nbsp;

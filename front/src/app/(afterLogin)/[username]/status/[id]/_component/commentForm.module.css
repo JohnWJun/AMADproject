@@ -56,13 +56,20 @@
     border: none;
     cursor: pointer;
     border-radius: 17px;
-    transition-duration: 0.2s;
-    transition-property: background-color;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(29, 155, 240, 0.01);
+
+    background-color: rgba(29, 155, 240, 0.01);
+
+    opacity: 0.6;
+
+    pointer-events: none;
+
+    transition: background-color 0.2s;
 }
+
 .patchDeleteButtons {
     margin-left: 10px;
     display: inline-flex;

@@ -42,15 +42,15 @@ export default function PatchAmadPage() {
     const memberInfo = useRecoilValue(Member);
     const email = memberInfo.email;
     const parts = usePathname().split("/"); // Split the URL by "/"
-    const accessToken = localStorage.getItem('Authorization');
-    const refreshToken = localStorage.getItem('Refresh');
+    const [accessToken, setAccessToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
     const [post, setPost] = useState<Props | null>(null);
     const [postId, setPostId] = useState<bigint>(BigInt(0));
 
     const [book, setBook] = useState<typeForContent>('');
-    const [chapter, setChapter] = useState<number>(0);
-    const [from, setFrom] = useState<number>(0);
-    const [to, setTo] = useState<number>(0);
+    const [chapter, setChapter] = useState<string>('');
+    const [from, setFrom] = useState<string>('');
+    const [to, setTo] = useState<string>('');
     const [title, setTitle] = useState<typeForContent>('');
 
     const [content_1, setContent_1] = useState<typeForContent>('');
@@ -66,6 +66,11 @@ export default function PatchAmadPage() {
     const router = useRouter();
     
     useEffect(() => {
+        setAccessToken(localStorage.getItem('Authorization') || '');
+        setRefreshToken(localStorage.getItem('Refresh') || '');
+    }, []);
+
+    useEffect(() => {
 
         if(parts[parts.length - 1] != 'amad'){
             setPostId(BigInt(parts[parts.length - 1]))
@@ -76,8 +81,8 @@ export default function PatchAmadPage() {
         if (postId != BigInt(0)) {
 
             const fetchPost = async () => {
-                const accessToken = localStorage.getItem("Authorization");
-                const refreshToken = localStorage.getItem("Refresh");
+                const accessToken = localStorage.getItem("Authorization") || '';
+                const refreshToken = localStorage.getItem("Refresh") || '';
                 const {success, data, error} = await getPostDetail({accessToken, refreshToken, postId});
 
                 if (success) {
@@ -86,9 +91,9 @@ export default function PatchAmadPage() {
                     setAmadId(data.myAmadId);
                     setTitle(data.content_1);
                     setBook(data.scripts[0].bible);
-                    setChapter(data.scripts[0].bibleChapter);
-                    setFrom(data.scripts[0].bibleVerseFrom);
-                    setTo(data.scripts[0].bibleVerseTo);
+                    setChapter(String(data.scripts[0].bibleChapter));
+                    setFrom(String(data.scripts[0].bibleVerseFrom));
+                    setTo(String(data.scripts[0].bibleVerseTo));
                     setContent_1(data.content_1);
                     setContent_2(data.content_2);
                     setContent_3(data.content_3);
@@ -119,9 +124,9 @@ export default function PatchAmadPage() {
             bibleVerses: [
                 {
                     bible: book,
-                    bibleChapter: chapter,
-                    bibleVerseFrom: from,
-                    bibleVerseTo: to
+                    bibleChapter: parseInt(chapter) || 0,
+                    bibleVerseFrom: parseInt(from) || 0,
+                    bibleVerseTo: parseInt(to) || 0
                 }
             ],
             title: title,
@@ -134,11 +139,10 @@ export default function PatchAmadPage() {
 
         };
 
-        if (accessToken && refreshToken !== null){
+        if (accessToken && refreshToken){
         const {success, data, error} = await patchPost({requestBody, accessToken, refreshToken, postId,bibleChapterVerseId,amadId });
         if (success) {
             router.replace(`/${data.writer}/status/${data.id}?email=${data.writer}`);
-            router.refresh();
         }
         if(!success && error === '409'){
             console.log("login failed");
@@ -155,13 +159,13 @@ export default function PatchAmadPage() {
         setBook(e.target.value);
     }
     const onChangeChapter: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setChapter(parseInt(e.target.value));
+        setChapter(e.target.value);
     }
     const onChangeFrom: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setFrom(parseInt(e.target.value));
+        setFrom(e.target.value);
     }
     const onChangeTo: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setTo(parseInt(e.target.value));
+        setTo(e.target.value);
     }
     const onChangeAmad: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setAmad(e.target.value);
@@ -288,12 +292,12 @@ export default function PatchAmadPage() {
                                     <option value='rev'>rev (요한계시록)</option>
 
                                     </select>
-                                    <input name={"chapter"} onChange={onChangeChapter} value={chapter}>
-                                    </input> 장
-                                    <input name={"from"} value={from} onChange={onChangeFrom} >
-                                    </input> 절 ~
-                                    <input name={"to"} value={to} onChange={onChangeTo} >
-                                    </input> 절
+                                    <input type="number" min="1" name={"chapter"} onChange={onChangeChapter} value={chapter} placeholder={'장'} />
+                                    장
+                                    <input type="number" min="1" name={"from"} value={from} onChange={onChangeFrom} placeholder={'절'} />
+                                    절 ~
+                                    <input type="number" min="1" name={"to"} value={to} onChange={onChangeTo} placeholder={'절'} />
+                                    절
                                 </div>
                                 <div>
 

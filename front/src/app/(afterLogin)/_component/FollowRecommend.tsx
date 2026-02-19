@@ -20,16 +20,21 @@ export default function FollowRecommend() {
     const onFollow = () => {
         alert('아직 구현되지 않았습니다. Comming Soon!');
     };
-    const storedAccessToken = localStorage.getItem("Authorization") || '';
-    const storedRefreshToken = localStorage.getItem("Refresh") || '';
+    const [storedAccessToken, setStoredAccessToken] = useState('');
+    const [storedRefreshToken, setStoredRefreshToken] = useState('');
     const [recommendedMembers, setMembers] = useState<Members[] >([]);
     const router = useRouter();
 
-    
     useEffect(() => {
+        setStoredAccessToken(localStorage.getItem("Authorization") || '');
+        setStoredRefreshToken(localStorage.getItem("Refresh") || '');
+    }, []);
+
+    useEffect(() => {
+        if (!storedAccessToken) return;
         const fetchUserData = async () => {
-        
-            
+
+
                 const { success, data, error } = await getRecommendedFriend({
                     accessToken: storedAccessToken,
                     refreshToken: storedRefreshToken,
@@ -46,7 +51,7 @@ export default function FollowRecommend() {
 
             fetchUserData();
 
-    }, []);
+    }, [storedAccessToken]);
 
 
     return (

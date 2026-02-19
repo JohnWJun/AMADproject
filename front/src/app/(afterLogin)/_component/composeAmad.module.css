@@ -248,7 +248,7 @@
     align-items: center;
 }
 .inputSection > span > div > input{
-    width: 30px;
+    width: 55px;
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 5px;
@@ -332,13 +332,20 @@
     border: none;
     cursor: pointer;
     border-radius: 17px;
-    background-color: rgb(29, 155, 240, 0.01);
-    transition-duration: 0.2s;
-    transition-property: background-color;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background-color: rgba(29, 155, 240, 0.01);
+
+    opacity: 0.6;
+
+    pointer-events: none;
+
+    transition: background-color 0.2s;
 }
+
 .uploadButton:hover {
     background-color: rgb(29, 155, 240, 0.1);
 }

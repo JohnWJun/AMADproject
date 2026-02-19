@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class PostController {
     public ResponseEntity postPost(@PathVariable("member-email") String email,
                                    @RequestBody PostDto.Post postDto){
         Post post = mapper.postDtoToPost(postDto);
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         post.getMember().setEmail(email);
         PostDto.Response response = mapper.postToResponse(service.createPost(post,date));
 

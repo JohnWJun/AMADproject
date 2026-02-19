@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <style>
+      .ink { fill:#142d4c; }
+      .stroke { fill:none; stroke:#142d4c; stroke-width:18; stroke-linecap:round; stroke-linejoin:round; }
+      .strokeThin { fill:none; stroke:#142d4c; stroke-width:10; stroke-linecap:round; stroke-linejoin:round; }
+      .strokeHair { fill:none; stroke:#142d4c; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; }
+    </style>
+  </defs>
+
+  <g transform="translate(0,0)">
+    <circle class="stroke" cx="400" cy="400" r="170"></circle>
+    <circle class="strokeThin" cx="400" cy="400" r="140"></circle>
+
+    <g class="strokeHair">
+      <line x1="400" y1="200" x2="400" y2="175"></line>
+      <line x1="400" y1="625" x2="400" y2="650"></line>
+      <line x1="200" y1="400" x2="175" y2="400"></line>
+      <line x1="600" y1="400" x2="625" y2="400"></line>
+
+      <line x1="260" y1="260" x2="242" y2="242"></line>
+      <line x1="540" y1="260" x2="558" y2="242"></line>
+      <line x1="260" y1="540" x2="242" y2="558"></line>
+      <line x1="540" y1="540" x2="558" y2="558"></line>
+    </g>
+
+    <g class="ink">
+      <polygon points="400,158 430,260 400,240 370,260"></polygon>
+      <polygon points="642,400 540,430 560,400 540,370"></polygon>
+      <polygon points="400,642 430,540 400,560 370,540"></polygon>
+      <polygon points="158,400 260,430 240,400 260,370"></polygon>
+    </g>
+
+    <g class="ink" opacity="0.95">
+      <polygon points="505,295 470,335 450,315"></polygon>
+      <polygon points="505,505 450,485 470,465"></polygon>
+      <polygon points="295,505 330,465 350,485"></polygon>
+      <polygon points="295,295 350,315 330,335"></polygon>
+    </g>
+
+    <g class="ink">
+      <rect x="380" y="280" width="40" height="240" rx="6"></rect>
+      <rect x="285" y="380" width="230" height="40" rx="6"></rect>
+      <rect x="392" y="292" width="16" height="216" rx="4" fill="#142d4c" opacity="0.10"></rect>
+      <rect x="297" y="392" width="206" height="16" rx="4" fill="#142d4c" opacity="0.10"></rect>
+    </g>
+  </g>
+</svg>

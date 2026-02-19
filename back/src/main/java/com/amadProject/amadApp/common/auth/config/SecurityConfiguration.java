@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,6 +33,9 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
     private final CustomAuthorityUtils authorityUtils;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
 
     @Bean
@@ -50,12 +55,13 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                                .antMatchers("/h2/**").permitAll()
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
                 )
-                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2memberSuccessHandler(jwtTokenizer,authorityUtils,memberService)))
+                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2memberSuccessHandler(jwtTokenizer,authorityUtils,memberService,frontendUrl)))
                 .logout()
-                .logoutSuccessUrl("http://localhost:3000");
+                .logoutSuccessUrl(frontendUrl);
         return http.build();
     }
     @Bean
@@ -63,7 +69,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam","http://jxy.me","http://localhost:3000","http://localhost:8080","127.0.0.1"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE","OPTION"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE","OPTIONS"));
         configuration.addAllowedHeader("*");
         configuration.setExposedHeaders(Arrays.asList("*","Authorization","Refresh"));
         configuration.setMaxAge(3600L);

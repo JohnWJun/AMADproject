@@ -7,6 +7,7 @@ import com.amadProject.amadApp.domain.post.entity.BibleChapterVerse;
 import com.amadProject.amadApp.domain.post.entity.Post;
 import org.mapstruct.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,7 +103,7 @@ public interface PostMapper {
         response.setScriptureForToday(bibleChapterVerseResponses);
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
-        response.setCreatedAt(post.getCreatedAt());
+        response.setCreatedAt(post.getPublishedDate());
         response.setLastModifiedAt(post.getModifiedAt());
         response.setContent_1(post.getContent_1());
         response.setContent_2(post.getContent_2());
@@ -124,7 +125,7 @@ public interface PostMapper {
         response.setId(post.getId());
         response.setTitle(post.getTitle());
         response.setWriter(post.getMember().getEmail());
-        response.setCreatedAt(post.getCreatedAt());
+        response.setCreatedAt(post.getPublishedDate());
         response.setContent_1(post.getContent_1());
         response.setContent_2(post.getContent_2());
         response.setContent_3(post.getContent_3());
@@ -159,10 +160,11 @@ public interface PostMapper {
 
     default PostDto.AbstractResponse postToAbstractResponse(Post post){
         PostDto.AbstractResponse abstractResponse = new PostDto.AbstractResponse();
+
         abstractResponse.setId(post.getId());
         abstractResponse.setTitle(post.getTitle());
         abstractResponse.setWriter(post.getMember().getEmail());
-        abstractResponse.setCreatedAt(post.getCreatedAt());
+        abstractResponse.setCreatedAt(post.getPublishedDate());
         abstractResponse.setContent_1(post.getContent_1());
         abstractResponse.setLikes(post.getWhoLikesMyPost().size());
         abstractResponse.setNickname(post.getMember().getNickname());
