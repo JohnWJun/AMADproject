@@ -1,17 +1,18 @@
 // Client-only module — uses localStorage. Must never be imported in Server Components.
 'use client'
 
-type ApiSuccess<T> = { success: true; data: T };
-type ApiSuccessEmpty = { success: true; data?: undefined };
-type ApiError = { success: false; error: string };
-export type ApiResult<T = unknown> = ApiSuccess<T> | ApiSuccessEmpty | ApiError;
+export type ApiResult<T = any> = {
+    success: boolean;
+    data?: T;
+    error?: string;
+};
 
 interface ApiFetchOptions extends Omit<RequestInit, 'headers'> {
     accessToken: string;
     refreshToken: string;
 }
 
-export async function apiFetch<T = unknown>(
+export async function apiFetch<T = any>(
     path: string,
     { accessToken, refreshToken, ...init }: ApiFetchOptions,
 ): Promise<ApiResult<T>> {
