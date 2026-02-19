@@ -11,6 +11,7 @@ import com.amadProject.amadApp.domain.post.repository.BibleChapterVerseRepositor
 import com.amadProject.amadApp.domain.post.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
+@Profile({"local", "dev"})
 public class PostDummyLoader implements CommandLineRunner {
 
     private final PostRepository repository;
