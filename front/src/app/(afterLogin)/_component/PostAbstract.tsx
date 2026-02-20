@@ -2,6 +2,7 @@ import style from './post.module.css';
 import Link from "next/link";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
 import 'dayjs/locale/ko';
 import ActionButtons from "@/app/(afterLogin)/_component/ActionButtons";
 import PostArticle from "@/app/(afterLogin)/_component/PostArticle";
@@ -10,7 +11,8 @@ import PostImages from "@/app/(afterLogin)/_component/PostImages";
 import cx from "classnames";
 
 dayjs.locale('ko');
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 type Props = {
     post:{
           id:bigint,
@@ -51,7 +53,7 @@ export default function PostAbstract({ post }: Props) {
                             ·
                             &nbsp;
                         </Link>
-                        <span className={style.postDate}>{dayjs(post.createdAt).fromNow(true)}</span>
+                        <span className={style.postDate}>{dayjs.utc(post.createdAt).local().fromNow(true)}</span>
                     </div>
                     
                     <div className={style.postContent}>

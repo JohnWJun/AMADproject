@@ -69,7 +69,7 @@ public class PostController {
     public ResponseEntity postDislikePost(@PathVariable("post-id") long postId,
                                        @PathVariable("member-id") long memberId){
         service.deleteLikePost(postId,memberId);
-        return new ResponseEntity<>("disliked the post", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{post-id}/{bibleChapterVerse-id}/{amad-id}")

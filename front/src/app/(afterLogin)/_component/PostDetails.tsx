@@ -3,6 +3,7 @@ import style from './post.module.css';
 import Link from "next/link";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
 import 'dayjs/locale/ko';
 import ActionButtons from "@/app/(afterLogin)/_component/ActionButtons";
 import PostImages from "@/app/(afterLogin)/_component/PostImages";
@@ -13,7 +14,8 @@ import { useRouter} from "next/navigation";
 
 
 dayjs.locale('ko');
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 type Props = {
     noImage?: boolean,
@@ -65,7 +67,7 @@ export default function Post({ noImage ,post }: Props) {
                                 ·
                                 &nbsp;
                             </Link>
-                            <span className={style.postDate}>{dayjs(target.createdAt).fromNow(true)}</span>
+                            <span className={style.postDate}>{dayjs.utc(target.createdAt).local().fromNow(true)}</span>
                             <div className={style.postFixButton}>
                                 {post.writer === loginEmail &&(
                                     <>

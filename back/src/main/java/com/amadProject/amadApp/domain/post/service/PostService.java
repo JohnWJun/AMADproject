@@ -95,7 +95,7 @@ public class PostService {
         Optional.ofNullable(post.getContent_5())
                 .ifPresent(content-> findPost.setContent_5(content));
         Optional.ofNullable(post.getAmad())
-                .ifPresent(amad-> findPost.setAmad(amad));
+                .ifPresent(amad -> findPost.getAmad().setMission(amad.getMission()));
         return postRepository.save(findPost);
     }
 

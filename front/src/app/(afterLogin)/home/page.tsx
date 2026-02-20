@@ -54,17 +54,15 @@ export default function Home() {
             const storedAccessToken = localStorage.getItem("Authorization") || '';
             const storedRefreshToken = localStorage.getItem("Refresh") || '';
 
-            if (member.email === '') {
-                const { success, data, error } = await getCurrentUserInfo({
-                    accessToken: storedAccessToken,
-                    refreshToken: storedRefreshToken,
-                    setMemberInfo
-                });
+            const { success, data, error } = await getCurrentUserInfo({
+                accessToken: storedAccessToken,
+                refreshToken: storedRefreshToken,
+                setMemberInfo
+            });
 
-                if(!success && error === '409'){
-                    console.log("login failed");
-                    router.replace('/')
-                }
+            if(!success && error === '409'){
+                console.log("login failed");
+                router.replace('/')
             }
             
         };
@@ -73,7 +71,7 @@ export default function Home() {
         if (typeof window !== 'undefined') {
             fetchUserData();
         }
-    }, [member, setMemberInfo]);
+    }, []);
 
 
     useEffect(() => {
