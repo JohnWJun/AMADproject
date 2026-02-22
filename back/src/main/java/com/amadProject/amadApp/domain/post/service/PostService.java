@@ -189,22 +189,25 @@ public class PostService {
     public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {
         LocalDateTime startDate = writtenDate.atStartOfDay();
         LocalDateTime endDate = startDate.plusDays(1);
-        return postRepository.findAllByWrittenDate(startDate, endDate, PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
+        return postRepository.findAllByWrittenDate(startDate, endDate, PageRequest.of(page-1,size, Sort.by("publishedDate").descending()));
     }
 
     public Page<Post> findPosts(String email, int page, int size) {
         LocalDate tdy = LocalDate.now();
         LocalDateTime startDate = tdy.atStartOfDay();
         LocalDateTime endDate = startDate.plusDays(1);
-        return postRepository.findAllByEmailExcToday(startDate, endDate, email, PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+        return postRepository.findAllByEmailExcToday(startDate, endDate, email, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
     }
 
     public Page<Post> findAllPosts( int page, int size) {
         LocalDate tdy = LocalDate.now();
-        return postRepository.findAll(PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+        return postRepository.findAll(PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
     }
 
-    public Page<Post> findPostsByKeyword(String keyword, int page, int size) {
-        return postRepository.findAllByKeyword(keyword, PageRequest.of(page-1, size, Sort.by("createdAt").descending()));
+    public Page<Post> findPostsByKeyword(String keyword, int page, int size, String sortBy) {
+        if ("likes".equals(sortBy)) {
+            return postRepository.findAllByKeywordSortedByLikes(keyword, PageRequest.of(page-1, size));
+        }
+        return postRepository.findAllByKeyword(keyword, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
     }
 }

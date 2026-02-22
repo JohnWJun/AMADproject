@@ -9,6 +9,7 @@ import {usePathname, useRouter} from "next/navigation";
 import {ChangeEventHandler, useEffect, useState} from "react";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
 import {getUserInfo, patchNickname} from "@/app/(afterLogin)/_lib/MemberApi";
+import {createOrGetRoom} from "@/app/(afterLogin)/_lib/ChatApi";
 import {tr} from "@faker-js/faker";
 import Loader from "@/app/_component/Loader";
 import {router} from "next/client";
@@ -82,6 +83,15 @@ export default function Profile() {
         };
         fetchUserInfo();
     }, [accessToken,refreshToken,emailToFind]);
+
+    const onClickChat = async () => {
+        const { success, data } = await createOrGetRoom({
+            accessToken, refreshToken,
+            member1Id: Number(userId),
+            member2Id: Number(userToFind?.id),
+        });
+        if (success && data) router.push(`/messages/${data.roomId}`);
+    };
 
     if (!userToFind) {
         return (
@@ -186,6 +196,7 @@ export default function Profile() {
                         <div>{userToFind.email}</div>
                     </div>
                     <button className={style.followButton}>팔로우</button>
+                    <button className={style.chatButton} onClick={onClickChat}>쪽지</button>
                 </div>
                 <div className={style.statusContainer}>
                     <h4>하나님과의 친밀도</h4>

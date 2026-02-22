@@ -1,51 +1,47 @@
 "use client";
 
 import style from "@/app/(afterLogin)/messages/message.module.css";
-import {faker} from "@faker-js/faker";
 import dayjs from "dayjs";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/ko';
+import { RoomResponse } from '@/app/(afterLogin)/_lib/ChatApi';
 
 dayjs.locale('ko');
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
-export default function Room() {
+type Props = { room: RoomResponse };
+
+export default function Room({ room }: Props) {
     const router = useRouter();
-    const user = {
-        id: 'hero',
-        nickname: '영웅',
-        Messages: [
-            {roomId: 123, content: '안녕하세요.', createdAt: new Date()},
-            {roomId: 123, content: '안녕히가세요.', createdAt: new Date()},
-        ],
-    }
 
-    const onClick =() => {
-        router.push(`/messages/${user.Messages.at(-1)?.roomId}`);
+    const onClick = () => {
+        router.push(`/messages/${room.roomId}`);
     };
 
     return (
         <div className={style.room} onClickCapture={onClick}>
             <div className={style.roomUserImage}>
-                <img src={faker.image.avatar()} alt=""/>
+                {room.otherStatusImg ? (
+                    <img src={room.otherStatusImg} alt="" />
+                ) : (
+                    <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: '#ccc' }} />
+                )}
             </div>
             <div className={style.roomChatInfo}>
                 <div className={style.roomUserInfo}>
-                    <b>{user.nickname}</b>
+                    <b>{room.otherNickname}</b>
                     &nbsp;
-                    <span>@{user.id}</span>
-                    &nbsp;
-                    ·
-                    &nbsp;
+                    <span>@{room.otherEmail}</span>
+                    &nbsp;·&nbsp;
                     <span className={style.postDate}>
-            {dayjs(user.Messages?.at(-1)?.createdAt).fromNow(true)}
-          </span>
+                        {room.lastMessageAt ? dayjs(room.lastMessageAt).fromNow(true) : ''}
+                    </span>
                 </div>
                 <div className={style.roomLastChat}>
-                    {user.Messages?.at(-1)?.content}
+                    {room.lastMessage}
                 </div>
             </div>
         </div>
-    )
+    );
 }

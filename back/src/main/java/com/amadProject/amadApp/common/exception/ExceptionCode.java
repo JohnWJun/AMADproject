@@ -14,7 +14,8 @@ public enum ExceptionCode {
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
-    LIKEPOST_NOT_FOUND(404, "likePost not found");
+    LIKEPOST_NOT_FOUND(404, "likePost not found"),
+    CHAT_ROOM_NOT_FOUND(404, "Chat room not found");
 
     @Getter
     private int status;

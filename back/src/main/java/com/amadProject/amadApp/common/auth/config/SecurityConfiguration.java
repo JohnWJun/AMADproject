@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                                .antMatchers("/h2/**").permitAll()
+                                .antMatchers("/h2/**", "/ws/**").permitAll()
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
                 )

@@ -20,6 +20,7 @@
     border-bottom-style: solid;
     width: inherit;
     position: fixed;
+    z-index: 99999;
 }
 .searchZone {
     display: flex;

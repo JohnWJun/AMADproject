@@ -25,7 +25,10 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query(value = "SELECT p FROM Post p where p.member.id = :memberId AND p.publishedDate >= :startDate AND p.publishedDate < :endDate")
     Optional<Post> findByMemberIdNDate(long memberId, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query(value = "SELECT p FROM Post p where p.content_1 LIKE %:keyword% OR p.content_2 LIKE %:keyword% OR p.content_3 LIKE %:keyword% OR p.content_4 LIKE %:keyword% OR p.content_5 LIKE %:keyword% OR p.amad LIKE %:keyword% OR p.member.nickname LIKE %:keyword% OR p.member.email LIKE %:keyword%")
-    Page<Post> findAllByKeyword( String keyword, Pageable createdAt);
+    @Query(value = "SELECT p FROM Post p LEFT JOIN p.amad a WHERE p.title LIKE %:keyword% OR p.content_1 LIKE %:keyword% OR p.content_2 LIKE %:keyword% OR p.content_3 LIKE %:keyword% OR p.content_4 LIKE %:keyword% OR p.content_5 LIKE %:keyword% OR a.mission LIKE %:keyword% OR p.member.nickname LIKE %:keyword% OR p.member.email LIKE %:keyword%")
+    Page<Post> findAllByKeyword(String keyword, Pageable pageable);
+
+    @Query(value = "SELECT p FROM Post p LEFT JOIN p.amad a WHERE p.title LIKE %:keyword% OR p.content_1 LIKE %:keyword% OR p.content_2 LIKE %:keyword% OR p.content_3 LIKE %:keyword% OR p.content_4 LIKE %:keyword% OR p.content_5 LIKE %:keyword% OR a.mission LIKE %:keyword% OR p.member.nickname LIKE %:keyword% OR p.member.email LIKE %:keyword% ORDER BY SIZE(p.whoLikesMyPost) DESC")
+    Page<Post> findAllByKeywordSortedByLikes(String keyword, Pageable pageable);
 
 }

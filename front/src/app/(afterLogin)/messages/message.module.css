@@ -53,3 +53,21 @@
 .roomChatInfo b {
     color: black;
 }
+
+.roomUserInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.postDate {
+    color: #536471;
+}
+
+.roomLastChat {
+    color: #536471;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
+}

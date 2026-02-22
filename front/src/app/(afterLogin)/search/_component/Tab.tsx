@@ -9,11 +9,11 @@ export default function Tab() {
     const searchParams = useSearchParams();
     const onClickHot = () => {
         setCurrent('hot');
-        router.replace(`/search?q=${searchParams.get('q')}`)
+        router.replace(`/search?q=${encodeURIComponent(searchParams.get('q') || '')}`);
     }
     const onClickNew = () => {
         setCurrent('new');
-        router.replace(`/search?${searchParams.toString()}&f=live`)
+        router.replace(`/search?q=${encodeURIComponent(searchParams.get('q') || '')}&f=live`);
     }
 
     return (

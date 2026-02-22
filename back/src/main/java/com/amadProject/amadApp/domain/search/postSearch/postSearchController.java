@@ -30,9 +30,11 @@ public class postSearchController {
     @GetMapping
     public ResponseEntity getPostByKeyword(@RequestParam String keyword,
                                            @Positive @RequestParam int page,
-                                           @Positive @RequestParam int size){
+                                           @Positive @RequestParam int size,
+                                           @RequestParam(required = false) String f){
 
-        Page<Post> foundPosts = service.findPostsByKeyword(keyword,page, size);
+        String sortBy = "live".equals(f) ? "date" : "likes";
+        Page<Post> foundPosts = service.findPostsByKeyword(keyword, page, size, sortBy);
         List<PostDto.AbstractResponse> responses = mapper.postsToAbstractResponses(foundPosts.toList());
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
