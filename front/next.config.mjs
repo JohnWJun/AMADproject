@@ -11,6 +11,15 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${apiHost}/:path*`,
       },
+      // Proxy WebSocket in dev (Next.js dev server supports WS upgrade through rewrites)
+      {
+        source: '/ws',
+        destination: `${apiHost}/ws`,
+      },
+      {
+        source: '/ws/:path*',
+        destination: `${apiHost}/ws/:path*`,
+      },
     ];
   },
 };

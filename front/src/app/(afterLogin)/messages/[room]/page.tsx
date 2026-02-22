@@ -15,7 +15,10 @@ import { Member } from '@/app/_component/MemberRecoilState';
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
 
-const SERVER_URL = process.env.NEXT_PUBLIC_API_PROXY_TARGET || 'http://localhost:8080';
+// Always use the same origin as the page so protocol (http/https) is always correct.
+// In prod: nginx routes /ws → backend. In dev: Next.js rewrite routes /ws → backend.
+const getWsBase = () =>
+    typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
 
 type Props = { params: { room: string } };
 
@@ -42,7 +45,7 @@ export default function ChatRoom({ params }: Props) {
         });
 
         const client = new Client({
-            webSocketFactory: () => new SockJS(`${SERVER_URL}/ws`),
+            webSocketFactory: () => new SockJS(`${getWsBase()}/ws`),
             connectHeaders: { Authorization: `Bearer ${accessToken}` },
             onConnect: () => {
                 client.subscribe(`/topic/chat/${roomId}`, (frame) => {
