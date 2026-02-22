@@ -118,3 +118,63 @@
 .sendButton:hover {
     background-color: #0066bb;
 }
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media screen and (max-width: 912px) {
+    .main {
+        /* Overlay the full screen between the fixed top-bar and fixed bottom-nav */
+        position: fixed;
+        top: 40px;    /* matches the teal top-bar height */
+        left: 0;
+        right: 0;
+        bottom: 50px; /* matches the mobile nav height */
+        width: 100%;
+        min-height: unset;
+        padding: 0;
+        z-index: 500;
+        background-color: white;
+        /* border is redundant when full-width */
+        border-left: none;
+        border-right: none;
+    }
+
+    .header h2 {
+        margin-left: 12px;
+        font-size: 17px;
+    }
+
+    .list {
+        padding: 8px 12px;
+    }
+
+    .sendForm {
+        padding: 8px 12px;
+    }
+
+    .content {
+        max-width: 70vw;
+        word-break: break-word;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .content {
+        font-size: 14px;
+        padding: 10px 12px;
+        max-width: 75vw;
+    }
+
+    .date {
+        font-size: 11px;
+    }
+
+    .sendInput {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .sendButton {
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+}

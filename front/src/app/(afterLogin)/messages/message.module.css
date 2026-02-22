@@ -71,3 +71,21 @@
     white-space: nowrap;
     max-width: 300px;
 }
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media screen and (max-width: 578px) {
+    .roomLastChat {
+        max-width: 55vw;
+    }
+
+    .roomUserInfo {
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .roomLastChat {
+        max-width: 50vw;
+    }
+}
