@@ -67,7 +67,7 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam","http://jxy.me","http://localhost:3000","http://localhost:8080","127.0.0.1"));
+        configuration.setAllowedOrigins(Arrays.asList("chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam","http://jxy.me","http://localhost:3000","http://localhost:8080","127.0.0.1",frontendUrl));
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE","OPTIONS"));
         configuration.addAllowedHeader("*");
