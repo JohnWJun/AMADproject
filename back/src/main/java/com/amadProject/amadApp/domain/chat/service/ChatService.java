@@ -15,6 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +31,16 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final MemberRepository memberRepository;
+
+    private static final DateTimeFormatter UTC_FMT = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+    /** Converts a server-local LocalDateTime to a UTC ISO-8601 string with +00:00 offset. */
+    private String toUtcString(LocalDateTime ldt) {
+        if (ldt == null) return null;
+        return ldt.atZone(ZoneId.systemDefault())
+                  .withZoneSameInstant(ZoneOffset.UTC)
+                  .format(UTC_FMT);
+    }
 
     public ChatDto.RoomIdResponse createOrGetRoom(long member1Id, long member2Id) {
         Optional<ChatRoom> existing = chatRoomRepository.findByMemberPair(member1Id, member2Id);
@@ -61,7 +75,7 @@ public class ChatService {
         return new ChatDto.MessageResponse(
                 saved.getId(), roomId,
                 sender.getEmail(), sender.getNickname(),
-                content, saved.getCreatedAt()
+                content, toUtcString(saved.getCreatedAt())
         );
     }
 
@@ -78,7 +92,7 @@ public class ChatService {
                     other.getNickname(),
                     other.getStatusImg(),
                     last.map(ChatMessage::getContent).orElse(""),
-                    last.map(ChatMessage::getCreatedAt).orElse(room.getCreatedAt())
+                    toUtcString(last.map(ChatMessage::getCreatedAt).orElse(room.getCreatedAt()))
             );
         }).collect(Collectors.toList());
     }
@@ -90,8 +104,17 @@ public class ChatService {
         return messages.getContent().stream().map(m -> new ChatDto.MessageResponse(
                 m.getId(), roomId,
                 m.getSender().getEmail(), m.getSender().getNickname(),
-                m.getContent(), m.getCreatedAt()
+                m.getContent(), toUtcString(m.getCreatedAt())
         )).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public long getRecipientId(long roomId, String senderEmail) {
+        ChatRoom room = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CHAT_ROOM_NOT_FOUND));
+        return room.getMember1().getEmail().equals(senderEmail)
+                ? room.getMember2().getId()
+                : room.getMember1().getId();
     }
 
     @Transactional(readOnly = true)
@@ -107,7 +130,7 @@ public class ChatService {
                 other.getNickname(),
                 other.getStatusImg(),
                 last.map(ChatMessage::getContent).orElse(""),
-                last.map(ChatMessage::getCreatedAt).orElse(room.getCreatedAt())
+                toUtcString(last.map(ChatMessage::getCreatedAt).orElse(room.getCreatedAt()))
         );
     }
 }

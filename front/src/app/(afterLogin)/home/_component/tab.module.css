@@ -72,40 +72,16 @@
 
 @media screen and (max-width: 912px){
     .homeFixed {
-        position: fixed;
         top: 5%;
-        z-index: 1;
-        width: 595px;
+        width: 100%;
     }
     .homeText {
         font-size: 15px;
         text-align: center;
     }
 }
-@media screen and (max-width: 768px){
-    .homeFixed {
-        position: fixed;
-        top: 5%;
-        z-index: 1;
-        width: 395px;
-    }
-}
-@media screen and (max-width: 578px){
-    .homeFixed {
-        position: fixed;
-        top: 5%;
-        z-index: 1;
-        width: 295px;
 
-    }
-}
 @media screen and (max-width: 280px){
-    .homeFixed {
-        position: fixed;
-        top: 5%;
-        z-index: 1;
-        width: 265px;
-    }
     .homeText {
         font-size: 10px;
         text-align: center;

@@ -8,6 +8,7 @@ import NavMenu from "@/app/(afterLogin)/_component/NavMenu";
 import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
 import MainLogo from "@/app/_component/MainLogo";
 import ComposeButton from "@/app/(afterLogin)/_component/ComposeButton";
+import MessageNotificationListener from "@/app/(afterLogin)/_component/MessageNotificationListener";
 
 type Props = { children: ReactNode, modal: ReactNode };
 export default async function AfterLoginLayout({children, modal}: Props) {
@@ -62,7 +63,7 @@ export default async function AfterLoginLayout({children, modal}: Props) {
                 </div>
             </div>
             {modal}
-
+            <MessageNotificationListener />
         </div>
     )
 }

@@ -189,14 +189,14 @@ public class PostService {
     public Page<Post> findTodayPosts(LocalDate writtenDate, int page,int size) {
         LocalDateTime startDate = writtenDate.atStartOfDay();
         LocalDateTime endDate = startDate.plusDays(1);
-        return postRepository.findAllByWrittenDate(startDate, endDate, PageRequest.of(page-1,size, Sort.by("publishedDate").descending()));
+        return postRepository.findAllByWrittenDate(startDate, endDate, PageRequest.of(page-1, size));
     }
 
     public Page<Post> findPosts(String email, int page, int size) {
         LocalDate tdy = LocalDate.now();
         LocalDateTime startDate = tdy.atStartOfDay();
         LocalDateTime endDate = startDate.plusDays(1);
-        return postRepository.findAllByEmailExcToday(startDate, endDate, email, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
+        return postRepository.findAllByEmailExcToday(startDate, endDate, email, PageRequest.of(page-1, size));
     }
 
     public Page<Post> findAllPosts( int page, int size) {

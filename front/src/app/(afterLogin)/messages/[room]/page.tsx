@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { getMessages, getRoom, MessageResponse, RoomResponse } from '@/app/(afterLogin)/_lib/ChatApi';
-import { useRecoilValue } from 'recoil';
-import { Member } from '@/app/_component/MemberRecoilState';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Member, unreadMessageCount } from '@/app/_component/MemberRecoilState';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
@@ -25,11 +25,15 @@ type Props = { params: { room: string } };
 export default function ChatRoom({ params }: Props) {
     const roomId = Number(params.room);
     const memberInfo = useRecoilValue(Member);
+    const setUnreadCount = useSetRecoilState(unreadMessageCount);
     const [messages, setMessages] = useState<MessageResponse[]>([]);
     const [roomInfo, setRoomInfo] = useState<RoomResponse | null>(null);
     const [content, setContent] = useState('');
     const clientRef = useRef<Client | null>(null);
-    const bottomRef = useRef<HTMLDivElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
+
+    // Clear the badge when the user opens any chat room
+    useEffect(() => { setUnreadCount(0); }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined' || !memberInfo.id) return;
@@ -64,7 +68,9 @@ export default function ChatRoom({ params }: Props) {
     }, [roomId, memberInfo.id]);
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (listRef.current) {
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
     }, [messages]);
 
     const sendMessage = () => {
@@ -78,6 +84,7 @@ export default function ChatRoom({ params }: Props) {
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.nativeEvent.isComposing) return; // skip while Korean/IME is still composing
             e.preventDefault();
             sendMessage();
         }
@@ -89,7 +96,7 @@ export default function ChatRoom({ params }: Props) {
                 <BackButton />
                 <div><h2>{roomInfo?.otherNickname ?? '채팅'}</h2></div>
             </div>
-            <div className={style.list}>
+            <div className={style.list} ref={listRef}>
                 {messages.map((m) => {
                     const isMe = m.senderEmail === memberInfo.email;
                     return (
@@ -98,11 +105,10 @@ export default function ChatRoom({ params }: Props) {
                             className={cx(style.message, isMe ? style.myMessage : style.yourMessage)}
                         >
                             <div className={style.content}>{m.content}</div>
-                            <div className={style.date}>{dayjs(m.createdAt).format('YYYY년 MM월 DD일 A HH시 mm분')}</div>
+                            <div className={style.date}>{dayjs(m.createdAt).format('YYYY년 MM월 DD일 A h시 mm분')}</div>
                         </div>
                     );
                 })}
-                <div ref={bottomRef} />
             </div>
             <div className={style.sendForm}>
                 <textarea

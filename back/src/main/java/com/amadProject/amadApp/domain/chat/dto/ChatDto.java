@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 public class ChatDto {
 
     @Getter
@@ -22,7 +20,7 @@ public class ChatDto {
         private String senderEmail;
         private String senderNickname;
         private String content;
-        private LocalDateTime createdAt;
+        private String createdAt; // ISO-8601 UTC string e.g. "2026-02-23T07:50:00+00:00"
     }
 
     @Getter
@@ -33,12 +31,18 @@ public class ChatDto {
         private String otherNickname;
         private String otherStatusImg;
         private String lastMessage;
-        private LocalDateTime lastMessageAt;
+        private String lastMessageAt; // ISO-8601 UTC string
     }
 
     @Getter
     @AllArgsConstructor
     public static class RoomIdResponse {
+        private long roomId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class NotificationPayload {
         private long roomId;
     }
 }

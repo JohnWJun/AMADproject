@@ -1,7 +1,6 @@
 "use client";
 import style from './tab.module.css';
 import {useState} from "react";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 
 type Props ={
@@ -9,13 +8,15 @@ type Props ={
     setIsTdy: any
     setPosts: any,
     setIsLastPost: any
+    onTabChange: () => void
 }
 
-export default function Tab({ setIsLastPost,setPage, setIsTdy, setPosts}: Props) {
+export default function Tab({ setIsLastPost,setPage, setIsTdy, setPosts, onTabChange}: Props) {
     const [tab, setTab] = useState('tdy');
 
     const router = useRouter();
     const onClickTdy = () => {
+        onTabChange();
         setTab('tdy');
         setPage(1);
         setIsTdy(true);
@@ -26,6 +27,7 @@ export default function Tab({ setIsLastPost,setPage, setIsTdy, setPosts}: Props)
 
     }
     const onClickAll = () => {
+        onTabChange();
         setTab('all');
         setPage(1);
         setIsTdy(false);

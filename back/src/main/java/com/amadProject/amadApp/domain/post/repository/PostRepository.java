@@ -16,10 +16,12 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query(value = "SELECT p FROM Post p where p.member.email = :email AND p.publishedDate >= :startDate AND p.publishedDate < :endDate")
     Optional<Post> findByEmailNDate(String email, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query(value = "SELECT p FROM Post p where p.member.email = :email AND (p.publishedDate < :startDate OR p.publishedDate >= :endDate)")
+    @Query(value = "SELECT p FROM Post p where p.member.email = :email AND (p.publishedDate < :startDate OR p.publishedDate >= :endDate) ORDER BY p.publishedDate DESC",
+           countQuery = "SELECT COUNT(p) FROM Post p where p.member.email = :email AND (p.publishedDate < :startDate OR p.publishedDate >= :endDate)")
     Page<Post> findAllByEmailExcToday(LocalDateTime startDate, LocalDateTime endDate, String email, Pageable pageable);
 
-    @Query(value = "SELECT p FROM Post p where p.publishedDate >= :startDate AND p.publishedDate < :endDate")
+    @Query(value = "SELECT p FROM Post p where p.publishedDate >= :startDate AND p.publishedDate < :endDate ORDER BY p.publishedDate DESC",
+           countQuery = "SELECT COUNT(p) FROM Post p where p.publishedDate >= :startDate AND p.publishedDate < :endDate")
     Page<Post> findAllByWrittenDate(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     @Query(value = "SELECT p FROM Post p where p.member.id = :memberId AND p.publishedDate >= :startDate AND p.publishedDate < :endDate")

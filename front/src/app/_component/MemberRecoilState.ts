@@ -40,4 +40,10 @@ export const Member = atom({
     effects_UNSTABLE: [persistAtom]
 });
 
+// Session-only badge count — intentionally NOT persisted so it resets on page refresh.
+export const unreadMessageCount = atom<number>({
+    key: 'unreadMessageCount',
+    default: 0,
+});
+
 

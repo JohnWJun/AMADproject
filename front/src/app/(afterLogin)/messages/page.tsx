@@ -3,15 +3,19 @@ import style from './message.module.css';
 import Room from "@/app/(afterLogin)/messages/_component/Room";
 import { useEffect, useState } from 'react';
 import { getRooms, RoomResponse } from '@/app/(afterLogin)/_lib/ChatApi';
-import { useRecoilState } from 'recoil';
-import { Member } from '@/app/_component/MemberRecoilState';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { Member, unreadMessageCount } from '@/app/_component/MemberRecoilState';
 import { getCurrentUserInfo } from '@/app/(afterLogin)/_lib/MemberApi';
 import { useRouter } from 'next/navigation';
 
 export default function MessagesPage() {
     const [memberInfo, setMemberInfo] = useRecoilState(Member);
     const [rooms, setRooms] = useState<RoomResponse[]>([]);
+    const setUnreadCount = useSetRecoilState(unreadMessageCount);
     const router = useRouter();
+
+    // Clear the badge whenever the user opens this page
+    useEffect(() => { setUnreadCount(0); }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;

@@ -24,8 +24,9 @@ interface Post {
     commentsNum:number
     whoLikesMyPost:BigInt[];
 }
+
 export default function Home() {
-    
+
     const router = useRouter();
 
     const [accessToken, setAcessToken] = useState('');
@@ -47,7 +48,21 @@ export default function Home() {
     const [page, setPage] = useState(1);
     const [isTabtdy, setIsTabtdy] = useState(true);
     const [isLastPost, setIsLastPost] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    // Ref so IntersectionObserver callback always sees the current loading state
+    // without needing to be re-created on every render.
+    const isLoadingRef = useRef(false);
+    // Incremented on every tab click so the fetch effect re-runs even when
+    // page and isTabtdy haven't changed (e.g. clicking the same tab twice).
+    const [resetCount, setResetCount] = useState(0);
+
+    // Called synchronously from the Tab click handler — before React processes
+    // the batched state updates and before the DOM re-renders. Setting
+    // isLoadingRef here ensures the IntersectionObserver cannot fire and
+    // increment page while posts are being cleared and re-fetched.
+    const onTabChange = () => {
+        isLoadingRef.current = true;
+        setResetCount(c => c + 1);
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -64,9 +79,9 @@ export default function Home() {
                 console.log("login failed");
                 router.replace('/')
             }
-            
+
         };
-        
+
 
         if (typeof window !== 'undefined') {
             fetchUserData();
@@ -74,24 +89,57 @@ export default function Home() {
     }, []);
 
 
+    // Fetch posts whenever page, accessToken, or active tab changes.
+    // `cancelled` is set to true by the cleanup function when the effect
+    // re-runs (tab switched, page changed) so stale responses are ignored.
     useEffect(() => {
-        if(accessToken)
-        {
-            if (isTabtdy) {
-            fetchTdyPost();
-        } else {
-            fetchPost();
-        }}
+        if (!accessToken) return;
+        if (isLastPost) return;
 
-    }, [page,accessToken]);
+        let cancelled = false;
+        isLoadingRef.current = true;
+
+        const doFetch = async () => {
+            if (isTabtdy) {
+                const { success, data, error } = await getTodayPosts({ accessToken, refreshToken, page });
+                if (cancelled) return;
+                if (success) {
+                    setPosts(prevPosts => [...prevPosts, ...data]);
+                    if (data.length < 3 || data.length === 0) setIsLastPost(true);
+                } else {
+                    setIsLastPost(true);
+                    if (error === '409') router.replace('/');
+                }
+            } else {
+                const { success, data, error } = await getPosts({ accessToken, refreshToken, page });
+                if (cancelled) return;
+                if (success) {
+                    setPosts(prevPosts => [...prevPosts, ...data.posts]);
+                    if (data.length < 3 || data.posts.length === 0) setIsLastPost(true);
+                } else {
+                    setIsLastPost(true);
+                    if (error === '409') router.replace('/');
+                }
+            }
+            isLoadingRef.current = false;
+        };
+
+        doFetch();
+
+        return () => {
+            cancelled = true;
+            isLoadingRef.current = false;
+        };
+    }, [page, accessToken, isTabtdy, resetCount]);
 
     useEffect(() => {
         const entryCallback = (entries:any) => {
             const entry = entries[0];
-            if (entry.isIntersecting) {
+            // Guard: do not increment page while a fetch is already in flight.
+            // Without this, clearing posts (tab switch) makes the sentinel div
+            // immediately visible and jumps page from 1 → 2 before page 1 loads.
+            if (entry.isIntersecting && !isLoadingRef.current) {
                 setPage(prevPage => prevPage + 1);
-
-
             }
         };
 
@@ -107,60 +155,12 @@ export default function Home() {
                 observer.unobserve(myRef.current);
             }
         };
-    }, [page]);
-
-    const fetchTdyPost = async () => {
-        if(!isLastPost) {
-        setIsLoading(true);
-       const { success, data, error } = await getTodayPosts({ accessToken, refreshToken, page });
-
-        if (success) {
-
-            setPosts(prevPosts => [...prevPosts, ...data]);
-            if (data.length < 3 || data.length === 0) {
-                setIsLastPost(true);
-
-            }
-            setIsLoading(false);
-
-        } else{
-            setIsLastPost(true);
-        }
-    
-        if(!success && error === '409'){
-            console.log("login failed");
-            router.replace('/')
-        }
-    }
-    };
-
-    const fetchPost = async () => {
-        if(!isLastPost) {
-        setIsLoading(true);
-        const { success, data, error } = await getPosts({ accessToken, refreshToken, page });
-
-        if (success) {
-            setPosts(prevPosts => [...prevPosts, ...data.posts]);
-            if (data.length < 3|| data.posts.length === 0) {
-                setIsLastPost(true);
-
-            }
-            setIsLoading(false);
-   
-        } else{
-            setIsLastPost(true);
-        }
-        if(!success && error === '409'){
-            console.log("login failed");
-            router.replace('/')
-        }
-    }
-    };
+    }, [page, isLastPost]);
 
     return (
         <main className={style.main}>
             <TabProvider>
-                <Tab setIsLastPost={setIsLastPost} setPosts={setPosts} setPage={setPage} setIsTdy={setIsTabtdy}/>
+                <Tab setIsLastPost={setIsLastPost} setPosts={setPosts} setPage={setPage} setIsTdy={setIsTabtdy} onTabChange={onTabChange}/>
                 <div className={style.postContainer}>
                     {posts.length === 0 && (
                         <ComponentLoader body={'오늘 아직 아무도 묵상을 완료하지 않았네요..'}/>
