@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -99,13 +100,16 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<ChatDto.MessageResponse> getMessages(long roomId, int page, int size) {
-        Page<ChatMessage> messages = chatMessageRepository.findByChatRoomIdOrderByCreatedAtAsc(
+        // Load most-recent `size` messages (DESC), then reverse to display oldest-first
+        Page<ChatMessage> messages = chatMessageRepository.findByChatRoomIdOrderByCreatedAtDesc(
                 roomId, PageRequest.of(page - 1, size));
-        return messages.getContent().stream().map(m -> new ChatDto.MessageResponse(
+        List<ChatDto.MessageResponse> result = messages.getContent().stream().map(m -> new ChatDto.MessageResponse(
                 m.getId(), roomId,
                 m.getSender().getEmail(), m.getSender().getNickname(),
                 m.getContent(), toUtcString(m.getCreatedAt())
         )).collect(Collectors.toList());
+        Collections.reverse(result);
+        return result;
     }
 
     @Transactional(readOnly = true)

@@ -11,5 +11,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 
     Page<ChatMessage> findByChatRoomIdOrderByCreatedAtAsc(long chatRoomId, Pageable pageable);
 
+    Page<ChatMessage> findByChatRoomIdOrderByCreatedAtDesc(long chatRoomId, Pageable pageable);
+
     Optional<ChatMessage> findTopByChatRoomIdOrderByCreatedAtDesc(long chatRoomId);
 }

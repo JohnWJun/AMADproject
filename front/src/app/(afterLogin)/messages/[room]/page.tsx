@@ -5,7 +5,7 @@ import cx from 'classnames';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/ko';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { getMessages, getRoom, MessageResponse, RoomResponse } from '@/app/(afterLogin)/_lib/ChatApi';
@@ -20,6 +20,8 @@ dayjs.extend(relativeTime);
 const getWsBase = () =>
     typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
 
+const PAGE_SIZE = 20;
+
 type Props = { params: { room: string } };
 
 export default function ChatRoom({ params }: Props) {
@@ -32,6 +34,12 @@ export default function ChatRoom({ params }: Props) {
     const clientRef = useRef<Client | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
+    // Pagination state in refs to avoid stale closures in scroll handler
+    const pageRef = useRef(1);
+    const hasMoreRef = useRef(false);
+    const isLoadingMoreRef = useRef(false);
+    const tokenRef = useRef({ accessToken: '', refreshToken: '' });
+
     // Clear the badge when the user opens any chat room
     useEffect(() => { setUnreadCount(0); }, []);
 
@@ -39,9 +47,16 @@ export default function ChatRoom({ params }: Props) {
         if (typeof window === 'undefined' || !memberInfo.id) return;
         const accessToken = localStorage.getItem('Authorization') || '';
         const refreshToken = localStorage.getItem('Refresh') || '';
+        tokenRef.current = { accessToken, refreshToken };
+        pageRef.current = 1;
+        hasMoreRef.current = false;
+        isLoadingMoreRef.current = false;
 
         getMessages({ accessToken, refreshToken, roomId, page: 1 }).then(({ success, data }) => {
-            if (success && data) setMessages(data);
+            if (success && data) {
+                setMessages(data);
+                hasMoreRef.current = data.length >= PAGE_SIZE;
+            }
         });
 
         getRoom({ accessToken, refreshToken, roomId }).then(({ success, data }) => {
@@ -67,11 +82,51 @@ export default function ChatRoom({ params }: Props) {
         };
     }, [roomId, memberInfo.id]);
 
-    useEffect(() => {
-        if (listRef.current) {
+    // Scroll to bottom on new messages — but skip when we're prepending older ones.
+    // useLayoutEffect runs synchronously after DOM commit (before paint), so it fires
+    // before requestAnimationFrame, letting the load-more handler win when needed.
+    useLayoutEffect(() => {
+        if (!isLoadingMoreRef.current && listRef.current) {
             listRef.current.scrollTop = listRef.current.scrollHeight;
         }
     }, [messages]);
+
+    // Infinite scroll: load older messages when the user scrolls to the very top
+    useEffect(() => {
+        const list = listRef.current;
+        if (!list) return;
+
+        const handleScroll = () => {
+            if (list.scrollTop > 0 || !hasMoreRef.current || isLoadingMoreRef.current) return;
+
+            isLoadingMoreRef.current = true;
+            const nextPage = pageRef.current + 1;
+            const prevScrollHeight = list.scrollHeight;
+            const { accessToken, refreshToken } = tokenRef.current;
+
+            getMessages({ accessToken, refreshToken, roomId, page: nextPage }).then(({ success, data }) => {
+                if (success && data && data.length > 0) {
+                    setMessages(prev => [...data, ...prev]);
+                    pageRef.current = nextPage;
+                    hasMoreRef.current = data.length >= PAGE_SIZE;
+                    // After React commits the prepended messages, restore scroll position
+                    // so the view doesn't jump to the top.
+                    requestAnimationFrame(() => {
+                        if (listRef.current) {
+                            listRef.current.scrollTop = listRef.current.scrollHeight - prevScrollHeight;
+                        }
+                        isLoadingMoreRef.current = false;
+                    });
+                } else {
+                    hasMoreRef.current = false;
+                    isLoadingMoreRef.current = false;
+                }
+            });
+        };
+
+        list.addEventListener('scroll', handleScroll);
+        return () => list.removeEventListener('scroll', handleScroll);
+    }, [roomId]);
 
     const sendMessage = () => {
         if (!content.trim() || !clientRef.current?.connected) return;
