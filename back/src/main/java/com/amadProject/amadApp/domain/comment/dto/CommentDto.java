@@ -13,6 +13,7 @@ public class CommentDto {
     @Setter
     public static class Post{
         private String mention;
+        private Long parentId;
     }
 
     @Getter
@@ -32,6 +33,8 @@ public class CommentDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private String mention;
+        private boolean deleted;
+        private List<Response> replies;
     }
     @Getter
     @Setter

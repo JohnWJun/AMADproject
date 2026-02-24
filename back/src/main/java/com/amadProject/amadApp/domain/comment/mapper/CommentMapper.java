@@ -4,6 +4,7 @@ import com.amadProject.amadApp.domain.comment.dto.CommentDto;
 import com.amadProject.amadApp.domain.comment.entity.Comment;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
@@ -21,6 +22,11 @@ public interface CommentMapper {
             response.setModifiedAt(comment.getModifiedAt());
             response.setWriter(comment.getMember().getEmail());
             response.setStatusImg(comment.getMember().getStatusImg());
+            response.setDeleted(comment.isDeleted());
+            List<Comment> children = comment.getChildren();
+            response.setReplies(children != null && !children.isEmpty()
+                ? commentsToResponses(children)
+                : new ArrayList<>());
 
             return response;
         };

@@ -30,7 +30,7 @@ public class CommentController {
                                       @PathVariable("post-id") long postId,
                                       @PathVariable("member-id") long memberId){
 
-        Comment comment = service.createComment(mapper.postToComment(post),postId,memberId);
+        Comment comment = service.createComment(mapper.postToComment(post), postId, memberId, post.getParentId());
         CommentDto.Response response = mapper.commentToResponse(comment);
       return new ResponseEntity<>(response,HttpStatus.CREATED);
     }

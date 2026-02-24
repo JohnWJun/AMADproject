@@ -139,3 +139,55 @@
 .actionButton:hover {
     background-color: rgb(26, 140, 216);
 }
+.replyIndent {
+    border-left: 2px solid rgb(239, 243, 244);
+    padding-left: 12px;
+}
+.replyButton {
+    font-size: 13px;
+    color: rgb(29, 155, 240);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0 4px 16px;
+}
+.replyForm {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0 8px 16px;
+}
+.replyForm textarea {
+    width: 100%;
+    border: 1px solid rgb(207, 217, 222);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+}
+.replySubmit {
+    background-color: rgb(29, 155, 240);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-right: 6px;
+}
+.replySubmit:disabled { opacity: 0.5; }
+.replyCancel {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #536471;
+    cursor: pointer;
+    padding: 6px 8px;
+}
+.deletedComment {
+    color: #536471;
+    font-style: italic;
+    font-size: 14px;
+}

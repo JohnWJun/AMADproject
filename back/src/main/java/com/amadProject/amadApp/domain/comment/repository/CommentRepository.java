@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("select c FROM Comment c WHERE c.post.id = :postId")
+    @Query(value = "select c FROM Comment c WHERE c.post.id = :postId AND c.parent IS NULL ORDER BY c.createdAt ASC",
+           countQuery = "select count(c) FROM Comment c WHERE c.post.id = :postId AND c.parent IS NULL")
     Page<Comment> findAllByPostId(long postId, Pageable pageable);
+
+    boolean existsByParentId(Long parentId);
 }

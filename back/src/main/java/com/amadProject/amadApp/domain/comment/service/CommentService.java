@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +28,18 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Comment createComment(Comment comment, long postId, long memberId){
+    public Comment createComment(Comment comment, long postId, long memberId, Long parentId){
 
         Member findMember = memberRepository.findById(memberId).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Post findPost = postRepository.findById(postId).orElseThrow(()->new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         comment.setPost(findPost);
         comment.setMember(findMember);
+        if (parentId != null) {
+            Comment parent = repository.findById(parentId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+            comment.setParent(parent);
+        }
         return repository.save(comment);
     };
 
@@ -53,11 +57,32 @@ public class CommentService {
 
     public Page<Comment> findComments(int page, int size,long postId){
 
-       return repository.findAllByPostId(postId,PageRequest.of(page-1,size, Sort.by("createdAt").descending()));
+       return repository.findAllByPostId(postId, PageRequest.of(page - 1, size));
     };
 
     public void deleteComment(long commentId){
         Comment comment = repository.findById(commentId).orElseThrow(()->new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
-        repository.delete(comment);
+        if (repository.existsByParentId(commentId)) {
+            comment.setDeleted(true);
+            repository.save(comment);
+        } else {
+            Long parentId = comment.getParent() != null ? comment.getParent().getId() : null;
+            repository.delete(comment);
+            if (parentId != null) {
+                cleanUpDeletedAncestors(parentId);
+            }
+        }
     };
+
+    private void cleanUpDeletedAncestors(Long commentId) {
+        Comment comment = repository.findById(commentId).orElse(null);
+        if (comment == null) return;
+        if (comment.isDeleted() && !repository.existsByParentId(commentId)) {
+            Long parentId = comment.getParent() != null ? comment.getParent().getId() : null;
+            repository.delete(comment);
+            if (parentId != null) {
+                cleanUpDeletedAncestors(parentId);
+            }
+        }
+    }
 }
