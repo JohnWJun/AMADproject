@@ -47,8 +47,9 @@ export async function apiFetch<T = any>(
                 });
 
                 if (finalRes.status === 204) return { success: true };
-                const data = await finalRes.json() as T;
-                return { success: true, data };
+                const text = await finalRes.text();
+                if (!text) return { success: true };
+                return { success: true, data: JSON.parse(text) as T };
             }
 
             return { success: false, error: '409' };
@@ -57,8 +58,9 @@ export async function apiFetch<T = any>(
         if (res.status === 204) return { success: true };
 
         if (res.ok) {
-            const data = await res.json() as T;
-            return { success: true, data };
+            const text = await res.text();
+            if (!text) return { success: true };
+            return { success: true, data: JSON.parse(text) as T };
         }
 
         return { success: false, error: String(res.status) };

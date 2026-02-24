@@ -8,11 +8,10 @@ import PostAbstract from "@/app/(afterLogin)/_component/PostAbstract";
 import {usePathname, useRouter} from "next/navigation";
 import {ChangeEventHandler, useEffect, useState} from "react";
 import {getTodayPosts} from "@/app/(afterLogin)/_lib/PostApi";
-import {getUserInfo, patchNickname} from "@/app/(afterLogin)/_lib/MemberApi";
+import {getUserInfo, patchNickname, getFollowings} from "@/app/(afterLogin)/_lib/MemberApi";
 import {createOrGetRoom} from "@/app/(afterLogin)/_lib/ChatApi";
-import {tr} from "@faker-js/faker";
+import {followMember, getFollowStatus, unfollowMember} from "@/app/(afterLogin)/_lib/FollowApi";
 import Loader from "@/app/_component/Loader";
-import {router} from "next/client";
 
 type Props = {
 
@@ -38,6 +37,9 @@ export default function Profile() {
     const [isEdit, setIsEdit] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isPatched, setIsPatched] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [followLoading, setFollowLoading] = useState(false);
+    const [followingList, setFollowingList] = useState<Props[]>([]);
     const onClickChangeButton = () => {
         setIsEdit(true);
     }
@@ -75,6 +77,19 @@ export default function Profile() {
             if (success) {
                 setUserToFind(data);
                 setNickname(data.nickname);
+                if (data.email === loginUserEmail) {
+                    const followResult = await getFollowings({ accessToken, refreshToken, memberId: Number(data.id) });
+                    if (followResult.success) setFollowingList(followResult.data);
+                } else if (userId) {
+                    const statusResult = await getFollowStatus({
+                        accessToken, refreshToken,
+                        followingId: Number(data.id),
+                        followerId: Number(userId),
+                    });
+                    if (statusResult.success) {
+                        setIsFollowing(statusResult.data.following);
+                    }
+                }
             }
             if(!success && error === '409'){
                 console.log("login failed");
@@ -83,6 +98,27 @@ export default function Profile() {
         };
         fetchUserInfo();
     }, [accessToken,refreshToken,emailToFind]);
+
+    const onClickFollow = async () => {
+        if (!userToFind || followLoading) return;
+        setFollowLoading(true);
+        if (isFollowing) {
+            const { success } = await unfollowMember({
+                accessToken, refreshToken,
+                followingId: Number(userToFind.id),
+                followerId: Number(userId),
+            });
+            if (success) setIsFollowing(false);
+        } else {
+            const { success, error } = await followMember({
+                accessToken, refreshToken,
+                followingId: Number(userToFind.id),
+                followerId: Number(userId),
+            });
+            if (success || error === '409') setIsFollowing(true);
+        }
+        setFollowLoading(false);
+    };
 
     const onClickChat = async () => {
         const { success, data } = await createOrGetRoom({
@@ -175,9 +211,21 @@ export default function Profile() {
                             d="M20.808,11.079C19.829,16.132,12,20.5,12,20.5s-7.829-4.368-8.808-9.421C2.227,6.1,5.066,3.5,8,3.5a4.444,4.444,0,0,1,4,2,4.444,4.444,0,0,1,4-2C18.934,3.5,21.773,6.1,20.808,11.079Z"/>
                     </svg>
                 </div>
-
-
             </div>
+            {followingList.length > 0 && (
+                <div className={style.followingSection}>
+                    <h4 className={style.followingTitle}>팔로우 중 ({followingList.length})</h4>
+                    <div className={style.followingList}>
+                        {followingList.map((f) => (
+                            <div key={String(f.id)} className={style.followingItem}
+                                 onClick={() => router.push(`/${f.email}`)}>
+                                <img src={f.statusImg} alt={f.nickname} className={style.followingAvatar}/>
+                                <span className={style.followingNickname}>{f.nickname}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </main>
     )}
     else{
@@ -195,7 +243,13 @@ export default function Profile() {
                         <div>{userToFind.nickname}</div>
                         <div>{userToFind.email}</div>
                     </div>
-                    <button className={style.followButton}>팔로우</button>
+                    <button
+                        className={isFollowing ? style.unfollowButton : style.followButton}
+                        onClick={onClickFollow}
+                        disabled={followLoading}
+                    >
+                        {isFollowing ? '언팔로우' : '팔로우'}
+                    </button>
                     <button className={style.chatButton} onClick={onClickChat}>쪽지</button>
                 </div>
                 <div className={style.statusContainer}>

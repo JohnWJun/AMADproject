@@ -15,7 +15,9 @@ public enum ExceptionCode {
     IMAGE_NOT_FOUND(404, "Image not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
     LIKEPOST_NOT_FOUND(404, "likePost not found"),
-    CHAT_ROOM_NOT_FOUND(404, "Chat room not found");
+    CHAT_ROOM_NOT_FOUND(404, "Chat room not found"),
+    FOLLOW_EXISTS(409, "Already following"),
+    FOLLOW_NOT_FOUND(404, "Follow not found");
 
     @Getter
     private int status;

@@ -50,9 +50,9 @@ public class MemberService {
 
     }
     @Transactional(readOnly = true)
-    public Page<Member> findRecommendedMembers(int page, int size){
-        return memberRepository.findAll( PageRequest.of(page-1,size, Sort.by("intimacy").descending()));
-
+    public Page<Member> findRecommendedMembers(int page, int size, Long myId){
+        return memberRepository.findRecommendedExcludingFollowed(
+                myId, PageRequest.of(page - 1, size, Sort.by("intimacy").descending()));
     }
 
     public void deleteMember(Long memberId){

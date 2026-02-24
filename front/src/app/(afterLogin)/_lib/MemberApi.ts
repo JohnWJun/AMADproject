@@ -37,6 +37,11 @@ export const getMembers = ({
 }: TokenProps & { page: number }) =>
     apiFetch(`/members?page=${page}&size=10`, { method: 'GET', accessToken, refreshToken });
 
+export const getFollowings = ({
+    accessToken, refreshToken, memberId,
+}: TokenProps & { memberId: number }) =>
+    apiFetch(`/members/${memberId}/following`, { method: 'GET', accessToken, refreshToken });
+
 export const deleteMember = ({
     storedAccessToken, storedRefreshToken, memberId,
 }: { storedAccessToken: string; storedRefreshToken: string; memberId: bigint }) =>

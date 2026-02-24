@@ -4,6 +4,7 @@ import com.amadProject.amadApp.domain.comment.dto.CommentDto;
 import com.amadProject.amadApp.domain.comment.entity.Comment;
 import com.amadProject.amadApp.domain.member.dto.MemberDto;
 import com.amadProject.amadApp.domain.member.entity.Member;
+import com.amadProject.amadApp.domain.follow.service.FollowService;
 import com.amadProject.amadApp.domain.member.mapper.MemberMapper;
 import com.amadProject.amadApp.domain.member.service.MemberService;
 import groovy.lang.GString;
@@ -28,6 +29,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper memberMapper;
+    private final FollowService followService;
 
     @PostMapping("/sign-up")
     public ResponseEntity postMember(@RequestBody MemberDto.Post post){
@@ -76,9 +78,17 @@ public class MemberController {
     @GetMapping("/recommend")
     public ResponseEntity getRecommendedMembers(@Positive @RequestParam int page,
                                      @Positive @RequestParam int size){
-        Page<Member> pages = memberService.findRecommendedMembers(page,size);
+        String email = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Member me = memberService.findMember(email);
+        Page<Member> pages = memberService.findRecommendedMembers(page, size, me.getId());
         List<MemberDto.Response> responses = memberMapper.membersToMemberResponses(pages.getContent());
         return new ResponseEntity<>(responses,HttpStatus.OK);
+    }
+
+    @GetMapping("/{member-id}/following")
+    public ResponseEntity getFollowings(@PathVariable("member-id") long memberId) {
+        List<MemberDto.Response> responses = memberMapper.membersToMemberResponses(followService.getFollowings(memberId));
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")

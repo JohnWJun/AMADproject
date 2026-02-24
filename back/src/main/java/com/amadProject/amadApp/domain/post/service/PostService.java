@@ -210,4 +210,11 @@ public class PostService {
         }
         return postRepository.findAllByKeyword(keyword, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
     }
+
+    public Page<Post> findPostsByKeywordAndFollowing(String keyword, int page, int size, String sortBy, Long myId) {
+        if ("likes".equals(sortBy)) {
+            return postRepository.findAllByKeywordAndFollowingSortedByLikes(keyword, myId, PageRequest.of(page-1, size));
+        }
+        return postRepository.findAllByKeywordAndFollowing(keyword, myId, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
+    }
 }

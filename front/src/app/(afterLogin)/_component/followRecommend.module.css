@@ -55,3 +55,13 @@
 .followButtonSection button:hover {
     background-color: rgb(39,44,48);
 }
+.followButtonSection .unfollowBtn {
+    background: white;
+    color: black;
+    border: 1px solid rgb(207, 217, 222);
+}
+.followButtonSection .unfollowBtn:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background-color: rgba(244, 33, 46, 0.1);
+}

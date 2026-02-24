@@ -27,6 +27,7 @@ export default function Search() {
     const searchParams = useSearchParams();
     const q = searchParams.get('q') || '';
     const f = searchParams.get('f') || '';
+    const pf = searchParams.get('pf') || '';
     const router = useRouter();
 
     const [accessToken, setAccessToken] = useState('');
@@ -46,14 +47,14 @@ export default function Search() {
         setRefreshToken(localStorage.getItem("Refresh") || '');
     }, []);
 
-    // Reset when keyword or tab changes
+    // Reset when keyword, tab, or follow filter changes
     useEffect(() => {
         setPosts([]);
         setPage(1);
         setIsLast(false);
         setSearched(false);
         isLoadingRef.current = false;
-    }, [q, f]);
+    }, [q, f, pf]);
 
     // Fetch whenever page, keyword, or tab changes
     useEffect(() => {
@@ -61,7 +62,7 @@ export default function Search() {
         isLoadingRef.current = true;
         const fetch = async () => {
             const { success, data, error } = await getPostBySearch({
-                accessToken, refreshToken, keyword: q, page, f: f || undefined,
+                accessToken, refreshToken, keyword: q, page, f: f || undefined, pf: pf || undefined,
             });
             if (success) {
                 setPosts(prev => page === 1 ? data : [...prev, ...data]);
@@ -73,7 +74,7 @@ export default function Search() {
             isLoadingRef.current = false;
         };
         fetch();
-    }, [accessToken, q, f, page]);
+    }, [accessToken, q, f, pf, page]);
 
     // IntersectionObserver — only active after first page has loaded
     useEffect(() => {

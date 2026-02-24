@@ -155,6 +155,62 @@
     background-color: rgb(39,44,48);
 }
 
+.followingSection {
+    padding: 16px 24px;
+    border-top: 1px solid rgb(239, 243, 244);
+}
+.followingTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: rgb(15, 20, 25);
+}
+.followingList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.followingItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+.followingItem:hover {
+    background-color: rgba(15, 20, 25, 0.05);
+}
+.followingAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.followingNickname {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.unfollowButton {
+    border: 1px solid rgb(207, 217, 222);
+    padding: 0 16px;
+    border-radius: 17px;
+    height: 34px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: black;
+    cursor: pointer;
+}
+.unfollowButton:hover {
+    border-color: #f4212e;
+    color: #f4212e;
+    background-color: rgba(244, 33, 46, 0.1);
+}
+
 .chatButton {
     border: 1px solid rgb(207, 217, 222);
     padding: 0 16px;
