@@ -45,6 +45,7 @@ async function fetchHistory(accessToken: string, refreshToken: string): Promise<
 
 async function sendMessage(
     message: string,
+    history: string[],
     accessToken: string,
     refreshToken: string,
 ): Promise<ChatResponse> {
@@ -56,7 +57,7 @@ async function sendMessage(
             Refresh: refreshToken ? `Bearer ${refreshToken}` : "",
         },
         credentials: "include",
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ text_ko: message, history_ko: history, limit_verses: 5 }),
     });
 
     if (!res.ok) {
@@ -81,6 +82,7 @@ export default function AiChatWidget() {
     const [remainingTokens, setRemainingTokens] = useState<number | null>(null);
     const [dailyLimit, setDailyLimit] = useState(20000);
     const [errorBanner, setErrorBanner] = useState<string | null>(null);
+    const [userHistory, setUserHistory] = useState<string[]>([]);
 
     const bottomRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -129,10 +131,13 @@ export default function AiChatWidget() {
         setMessages((prev) => [...prev, optimisticMsg]);
         setLoading(true);
 
+        const nextHistory = [...userHistory, text].slice(-8);
+        setUserHistory(nextHistory);
+
         const accessToken = localStorage.getItem("Authorization") || "";
         const refreshToken = localStorage.getItem("Refresh") || "";
 
-        const res = await sendMessage(text, accessToken, refreshToken);
+        const res = await sendMessage(text, nextHistory, accessToken, refreshToken);
         setLoading(false);
 
         if (res.status === "ok") {
@@ -164,8 +169,8 @@ export default function AiChatWidget() {
             <button
                 className={style.fab}
                 onClick={handleToggle}
-                aria-label="AI 성경 상담"
-                title="AI 성경 상담"
+                aria-label="PathFinder"
+                title="PathFinder"
             >
                 {open ? (
                     // Close icon
@@ -189,7 +194,7 @@ export default function AiChatWidget() {
                         <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 6, color: "#6b7280" }}>
                             <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                         </svg>
-                        AI 성경 상담
+                        PathFinder
                     </div>
                     {tokenPercent !== null && (
                         <div className={style.tokenBadge} title={`오늘 남은 토큰: ${remainingTokens?.toLocaleString()}`}>
