@@ -22,7 +22,9 @@ public enum ExceptionCode {
     NOT_GROUP_MEMBER(403, "Not a group member"),
     NOT_GROUP_ADMIN(403, "Not a group admin"),
     MEMBER_ALREADY_IN_GROUP(409, "Already a member or pending"),
-    JOIN_REQUEST_NOT_FOUND(404, "Join request not found");
+    JOIN_REQUEST_NOT_FOUND(404, "Join request not found"),
+    AI_RATE_LIMITED(429, "Too many requests. Please wait a moment."),
+    AI_SERVICE_UNAVAILABLE(503, "AI service is temporarily unavailable.");
 
     @Getter
     private int status;

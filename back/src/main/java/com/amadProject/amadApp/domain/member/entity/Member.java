@@ -9,6 +9,7 @@ import com.amadProject.amadApp.domain.post.like.entity.LikePost;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,13 @@ public class Member extends Auditable {
 
     @Column
     private boolean isMadePostToday = false;
+
+    // AI counseling token quota (resets daily)
+    @Column(nullable = false)
+    private int aiTokensUsedToday = 0;
+
+    @Column
+    private LocalDate aiTokensResetDate;
 
 
     @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

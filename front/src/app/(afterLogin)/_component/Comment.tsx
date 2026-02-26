@@ -171,7 +171,13 @@ export default function Comment({comment, me, onCommentPatched, depth = 0}:Props
                 )}
             </div>
             {!comment.deleted && (
-                <button className={style.replyButton} onClick={() => setShowReply(v => !v)}>답글 달기</button>
+                <button className={style.replyButton} onClick={() => {
+                    if (!loginUser.email) {
+                        router.push('/i/flow/signup');
+                        return;
+                    }
+                    setShowReply(v => !v);
+                }}>답글 달기</button>
             )}
             {showReply && (
                 <div className={style.replyForm}>

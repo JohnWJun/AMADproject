@@ -9,6 +9,7 @@ import RightSearchZone from "@/app/(afterLogin)/_component/RightSearchZone";
 import MainLogo from "@/app/_component/MainLogo";
 import ComposeButton from "@/app/(afterLogin)/_component/ComposeButton";
 import MessageNotificationListener from "@/app/(afterLogin)/_component/MessageNotificationListener";
+import AiChatWidget from "@/app/(afterLogin)/_component/AiChatWidget";
 
 type Props = { children: ReactNode, modal: ReactNode };
 export default async function AfterLoginLayout({children, modal}: Props) {
@@ -64,6 +65,7 @@ export default async function AfterLoginLayout({children, modal}: Props) {
             </div>
             {modal}
             <MessageNotificationListener />
+            <AiChatWidget />
         </div>
     )
 }

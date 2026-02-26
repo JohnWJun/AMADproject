@@ -166,6 +166,18 @@ export default function NavMenu() {
                     </div>
                 </Link>
             </li>
+            {!me?.email && <li>
+                <Link href="/i/flow/login">
+                    <div className={style.navPill}>
+                        <svg width={26} viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path d="M12 2C9.791 2 8 3.79 8 6s1.791 4 4 4 4-1.79 4-4-1.791-4-4-4zm0 6c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm5.863 5.44C16.373 11.85 14.352 11 12 11s-4.373.85-5.863 2.44C4.677 15.02 3.788 17.24 3.522 19.9l-.11 1.1h17.176l-.11-1.1c-.266-2.66-1.155-4.88-2.615-6.46z"/>
+                            </g>
+                        </svg>
+                        <div>로그인</div>
+                    </div>
+                </Link>
+            </li>}
             {me?.email && <li>
                 <Link href={`/${me?.email}`}>
                     <div className={style.navPill}>

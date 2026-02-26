@@ -55,6 +55,11 @@ export default function ActionButtons({ white,likes,commentsNum,postId,whoLikesM
     // const onClickRepost = () => {}
     const onClickHeart = () => {
 
+        if (!memberId) {
+            router.push('/i/flow/signup');
+            return;
+        }
+
         if(userInfo && !liked){
             const fetchPostLike = async () =>{
         

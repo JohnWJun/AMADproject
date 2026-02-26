@@ -18,8 +18,8 @@ export async function apiFetch<T = any>(
 ): Promise<ApiResult<T>> {
     const baseHeaders: Record<string, string> = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
     };
+    if (accessToken) baseHeaders['Authorization'] = `Bearer ${accessToken}`;
 
     const url = `/api${path}`;
 
@@ -28,6 +28,9 @@ export async function apiFetch<T = any>(
 
         // Access token expired — attempt refresh
         if (res.status === 401) {
+            // No tokens at all — user is not logged in
+            if (!refreshToken) return { success: false, error: '401' };
+
             const refreshRes = await fetch(url, {
                 ...init,
                 headers: { ...baseHeaders, 'Refresh': `Bearer ${refreshToken}` },

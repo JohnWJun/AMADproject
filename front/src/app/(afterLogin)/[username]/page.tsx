@@ -100,6 +100,7 @@ export default function Profile() {
     }, [accessToken,refreshToken,emailToFind]);
 
     const onClickFollow = async () => {
+        if (!userId) { router.push('/i/flow/signup'); return; }
         if (!userToFind || followLoading) return;
         setFollowLoading(true);
         if (isFollowing) {
@@ -121,6 +122,7 @@ export default function Profile() {
     };
 
     const onClickChat = async () => {
+        if (!userId) { router.push('/i/flow/signup'); return; }
         const { success, data } = await createOrGetRoom({
             accessToken, refreshToken,
             member1Id: Number(userId),

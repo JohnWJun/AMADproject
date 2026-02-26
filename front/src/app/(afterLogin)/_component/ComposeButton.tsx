@@ -33,6 +33,15 @@ export default function ComposeButton({ className }: Props) {
         checkTodayPost();
     }, [memberId, accessToken, pathname]);
 
+    if (!memberInfo.email) {
+        return (
+            <Link href="/i/flow/signup" className={className}>
+                <span>묵상하기</span>
+                <PostButton />
+            </Link>
+        );
+    }
+
     if (hasTodayPost) {
         return (
             <div className={className} style={{ opacity: 0.4, cursor: 'not-allowed', pointerEvents: 'none' }}>

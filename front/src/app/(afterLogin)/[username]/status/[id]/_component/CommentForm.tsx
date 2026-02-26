@@ -7,6 +7,7 @@ import {Member} from "@/app/_component/MemberRecoilState";
 import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
 import {postComment} from "@/app/(afterLogin)/_lib/CommentApi";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 type Props = {
     postId: bigint,
@@ -43,6 +44,16 @@ export default function CommentForm({ postId, onCommentAdded }: Props) {
         setContent(e.target.value);
     }
 
+
+    if (!me.email) {
+        return (
+            <div className={style.postForm} style={{ justifyContent: 'center', padding: '16px' }}>
+                <Link href="/i/flow/signup" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                    로그인하고 댓글을 달아보세요
+                </Link>
+            </div>
+        );
+    }
 
         return (
         <form className={style.postForm} onSubmit={onSubmit}>

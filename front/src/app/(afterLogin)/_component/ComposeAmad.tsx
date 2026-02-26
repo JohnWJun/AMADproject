@@ -25,8 +25,13 @@ export default function ComposeAmad() {
     const [selectedGroupId, setSelectedGroupId] = useState<string>(groupIdFromUrl || '');
 
     useEffect(() => {
+        const token = localStorage.getItem('Authorization');
+        if (!token) {
+            router.replace('/i/flow/signup');
+            return;
+        }
         const loadGroups = async () => {
-            const accessToken = localStorage.getItem('Authorization') || '';
+            const accessToken = token;
             const refreshToken = localStorage.getItem('Refresh') || '';
             const result = await getMyGroups({ accessToken, refreshToken });
             if (result.success && result.data) {
