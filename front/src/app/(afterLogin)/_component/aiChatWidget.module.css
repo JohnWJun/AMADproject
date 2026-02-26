@@ -299,16 +299,71 @@
 
 /* ── Mobile responsive ───────────────────────────────────────────────────── */
 @media (max-width: 480px) {
+    /* FAB sits 14px above the 50px mobile nav bar */
     .fab {
-        bottom: 80px;
+        bottom: 68px;
         right: 16px;
+        left: auto;
+        width: 48px;
+        height: 48px;
     }
 
+    /* Full-width bottom sheet anchored just above the nav bar */
     .panel {
-        right: 10px;
-        left: 10px;
-        width: auto;
-        bottom: 148px;
-        max-width: unset;
+        left: 0;
+        right: 0;
+        bottom: 50px;
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 120px);
+        max-height: calc(100vh - 120px);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.14);
+
+        /* Override slide-up origin for sheet animation */
+        transform: translateY(30px) scale(1);
+    }
+
+    .panelOpen {
+        transform: translateY(0) scale(1);
+    }
+
+    .header {
+        padding: 16px 18px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .messages {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .bubble {
+        max-width: 88%;
+    }
+
+    .bubbleText {
+        font-size: 14px;
+    }
+
+    /* Right padding clears the FAB (48px wide + 16px from edge + 8px gap = 72px) */
+    .inputRow {
+        padding: 10px 72px 6px 14px;
+    }
+
+    .input {
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+
+    .sendButton {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .charCount {
+        padding: 2px 72px 10px 16px;
+        font-size: 12px;
     }
 }
