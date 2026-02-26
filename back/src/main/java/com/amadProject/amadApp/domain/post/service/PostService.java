@@ -6,6 +6,11 @@ import com.amadProject.amadApp.common.tools.calculator.MemberIntimacyCalculator;
 import com.amadProject.amadApp.domain.amad.entity.Amad;
 import com.amadProject.amadApp.domain.amad.repository.AmadRepository;
 import com.amadProject.amadApp.domain.amad.service.AmadService;
+import com.amadProject.amadApp.domain.group.entity.GroupMember;
+import com.amadProject.amadApp.domain.group.entity.StudyGroup;
+import com.amadProject.amadApp.domain.group.entity.enums.MemberStatus;
+import com.amadProject.amadApp.domain.group.repository.GroupMemberRepository;
+import com.amadProject.amadApp.domain.group.repository.StudyGroupRepository;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.member.repository.MemberRepository;
 import com.amadProject.amadApp.domain.post.dto.PostDto;
@@ -48,6 +53,10 @@ public class PostService {
 
     private final MemberIntimacyCalculator memberIntimacyCalculator;
 
+    private final StudyGroupRepository studyGroupRepository;
+
+    private final GroupMemberRepository groupMemberRepository;
+
 
 
 
@@ -64,6 +73,19 @@ public class PostService {
         memberIntimacyCalculator.addIntimacyPoint(member);
         member.setMadePostToday(true);
         member.setPenaltyPoints(0);
+
+        if (post.getStudyGroup() != null && post.getStudyGroup().getId() != null) {
+            StudyGroup group = studyGroupRepository.findById(post.getStudyGroup().getId())
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.GROUP_NOT_FOUND));
+            groupMemberRepository.findByStudyGroupIdAndMemberId(group.getId(), member.getId())
+                    .filter(gm -> gm.getStatus() == MemberStatus.APPROVED)
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_GROUP_MEMBER));
+            post.setStudyGroup(group);
+        } else {
+            // No group set — cannot be group-only
+            post.setIsGroupOnly(false);
+        }
+
         Post savedPost = postRepository.save(post);
         memberRepository.save(member);
 //        amadRepository.save(post.getAmad());
@@ -200,8 +222,7 @@ public class PostService {
     }
 
     public Page<Post> findAllPosts( int page, int size) {
-        LocalDate tdy = LocalDate.now();
-        return postRepository.findAll(PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
+        return postRepository.findAllPublic(PageRequest.of(page-1, size));
     }
 
     public Page<Post> findPostsByKeyword(String keyword, int page, int size, String sortBy) {
@@ -216,5 +237,13 @@ public class PostService {
             return postRepository.findAllByKeywordAndFollowingSortedByLikes(keyword, myId, PageRequest.of(page-1, size));
         }
         return postRepository.findAllByKeywordAndFollowing(keyword, myId, PageRequest.of(page-1, size, Sort.by("publishedDate").descending()));
+    }
+
+    public Page<Post> findGroupFeed(Long memberId, int page, int size) {
+        return postRepository.findGroupFeedByMemberId(memberId, PageRequest.of(page - 1, size));
+    }
+
+    public Page<Post> findGroupPosts(Long groupId, int page, int size) {
+        return postRepository.findAllByGroupId(groupId, PageRequest.of(page - 1, size));
     }
 }

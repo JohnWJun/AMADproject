@@ -1,16 +1,45 @@
 "use client";
 
 import style from './composeAmad.module.css';
-import {ChangeEventHandler, FormEventHandler, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
+import {ChangeEventHandler, FormEventHandler, useEffect, useRef, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
 import {postPost} from "@/app/(afterLogin)/_lib/PostApi";
+import {getMyGroups} from "@/app/(afterLogin)/_lib/GroupApi";
 import {useRecoilValue} from "recoil";
 import {Member} from "@/app/_component/MemberRecoilState"
+
+type GroupOption = { id: number; name: string };
 
 export default function ComposeAmad() {
 
     type typeForContent = string;
     const memberInfo = useRecoilValue(Member);
+    const searchParams = useSearchParams();
+    const groupIdFromUrl = searchParams.get('groupId');
+
+    const [myGroups, setMyGroups] = useState<GroupOption[]>([]);
+    // 'public' | 'group' | 'both'
+    const [visibility, setVisibility] = useState<'public' | 'group' | 'both'>(
+        groupIdFromUrl ? 'both' : 'public'
+    );
+    const [selectedGroupId, setSelectedGroupId] = useState<string>(groupIdFromUrl || '');
+
+    useEffect(() => {
+        const loadGroups = async () => {
+            const accessToken = localStorage.getItem('Authorization') || '';
+            const refreshToken = localStorage.getItem('Refresh') || '';
+            const result = await getMyGroups({ accessToken, refreshToken });
+            if (result.success && result.data) {
+                setMyGroups(result.data as GroupOption[]);
+            }
+        };
+        loadGroups();
+    }, []);
+
+    // When visibility switches to 'public', clear group selection
+    useEffect(() => {
+        if (visibility === 'public') setSelectedGroupId('');
+    }, [visibility]);
 
     const Post = {
         bibleVerses: [{
@@ -48,8 +77,8 @@ export default function ComposeAmad() {
         e.preventDefault();
 
         // Construct the requestBody object with the updated values
-        const requestBody = {
-
+        const needsGroup = visibility === 'group' || visibility === 'both';
+        const requestBody: any = {
                 bibleVerses: [
                     {
                         bible: book,
@@ -64,9 +93,12 @@ export default function ComposeAmad() {
                 content_3: content_3,
                 content_4: content_4,
                 content_5: content_5,
-                myAmad: amad
-
+                myAmad: amad,
+                isGroupOnly: visibility === 'group',
         };
+        if (needsGroup && selectedGroupId) {
+            requestBody.groupId = parseInt(selectedGroupId);
+        }
 
         const accessToken = localStorage.getItem("Authorization") || '';
         const refreshToken = localStorage.getItem("Refresh") || '';
@@ -153,6 +185,41 @@ export default function ComposeAmad() {
                         <div className={style.inputSection}>
                             <div className={style.inputDiv}>
                                 <h4>오늘의 묵상을 기록하세요.</h4>
+                            </div>
+                            <div className={style.inputDiv}>
+                                <div>
+                                    <h5>공개 범위</h5>
+                                    <div style={{display:'flex', gap:'16px', margin:'6px 0'}}>
+                                        {[
+                                            {val:'public', label:'공개'},
+                                            {val:'group',  label:'그룹만'},
+                                            {val:'both',   label:'공개 + 그룹'},
+                                        ].map(({val, label}) => (
+                                            <label key={val} style={{display:'flex', alignItems:'center', gap:'4px', cursor:'pointer'}}>
+                                                <input
+                                                    type="radio"
+                                                    name="visibility"
+                                                    value={val}
+                                                    checked={visibility === val}
+                                                    onChange={() => setVisibility(val as any)}
+                                                />
+                                                {label}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {(visibility === 'group' || visibility === 'both') && (
+                                        <select
+                                            value={selectedGroupId}
+                                            onChange={e => setSelectedGroupId(e.target.value)}
+                                            style={{marginTop:'6px'}}
+                                        >
+                                            <option value="">그룹 선택</option>
+                                            {myGroups.map(g => (
+                                                <option key={g.id} value={String(g.id)}>{g.name}</option>
+                                            ))}
+                                        </select>
+                                    )}
+                                </div>
                             </div>
                             <div className={style.inputDiv}>
                                 <h5>오늘 나에게 주신 말씀</h5>
@@ -311,7 +378,7 @@ export default function ComposeAmad() {
                                     </svg>
                                 </button>
                             </div>
-                            <button type={"submit"} className={style.actionButton} disabled={!book||!chapter||!from || !to || !content_1 || !content_2 || !content_3 || !content_4 || !content_5 || !amad}>게시하기</button>
+                            <button type={"submit"} className={style.actionButton} disabled={!book||!chapter||!from || !to || !content_1 || !content_2 || !content_3 || !content_4 || !content_5 || !amad || ((visibility==='group'||visibility==='both') && !selectedGroupId)}>게시하기</button>
                         </div>
                     </div>
                 </form>

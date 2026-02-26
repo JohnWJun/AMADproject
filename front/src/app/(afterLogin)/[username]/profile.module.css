@@ -95,7 +95,9 @@
     cursor: pointer;
 }
 @media screen and (max-width: 912px){
-
+    .main {
+        padding-bottom: 70px;
+    }
 }
 @media screen and (max-width: 768px){
     .followButton {
@@ -376,20 +378,21 @@
 }
 
 .form__field:focus {
-    ~ .form__label {
-        position: absolute;
-        top: 0;
-        display: block;
-        transition: 0.2s;
-        font-size: 1rem;
-        color: #142d4c;
-        font-weight:700;
-    }
     padding-bottom: 6px;
     font-weight: 700;
     border-width: 3px;
-    border-image: linear-gradient(to right, #142d4c,#9fd3c7);
+    border-image: linear-gradient(to right, #142d4c, #9fd3c7);
     border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #142d4c;
+    font-weight: 700;
 }
 /* reset input */
 .form__field:required, .form__field:invalid {

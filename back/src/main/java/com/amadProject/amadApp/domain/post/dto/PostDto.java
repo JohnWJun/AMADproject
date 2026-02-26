@@ -57,6 +57,11 @@ public class PostDto {
         private String content_5;
 
         private String myAmad;
+
+        private Long groupId;
+
+        // null / false = public; true = group only
+        private Boolean isGroupOnly;
     }
 
     @Getter
@@ -160,6 +165,9 @@ public class PostDto {
         private int likes;
         private int commentsNum;
         private List<Long> whoLikesMyPost;
+        private Long groupId;
+        private String groupName;
+        private Boolean isGroupOnly;
 
     }
     @Getter

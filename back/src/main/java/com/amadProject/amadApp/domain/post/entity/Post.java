@@ -3,6 +3,7 @@ package com.amadProject.amadApp.domain.post.entity;
 import com.amadProject.amadApp.common.audit.Auditable;
 import com.amadProject.amadApp.domain.amad.entity.Amad;
 import com.amadProject.amadApp.domain.comment.entity.Comment;
+import com.amadProject.amadApp.domain.group.entity.StudyGroup;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.post.like.entity.LikePost;
 import lombok.EqualsAndHashCode;
@@ -57,6 +58,13 @@ public class Post extends Auditable {
 
     @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STUDY_GROUP_ID")
+    private StudyGroup studyGroup;
+
+    // false = visible in public feeds; true = group feed only (requires studyGroup)
+    private Boolean isGroupOnly = false;
 
 
     public void addBible(BibleChapterVerse bibleChapterVerse){

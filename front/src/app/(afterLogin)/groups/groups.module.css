@@ -1,0 +1,121 @@
+.container {
+    padding: 16px;
+    max-width: 600px;
+}
+
+.header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.createForm {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.createForm h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #1d9bf0;
+}
+
+.textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 72px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: #1d9bf0;
+}
+
+.submitButton {
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: #1a8cd8;
+}
+
+.submitButton:disabled {
+    background-color: #a8d8f5;
+    cursor: not-allowed;
+}
+
+.groupList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.groupCard {
+    border: 1px solid #e7e7e7;
+    border-radius: 12px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: background-color 0.15s;
+}
+
+.groupCard:hover {
+    background-color: #f7f7f7;
+}
+
+.groupName {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.groupDesc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.groupMeta {
+    font-size: 12px;
+    color: #888;
+}
+
+.emptyState {
+    text-align: center;
+    color: #888;
+    padding: 40px 16px;
+    font-size: 15px;
+}

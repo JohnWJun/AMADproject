@@ -1,6 +1,7 @@
 package com.amadProject.amadApp.domain.post.mapper;
 
 import com.amadProject.amadApp.domain.amad.entity.Amad;
+import com.amadProject.amadApp.domain.group.entity.StudyGroup;
 import com.amadProject.amadApp.domain.member.entity.Member;
 import com.amadProject.amadApp.domain.post.dto.PostDto;
 import com.amadProject.amadApp.domain.post.entity.BibleChapterVerse;
@@ -44,6 +45,17 @@ public interface PostMapper {
         postToCreate.setContent_5(post.getContent_5());
 
         postToCreate.setBibleChapterVerses(bibleChapterVerses);
+
+        if (post.getGroupId() != null) {
+            StudyGroup sg = new StudyGroup();
+            sg.setId(post.getGroupId());
+            postToCreate.setStudyGroup(sg);
+        }
+
+        if (Boolean.TRUE.equals(post.getIsGroupOnly())) {
+            postToCreate.setIsGroupOnly(true);
+        }
+
         return postToCreate;
     }
 
@@ -178,6 +190,13 @@ public interface PostMapper {
                 }
         ).collect(Collectors.toList());
         abstractResponse.setWhoLikesMyPost(likers);
+
+        if (post.getStudyGroup() != null) {
+            abstractResponse.setGroupId(post.getStudyGroup().getId());
+            abstractResponse.setGroupName(post.getStudyGroup().getName());
+        }
+
+        abstractResponse.setIsGroupOnly(post.getIsGroupOnly());
 
         return abstractResponse;
     }
