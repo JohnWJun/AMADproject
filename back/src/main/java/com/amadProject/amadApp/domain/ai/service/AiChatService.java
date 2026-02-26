@@ -179,8 +179,8 @@ public class AiChatService {
     private String extractCounselingText(String json) {
         try {
             JsonNode root = objectMapper.readTree(json);
-            if (root.has("counsel") && !root.get("counsel").isNull()) {
-                return root.get("counsel").asText().trim();
+            if (root.has("answer_ko") && !root.get("answer_ko").isNull()) {
+                return root.get("answer_ko").asText().trim();
             }
             if (root.has("error")) {
                 log.warn("AI service returned error field: {}", root.get("error").asText());
