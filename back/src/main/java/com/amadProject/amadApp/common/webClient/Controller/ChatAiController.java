@@ -24,7 +24,7 @@ public class ChatAiController {
             return Mono.just(Map.of("error", "message is required"));
         }
 
-        return bibleAiClient.counsel(message)
+        return bibleAiClient.counsel(message, java.util.List.of(), 5)
                 .map(aiResp -> Map.of("answer", aiResp));
     }
 }

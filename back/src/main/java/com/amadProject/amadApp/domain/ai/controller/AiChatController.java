@@ -22,7 +22,7 @@ public class AiChatController {
 
     /**
      * POST /ai-chat
-     * Body: { "message": "..." }
+     * Body: { "text_ko": "...", "history_ko": [...], "limit_verses": 5 }
      *
      * Returns a structured ChatResponse with status, AI reply, and remaining tokens.
      */
