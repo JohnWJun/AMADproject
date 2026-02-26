@@ -58,11 +58,11 @@ public class AiChatService {
         // ── 1. Sanitize & validate ────────────────────────────────────────
         String message = sanitize(rawMessage);
         if (message.isEmpty()) {
-            return errorResponse("메시지를 입력해주세요.", 0);
+            return errorResponse("메시지를 입력해주세요.", -1);
         }
         if (message.length() > MAX_INPUT_LENGTH) {
             return errorResponse(
-                    "메시지는 최대 " + MAX_INPUT_LENGTH + "자까지 입력할 수 있습니다.", 0);
+                    "메시지는 최대 " + MAX_INPUT_LENGTH + "자까지 입력할 수 있습니다.", -1);
         }
 
         // ── 2. Rate limit ────────────────────────────────────────────────
@@ -73,7 +73,7 @@ public class AiChatService {
         if (last != null && Duration.between(last, now).getSeconds() < MIN_INTERVAL_SECONDS) {
             long waitSec = MIN_INTERVAL_SECONDS - Duration.between(last, now).getSeconds();
             return rateLimitedResponse(
-                    "메시지를 너무 빠르게 전송하고 있습니다. " + waitSec + "초 후 다시 시도해주세요.", 0);
+                    "메시지를 너무 빠르게 전송하고 있습니다. " + waitSec + "초 후 다시 시도해주세요.", -1);
         }
         lastRequestMap.put(email, now);
 

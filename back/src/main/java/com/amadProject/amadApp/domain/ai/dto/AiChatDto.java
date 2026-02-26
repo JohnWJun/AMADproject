@@ -1,5 +1,6 @@
 package com.amadProject.amadApp.domain.ai.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,11 @@ public class AiChatDto {
     @Getter
     @Setter
     public static class Request {
+        @JsonProperty("text_ko")
         private String textKo;
+        @JsonProperty("history_ko")
         private java.util.List<String> historyKo;
+        @JsonProperty("limit_verses")
         private int limitVerses = 5;
     }
 
