@@ -7,6 +7,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -14,11 +16,11 @@ import java.util.Map;
 public class BibleAiClient {
     private final WebClient bibleAiWebClient;
 
-    public Mono<String> counsel(String textKo) {
-        Map<String, Object> body = Map.of(
-                "text_ko", textKo,
-                "limit_verses", 5
-        );
+    public Mono<String> counsel(String textKo, List<String> historyKo, int limitVerses) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("text_ko", textKo);
+        body.put("history_ko", historyKo != null ? historyKo : List.of());
+        body.put("limit_verses", limitVerses);
 
         return bibleAiWebClient.post()
                 .uri("/counsel")

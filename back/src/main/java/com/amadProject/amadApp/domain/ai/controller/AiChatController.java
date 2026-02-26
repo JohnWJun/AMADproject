@@ -33,7 +33,8 @@ public class AiChatController {
         String email = resolveEmail();
         log.debug("AI chat request from {}", email);
 
-        AiChatDto.ChatResponse response = aiChatService.chat(email, request.getMessage());
+        AiChatDto.ChatResponse response = aiChatService.chat(
+                email, request.getTextKo(), request.getHistoryKo(), request.getLimitVerses());
         return ResponseEntity.ok(response);
     }
 

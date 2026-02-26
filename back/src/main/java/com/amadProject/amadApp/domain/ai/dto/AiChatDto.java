@@ -13,7 +13,9 @@ public class AiChatDto {
     @Getter
     @Setter
     public static class Request {
-        private String message;
+        private String textKo;
+        private java.util.List<String> historyKo;
+        private int limitVerses = 5;
     }
 
     /**

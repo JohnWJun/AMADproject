@@ -52,7 +52,8 @@ public class AiChatService {
     /**
      * Main entry point: validate → rate limit → quota check → AI call → persist.
      */
-    public AiChatDto.ChatResponse chat(String email, String rawMessage) {
+    public AiChatDto.ChatResponse chat(String email, String rawMessage,
+                                       java.util.List<String> history, int limitVerses) {
 
         // ── 1. Sanitize & validate ────────────────────────────────────────
         String message = sanitize(rawMessage);
@@ -93,7 +94,7 @@ public class AiChatService {
         // ── 4. Call AI microservice (no DB connection held here) ──────────
         String rawAiResponse;
         try {
-            rawAiResponse = bibleAiClient.counsel(message)
+            rawAiResponse = bibleAiClient.counsel(message, history, limitVerses)
                     .timeout(AI_TIMEOUT)
                     .block();
         } catch (Exception ex) {
