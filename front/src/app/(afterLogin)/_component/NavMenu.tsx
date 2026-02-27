@@ -205,6 +205,29 @@ export default function NavMenu() {
                 </Link>
             </li>}
             <li>
+                <Link href="/pricing">
+                    <div className={style.navPill}>
+                        {segment === 'pricing' ?
+                            <>
+                                <svg width={26} viewBox="0 0 24 24" aria-hidden="true">
+                                    <g>
+                                        <path d="M12 2l2.582 6.953L22 9.257l-5.5 5.168L18.18 22 12 18.38 5.82 22l1.68-7.575L2 9.257l7.418-.304z"/>
+                                    </g>
+                                </svg>
+                                <div style={{fontWeight: 'bold'}}>구독</div>
+                            </> :
+                            <>
+                                <svg width={26} viewBox="0 0 24 24" aria-hidden="true">
+                                    <g>
+                                        <path d="M12 2l2.582 6.953L22 9.257l-5.5 5.168L18.18 22 12 18.38 5.82 22l1.68-7.575L2 9.257l7.418-.304zM12 4.797L10.065 10.1l-5.511.226 4.232 3.98-1.237 5.596L12 16.872l4.451 3.03-1.237-5.596 4.232-3.98-5.511-.226z"/>
+                                    </g>
+                                </svg>
+                                <div>구독</div>
+                            </>}
+                    </div>
+                </Link>
+            </li>
+            <li>
                 <Link href="/aboutAmad">
                     <div className={style.navPill}>
                         {segment === 'aboutAmad' ?

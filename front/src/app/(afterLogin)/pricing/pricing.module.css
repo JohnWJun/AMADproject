@@ -1,0 +1,179 @@
+.main {
+    padding: 40px 16px 80px;
+    max-width: 760px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 8px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.cardWrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 32px 28px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.premiumCard {
+    border-color: #6366f1;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.15);
+}
+
+.planLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.premiumLabel {
+    color: #6366f1;
+}
+
+.price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.amount {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.period {
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.feature {
+    font-size: 14px;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feature.disabled {
+    color: #9ca3af;
+}
+
+.checkIcon {
+    color: #10b981;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.xIcon {
+    color: #d1d5db;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.subscribeBtn {
+    width: 100%;
+    padding: 14px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.subscribeBtn:hover:not(:disabled) {
+    background: #4f46e5;
+}
+
+.subscribeBtn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.manageBtn {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: #6366f1;
+    border: 1.5px solid #6366f1;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.manageBtn:hover {
+    background: #eef2ff;
+}
+
+.loadingBtn {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+.currentPlanBadge {
+    width: 100%;
+    padding: 14px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.disclaimer {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 32px;
+    line-height: 1.6;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}

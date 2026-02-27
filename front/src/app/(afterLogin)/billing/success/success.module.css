@@ -1,0 +1,58 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 40px 16px;
+    text-align: center;
+}
+
+.icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+}
+
+.desc {
+    font-size: 15px;
+    color: #6b7280;
+    max-width: 380px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+}
+
+.sessionId {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 0 0 20px;
+    font-family: monospace;
+}
+
+.redirect {
+    font-size: 13px;
+    color: #9ca3af;
+    margin: 0 0 24px;
+}
+
+.btn {
+    padding: 12px 32px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn:hover {
+    background: #4f46e5;
+}

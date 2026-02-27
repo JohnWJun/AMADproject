@@ -24,7 +24,11 @@ public enum ExceptionCode {
     MEMBER_ALREADY_IN_GROUP(409, "Already a member or pending"),
     JOIN_REQUEST_NOT_FOUND(404, "Join request not found"),
     AI_RATE_LIMITED(429, "Too many requests. Please wait a moment."),
-    AI_SERVICE_UNAVAILABLE(503, "AI service is temporarily unavailable.");
+    AI_SERVICE_UNAVAILABLE(503, "AI service is temporarily unavailable."),
+    BILLING_PLAN_NOT_FOUND(404, "Billing plan not found"),
+    BILLING_CUSTOMER_NOT_FOUND(404, "Billing customer not found"),
+    STRIPE_API_ERROR(502, "Stripe API error"),
+    STRIPE_WEBHOOK_INVALID(401, "Invalid Stripe webhook signature");
 
     @Getter
     private int status;

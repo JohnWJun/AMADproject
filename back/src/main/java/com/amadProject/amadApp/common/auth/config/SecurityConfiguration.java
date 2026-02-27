@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/h2/**", "/ws/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/members/sign-up").permitAll()
+                        .antMatchers(HttpMethod.POST, "/billing/webhook").permitAll()
                         .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/*/comment", "/*/comment/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/search").permitAll()
