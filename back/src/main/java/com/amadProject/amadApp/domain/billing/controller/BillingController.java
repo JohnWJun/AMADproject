@@ -47,6 +47,14 @@ public class BillingController {
         return ResponseEntity.ok(status);
     }
 
+    /** DELETE /billing/subscription — sets cancelAtPeriodEnd=true; user keeps access until period ends */
+    @DeleteMapping("/subscription")
+    public ResponseEntity<Void> cancelSubscription() {
+        String email = getAuthenticatedEmail();
+        billingService.cancelSubscription(email);
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * POST /billing/webhook — Stripe webhook endpoint.
      * Must use raw bytes from the request body to preserve HMAC integrity.

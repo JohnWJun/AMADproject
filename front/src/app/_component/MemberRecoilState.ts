@@ -46,4 +46,10 @@ export const unreadMessageCount = atom<number>({
     default: 0,
 });
 
+// Session-only subscription flag. 'loading' = not yet fetched.
+export const subscriptionStatus = atom<'loading' | 'premium' | 'free'>({
+    key: 'subscriptionStatus',
+    default: 'loading',
+});
+
 

@@ -22,9 +22,7 @@
     flex-shrink: 0;
 }
 
-.backBtn:hover {
-    color: #374151;
-}
+.backBtn:hover { color: #374151; }
 
 .title {
     font-size: 20px;
@@ -61,13 +59,8 @@
     color: #1a1a1a;
 }
 
-.value.active {
-    color: #10b981;
-}
-
-.value.inactive {
-    color: #ef4444;
-}
+.value.active { color: #10b981; }
+.value.inactive { color: #ef4444; }
 
 .cancelNote {
     font-size: 13px;
@@ -85,12 +78,12 @@
     gap: 12px;
 }
 
-.portalBtn {
+.cancelBtn {
     width: 100%;
     padding: 14px;
     background: #fff;
-    color: #374151;
-    border: 1.5px solid #d1d5db;
+    color: #ef4444;
+    border: 1.5px solid #ef4444;
     border-radius: 10px;
     font-size: 15px;
     font-weight: 600;
@@ -98,14 +91,8 @@
     transition: background 0.15s;
 }
 
-.portalBtn:hover:not(:disabled) {
-    background: #f9fafb;
-}
-
-.portalBtn:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
+.cancelBtn:hover:not(:disabled) { background: #fef2f2; }
+.cancelBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .upgradeBtn {
     width: 100%;
@@ -120,9 +107,7 @@
     transition: background 0.15s;
 }
 
-.upgradeBtn:hover {
-    background: #4f46e5;
-}
+.upgradeBtn:hover { background: #4f46e5; }
 
 .loadingText {
     text-align: center;
@@ -130,3 +115,79 @@
     font-size: 14px;
     margin-top: 80px;
 }
+
+/* Confirmation dialog */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 16px;
+}
+
+.dialog {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dialogTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.dialogDesc {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.dialogActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.confirmCancelBtn {
+    width: 100%;
+    padding: 13px;
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.confirmCancelBtn:hover:not(:disabled) { background: #dc2626; }
+.confirmCancelBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.dismissBtn {
+    width: 100%;
+    padding: 13px;
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.dismissBtn:hover:not(:disabled) { background: #f9fafb; }
+.dismissBtn:disabled { opacity: 0.5; cursor: not-allowed; }

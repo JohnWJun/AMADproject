@@ -24,6 +24,7 @@ import com.stripe.model.Subscription;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.SubscriptionUpdateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -166,6 +167,35 @@ public class BillingService {
                         .status("none")
                         .hasPremiumAccess(false)
                         .build());
+    }
+
+    /**
+     * Sets cancelAtPeriodEnd=true on the Stripe subscription.
+     * The user keeps premium access until currentPeriodEnd.
+     */
+    @Transactional
+    public void cancelSubscription(String email) {
+        Member member = findMember(email);
+        BillingSubscription bs = subscriptionRepo.findByUserId(member.getId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BILLING_CUSTOMER_NOT_FOUND));
+
+        try {
+            Subscription sub = Subscription.retrieve(bs.getStripeSubscriptionId());
+            SubscriptionUpdateParams params = SubscriptionUpdateParams.builder()
+                    .setCancelAtPeriodEnd(true)
+                    .build();
+            sub.update(params);
+
+            // Optimistic local update — webhook will also confirm via subscription.updated
+            bs.setCancelAtPeriodEnd(true);
+            bs.setUpdatedAt(LocalDateTime.now());
+            subscriptionRepo.save(bs);
+            log.info("Subscription set to cancel at period end userId={}", member.getId());
+
+        } catch (StripeException e) {
+            log.error("Failed to cancel subscription for userId={}: {}", member.getId(), e.getMessage());
+            throw new BusinessLogicException(ExceptionCode.STRIPE_API_ERROR);
+        }
     }
 
     /**

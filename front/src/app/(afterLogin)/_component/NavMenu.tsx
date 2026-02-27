@@ -4,8 +4,9 @@ import style from './navMenu.module.css';
 import {useSelectedLayoutSegment} from "next/navigation";
 import Link from "next/link";
 import {useRecoilState, useRecoilValue} from "recoil";
-import {Member, unreadMessageCount} from "@/app/_component/MemberRecoilState";
+import {Member, unreadMessageCount, subscriptionStatus} from "@/app/_component/MemberRecoilState";
 import {useEffect, useState} from "react";
+import {getSubscriptionStatus} from "@/app/(afterLogin)/_lib/BillingApi";
 
 
 
@@ -14,15 +15,26 @@ export default function NavMenu() {
 
     const me = useRecoilValue(Member);
     const unread = useRecoilValue(unreadMessageCount);
-
+    const [subStatus, setSubStatus] = useRecoilState(subscriptionStatus);
 
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-        setIsClient(true)
-            }
+            setIsClient(true);
+        }
     }, []);
+
+    // Fetch subscription status once per session
+    useEffect(() => {
+        if (subStatus !== 'loading') return;
+        const at = localStorage.getItem('Authorization') || '';
+        const rt = localStorage.getItem('Refresh') || '';
+        if (!at) { setSubStatus('free'); return; }
+        getSubscriptionStatus({ accessToken: at, refreshToken: rt }).then(({ success, data }) => {
+            setSubStatus(success && data?.hasPremiumAccess ? 'premium' : 'free');
+        });
+    }, [subStatus]);
 
     if (isClient){
     return (
@@ -205,9 +217,9 @@ export default function NavMenu() {
                 </Link>
             </li>}
             <li>
-                <Link href="/pricing">
+                <Link href={subStatus === 'premium' ? '/billing' : '/pricing'}>
                     <div className={style.navPill}>
-                        {segment === 'pricing' ?
+                        {(segment === 'pricing' || segment === 'billing') ?
                             <>
                                 <svg width={26} viewBox="0 0 24 24" aria-hidden="true">
                                     <g>

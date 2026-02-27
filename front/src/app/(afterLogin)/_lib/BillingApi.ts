@@ -34,3 +34,10 @@ export const createPortalSession = ({ accessToken, refreshToken }: TokenProps) =
         accessToken,
         refreshToken,
     });
+
+export const cancelSubscription = ({ accessToken, refreshToken }: TokenProps) =>
+    apiFetch('/billing/subscription', {
+        method: 'DELETE',
+        accessToken,
+        refreshToken,
+    });
