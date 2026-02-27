@@ -41,3 +41,12 @@ export const cancelSubscription = ({ accessToken, refreshToken }: TokenProps) =>
         accessToken,
         refreshToken,
     });
+
+export const syncAfterCheckout = ({
+    sessionId, accessToken, refreshToken,
+}: { sessionId: string } & TokenProps) =>
+    apiFetch(`/billing/sync?sessionId=${encodeURIComponent(sessionId)}`, {
+        method: 'POST',
+        accessToken,
+        refreshToken,
+    });

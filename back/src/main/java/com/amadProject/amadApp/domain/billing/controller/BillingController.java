@@ -47,6 +47,18 @@ public class BillingController {
         return ResponseEntity.ok(status);
     }
 
+    /**
+     * POST /billing/sync?sessionId=xxx
+     * Called from the success page right after Stripe checkout.
+     * Writes BillingSubscription to DB without relying on webhooks.
+     */
+    @PostMapping("/sync")
+    public ResponseEntity<Void> syncAfterCheckout(@RequestParam String sessionId) {
+        String email = getAuthenticatedEmail();
+        billingService.syncAfterCheckout(sessionId, email);
+        return ResponseEntity.noContent().build();
+    }
+
     /** DELETE /billing/subscription — sets cancelAtPeriodEnd=true; user keeps access until period ends */
     @DeleteMapping("/subscription")
     public ResponseEntity<Void> cancelSubscription() {

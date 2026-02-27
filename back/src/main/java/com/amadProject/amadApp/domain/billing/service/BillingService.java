@@ -23,6 +23,7 @@ import com.stripe.model.StripeObject;
 import com.stripe.model.Subscription;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import com.stripe.param.checkout.SessionRetrieveParams;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.SubscriptionUpdateParams;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -167,6 +168,38 @@ public class BillingService {
                         .status("none")
                         .hasPremiumAccess(false)
                         .build());
+    }
+
+    /**
+     * Called from the success page immediately after checkout.
+     * Retrieves the checkout session + subscription from Stripe and persists
+     * BillingSubscription without relying on webhooks. Idempotent.
+     */
+    @Transactional
+    public void syncAfterCheckout(String sessionId, String email) {
+        Member member = findMember(email);
+        try {
+            SessionRetrieveParams params = SessionRetrieveParams.builder()
+                    .addExpand("subscription")
+                    .build();
+            Session session = Session.retrieve(sessionId, params, null);
+
+            // Security: verify the session belongs to this user's Stripe customer
+            BillingCustomer customer = customerRepo.findByUserId(member.getId())
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BILLING_CUSTOMER_NOT_FOUND));
+            if (!customer.getStripeCustomerId().equals(session.getCustomer())) {
+                log.warn("Session customerId mismatch for userId={}", member.getId());
+                throw new BusinessLogicException(ExceptionCode.ID_DOESNT_MATCH);
+            }
+
+            if (session.getSubscriptionObject() != null) {
+                onSubscriptionUpsert(session.getSubscriptionObject());
+                log.info("Synced subscription after checkout for userId={}", member.getId());
+            }
+        } catch (StripeException e) {
+            log.error("Failed to sync after checkout for userId={}: {}", member.getId(), e.getMessage());
+            throw new BusinessLogicException(ExceptionCode.STRIPE_API_ERROR);
+        }
     }
 
     /**
