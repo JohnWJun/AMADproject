@@ -116,6 +116,48 @@
     margin-top: 80px;
 }
 
+/* No-subscription empty state */
+.emptyCard {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 48px;
+}
+
+.emptyTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.emptyDesc {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0 0 8px;
+    line-height: 1.5;
+}
+
+/* Payment failure warning */
+.warnNote {
+    font-size: 13px;
+    color: #ef4444;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 10px 12px;
+    line-height: 1.5;
+}
+
 /* Confirmation dialog */
 .overlay {
     position: fixed;

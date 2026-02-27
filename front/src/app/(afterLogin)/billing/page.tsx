@@ -29,24 +29,19 @@ export default function BillingPage() {
     const [showConfirm, setShowConfirm] = useState(false);
     const [, setSubStatus] = useRecoilState(subscriptionStatus);
 
+    const fetchStatus = async (at: string, rt: string) => {
+        const { success, data } = await getSubscriptionStatus({ accessToken: at, refreshToken: rt });
+        if (success && data) setSub(data);
+        setLoading(false);
+    };
+
     useEffect(() => {
         if (typeof window === 'undefined') return;
         const at = localStorage.getItem('Authorization') || '';
         const rt = localStorage.getItem('Refresh') || '';
         setAccessToken(at);
         setRefreshToken(rt);
-
-        (async () => {
-            const { success, data } = await getSubscriptionStatus({ accessToken: at, refreshToken: rt });
-            if (success && data) {
-                setSub(data);
-                // Redirect to pricing if no active subscription
-                if (!data.hasPremiumAccess && data.status === 'none') {
-                    router.replace('/pricing');
-                }
-            }
-            setLoading(false);
-        })();
+        fetchStatus(at, rt);
     }, []);
 
     const handleCancel = async () => {
@@ -54,9 +49,8 @@ export default function BillingPage() {
         setShowConfirm(false);
         const { success } = await cancelSubscription({ accessToken, refreshToken });
         if (success) {
-            // Refresh local state
-            const { data } = await getSubscriptionStatus({ accessToken, refreshToken });
-            if (data) {
+            const { success: s2, data } = await getSubscriptionStatus({ accessToken, refreshToken });
+            if (s2 && data) {
                 setSub(data);
                 if (!data.hasPremiumAccess) setSubStatus('free');
             }
@@ -83,6 +77,7 @@ export default function BillingPage() {
 
     const hasActive = sub?.hasPremiumAccess;
     const isCancelingAtEnd = sub?.cancelAtPeriodEnd;
+    const noSubscription = !sub || sub.status === 'none' || sub.status === 'canceled';
     const statusText = sub ? (STATUS_LABEL[sub.status] ?? sub.status) : '구독 없음';
 
     return (
@@ -92,53 +87,63 @@ export default function BillingPage() {
                 <h1 className={style.title}>구독 관리</h1>
             </div>
 
-            <div className={style.card}>
-                <div className={style.row}>
-                    <span className={style.label}>플랜</span>
-                    <span className={style.value}>
-                        {sub?.planKey ? '월간 프리미엄' : '무료'}
-                    </span>
-                </div>
-                <div className={style.row}>
-                    <span className={style.label}>상태</span>
-                    <span className={`${style.value} ${hasActive ? style.active : style.inactive}`}>
-                        {isCancelingAtEnd ? '해지 예정' : statusText}
-                    </span>
-                </div>
-                {sub?.currentPeriodEnd && (
-                    <div className={style.row}>
-                        <span className={style.label}>
-                            {isCancelingAtEnd ? '프리미엄 종료일' : '다음 갱신일'}
-                        </span>
-                        <span className={style.value}>{formatDate(sub.currentPeriodEnd)}</span>
-                    </div>
-                )}
-                {isCancelingAtEnd && (
-                    <div className={style.cancelNote}>
-                        구독이 해지 예정입니다. 종료일까지 프리미엄 기능을 계속 이용하실 수 있습니다.
-                    </div>
-                )}
-            </div>
-
-            <div className={style.actions}>
-                {hasActive && !isCancelingAtEnd && (
-                    <button
-                        className={style.cancelBtn}
-                        onClick={() => setShowConfirm(true)}
-                        disabled={canceling}
-                    >
-                        구독 해지
-                    </button>
-                )}
-                {!hasActive && (
-                    <button
-                        className={style.upgradeBtn}
-                        onClick={() => router.push('/pricing')}
-                    >
+            {noSubscription ? (
+                /* ── No subscription ── */
+                <div className={style.emptyCard}>
+                    <div className={style.emptyIcon}>⭐</div>
+                    <p className={style.emptyTitle}>구독 중인 플랜이 없습니다</p>
+                    <p className={style.emptyDesc}>프리미엄 플랜을 구독하고 모든 기능을 이용해보세요.</p>
+                    <button className={style.upgradeBtn} onClick={() => router.push('/pricing')}>
                         프리미엄 구독하기
                     </button>
-                )}
-            </div>
+                </div>
+            ) : (
+                /* ── Active subscription ── */
+                <>
+                    <div className={style.card}>
+                        <div className={style.row}>
+                            <span className={style.label}>플랜</span>
+                            <span className={style.value}>월간 프리미엄</span>
+                        </div>
+                        <div className={style.row}>
+                            <span className={style.label}>상태</span>
+                            <span className={`${style.value} ${hasActive ? style.active : style.inactive}`}>
+                                {isCancelingAtEnd ? '해지 예정' : statusText}
+                            </span>
+                        </div>
+                        {sub?.currentPeriodEnd && (
+                            <div className={style.row}>
+                                <span className={style.label}>
+                                    {isCancelingAtEnd ? '프리미엄 종료일' : '다음 갱신일'}
+                                </span>
+                                <span className={style.value}>{formatDate(sub.currentPeriodEnd)}</span>
+                            </div>
+                        )}
+                        {isCancelingAtEnd && (
+                            <div className={style.cancelNote}>
+                                구독이 해지 예정입니다. 종료일까지 프리미엄 기능을 계속 이용하실 수 있습니다.
+                            </div>
+                        )}
+                        {sub?.status === 'past_due' && (
+                            <div className={style.warnNote}>
+                                결제가 실패했습니다. 결제 수단을 확인해주세요.
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={style.actions}>
+                        {hasActive && !isCancelingAtEnd && (
+                            <button
+                                className={style.cancelBtn}
+                                onClick={() => setShowConfirm(true)}
+                                disabled={canceling}
+                            >
+                                구독 해지
+                            </button>
+                        )}
+                    </div>
+                </>
+            )}
 
             {/* Confirmation dialog */}
             {showConfirm && (
@@ -146,7 +151,8 @@ export default function BillingPage() {
                     <div className={style.dialog}>
                         <h2 className={style.dialogTitle}>구독을 해지하시겠습니까?</h2>
                         <p className={style.dialogDesc}>
-                            해지 후에도 <strong>{formatDate(sub?.currentPeriodEnd ?? null)}</strong>까지 프리미엄 기능을 이용하실 수 있습니다.
+                            해지 후에도 <strong>{formatDate(sub?.currentPeriodEnd ?? null)}</strong>까지
+                            프리미엄 기능을 이용하실 수 있습니다.
                         </p>
                         <div className={style.dialogActions}>
                             <button
