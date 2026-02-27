@@ -78,6 +78,22 @@
     gap: 12px;
 }
 
+.reactivateBtn {
+    width: 100%;
+    padding: 14px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.reactivateBtn:hover:not(:disabled) { background: #4f46e5; }
+.reactivateBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .cancelBtn {
     width: 100%;
     padding: 14px;

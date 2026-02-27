@@ -54,7 +54,7 @@ export default function PricingPage() {
                 <div className={style.card}>
                     <div className={style.planLabel}>무료</div>
                     <div className={style.price}>
-                        <span className={style.amount}>₩0</span>
+                        <span className={style.amount}>$0</span>
                         <span className={style.period}> / 월</span>
                     </div>
                     <ul className={style.features}>
@@ -65,7 +65,13 @@ export default function PricingPage() {
                             <span className={style.checkIcon}>✓</span> 커뮤니티 피드 열람
                         </li>
                         <li className={style.feature}>
-                            <span className={style.checkIcon}>✓</span> AI PathFinder 20,000 토큰/일
+                            <span className={style.checkIcon}>✓</span> AI PathFinder 5회/일
+                        </li>
+                        <li className={style.feature}>
+                            <span className={style.checkIcon}>✓</span> 성경 구절 최대 2개
+                        </li>
+                        <li className={`${style.feature} ${style.disabled}`}>
+                            <span className={style.xIcon}>✗</span> AI 대화 히스토리
                         </li>
                         <li className={`${style.feature} ${style.disabled}`}>
                             <span className={style.xIcon}>✗</span> 그룹 기능
@@ -78,7 +84,7 @@ export default function PricingPage() {
                 <div className={`${style.card} ${style.premiumCard}`}>
                     <div className={`${style.planLabel} ${style.premiumLabel}`}>프리미엄</div>
                     <div className={style.price}>
-                        <span className={style.amount}>₩9,900</span>
+                        <span className={style.amount}>$5</span>
                         <span className={style.period}> / 월</span>
                     </div>
                     <ul className={style.features}>
@@ -86,13 +92,19 @@ export default function PricingPage() {
                             <span className={style.checkIcon}>✓</span> 무료 플랜의 모든 기능
                         </li>
                         <li className={style.feature}>
+                            <span className={style.checkIcon}>✓</span> AI PathFinder 30회/일
+                        </li>
+                        <li className={style.feature}>
+                            <span className={style.checkIcon}>✓</span> 성경 구절 최대 10개
+                        </li>
+                        <li className={style.feature}>
+                            <span className={style.checkIcon}>✓</span> AI 대화 히스토리 (최대 30턴)
+                        </li>
+                        <li className={style.feature}>
                             <span className={style.checkIcon}>✓</span> 그룹 생성 및 관리
                         </li>
                         <li className={style.feature}>
                             <span className={style.checkIcon}>✓</span> 그룹 전용 묵상 피드
-                        </li>
-                        <li className={style.feature}>
-                            <span className={style.checkIcon}>✓</span> 우선 고객 지원
                         </li>
                     </ul>
 

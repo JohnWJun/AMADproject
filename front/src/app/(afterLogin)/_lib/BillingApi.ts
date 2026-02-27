@@ -42,6 +42,13 @@ export const cancelSubscription = ({ accessToken, refreshToken }: TokenProps) =>
         refreshToken,
     });
 
+export const reactivateSubscription = ({ accessToken, refreshToken }: TokenProps) =>
+    apiFetch('/billing/reactivate', {
+        method: 'POST',
+        accessToken,
+        refreshToken,
+    });
+
 export const syncAfterCheckout = ({
     sessionId, accessToken, refreshToken,
 }: { sessionId: string } & TokenProps) =>

@@ -6,6 +6,7 @@ import style from './billing.module.css';
 import {
     getSubscriptionStatus,
     cancelSubscription,
+    reactivateSubscription,
     SubscriptionStatus,
 } from '@/app/(afterLogin)/_lib/BillingApi';
 import { subscriptionStatus } from '@/app/_component/MemberRecoilState';
@@ -26,6 +27,7 @@ export default function BillingPage() {
     const [sub, setSub] = useState<SubscriptionStatus | null>(null);
     const [loading, setLoading] = useState(true);
     const [canceling, setCanceling] = useState(false);
+    const [reactivating, setReactivating] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [, setSubStatus] = useRecoilState(subscriptionStatus);
 
@@ -43,6 +45,21 @@ export default function BillingPage() {
         setRefreshToken(rt);
         fetchStatus(at, rt);
     }, []);
+
+    const handleReactivate = async () => {
+        setReactivating(true);
+        const { success } = await reactivateSubscription({ accessToken, refreshToken });
+        if (success) {
+            const { success: s2, data } = await getSubscriptionStatus({ accessToken, refreshToken });
+            if (s2 && data) {
+                setSub(data);
+                setSubStatus('premium');
+            }
+        } else {
+            alert('구독 재개에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        }
+        setReactivating(false);
+    };
 
     const handleCancel = async () => {
         setCanceling(true);
@@ -132,6 +149,15 @@ export default function BillingPage() {
                     </div>
 
                     <div className={style.actions}>
+                        {hasActive && isCancelingAtEnd && (
+                            <button
+                                className={style.reactivateBtn}
+                                onClick={handleReactivate}
+                                disabled={reactivating}
+                            >
+                                {reactivating ? '처리 중...' : '구독 재개하기'}
+                            </button>
+                        )}
                         {hasActive && !isCancelingAtEnd && (
                             <button
                                 className={style.cancelBtn}

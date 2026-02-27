@@ -203,6 +203,34 @@ public class BillingService {
     }
 
     /**
+     * Undoes a pending cancellation (cancelAtPeriodEnd → false).
+     * Only valid while the subscription is still active.
+     */
+    @Transactional
+    public void reactivateSubscription(String email) {
+        Member member = findMember(email);
+        BillingSubscription bs = subscriptionRepo.findByUserId(member.getId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BILLING_CUSTOMER_NOT_FOUND));
+
+        try {
+            Subscription sub = Subscription.retrieve(bs.getStripeSubscriptionId());
+            SubscriptionUpdateParams params = SubscriptionUpdateParams.builder()
+                    .setCancelAtPeriodEnd(false)
+                    .build();
+            sub.update(params);
+
+            bs.setCancelAtPeriodEnd(false);
+            bs.setUpdatedAt(LocalDateTime.now());
+            subscriptionRepo.save(bs);
+            log.info("Subscription reactivated for userId={}", member.getId());
+
+        } catch (StripeException e) {
+            log.error("Failed to reactivate subscription for userId={}: {}", member.getId(), e.getMessage());
+            throw new BusinessLogicException(ExceptionCode.STRIPE_API_ERROR);
+        }
+    }
+
+    /**
      * Sets cancelAtPeriodEnd=true on the Stripe subscription.
      * The user keeps premium access until currentPeriodEnd.
      */

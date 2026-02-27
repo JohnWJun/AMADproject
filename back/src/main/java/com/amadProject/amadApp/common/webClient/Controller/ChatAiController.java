@@ -1,6 +1,8 @@
 package com.amadProject.amadApp.common.webClient.Controller;
 
 import com.amadProject.amadApp.common.webClient.service.BibleAiClient;
+import com.amadProject.amadApp.domain.billing.config.TierProperties;
+import com.amadProject.amadApp.domain.billing.enums.UserTier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class ChatAiController {
 
     private final BibleAiClient bibleAiClient;
+    private final TierProperties tierProperties;
 
     @PostMapping("/ai")
     public Mono<Map<String, Object>> chatAi(@RequestBody Map<String, String> req) {
@@ -24,7 +27,9 @@ public class ChatAiController {
             return Mono.just(Map.of("error", "message is required"));
         }
 
-        return bibleAiClient.counsel(message, java.util.List.of(), 5)
+        // Legacy endpoint: no auth context → use FREE tier defaults
+        return bibleAiClient.counsel(message, java.util.List.of(),
+                        UserTier.FREE, tierProperties.getSettings(UserTier.FREE))
                 .map(aiResp -> Map.of("answer", aiResp));
     }
 }

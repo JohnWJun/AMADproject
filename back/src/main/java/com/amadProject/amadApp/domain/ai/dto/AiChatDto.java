@@ -18,8 +18,6 @@ public class AiChatDto {
         private String textKo;
         @JsonProperty("history_ko")
         private java.util.List<String> historyKo;
-        @JsonProperty("limit_verses")
-        private int limitVerses = 5;
     }
 
     /**
@@ -31,7 +29,15 @@ public class AiChatDto {
     public static class ChatResponse {
         private String status;
         private String message;
-        private int remainingTokens;
+        /** User's current subscription tier (FREE, PREMIUM, GRACE, CANCELING). */
+        private String tier;
+        /** How many AI requests the user has left today. */
+        private int remainingUsageToday;
+        /** Whether the daily limit has been reached. */
+        private boolean limitReached;
+        /** True when the user is FREE/GRACE and premium features are locked. */
+        private boolean premiumFeaturesLocked;
+        /** Total daily request allowance for this tier. */
         private int dailyLimit;
     }
 
@@ -49,8 +55,13 @@ public class AiChatDto {
     @Builder
     public static class HistoryResponse {
         private List<MessageResponse> messages;
-        private int tokensUsedToday;
-        private int remainingTokens;
+        /** User's current subscription tier. */
+        private String tier;
+        /** Requests used so far today. */
+        private int usedToday;
+        /** Requests remaining today. */
+        private int remainingUsageToday;
+        /** Total daily request allowance for this tier. */
         private int dailyLimit;
     }
 }

@@ -1,5 +1,7 @@
 package com.amadProject.amadApp.common.webClient.service;
 
+import com.amadProject.amadApp.domain.billing.config.TierSettings;
+import com.amadProject.amadApp.domain.billing.enums.UserTier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -16,17 +18,28 @@ import java.util.Map;
 public class BibleAiClient {
     private final WebClient bibleAiWebClient;
 
-    public Mono<String> counsel(String textKo, List<String> historyKo, int limitVerses) {
+    /**
+     * Calls the FastAPI /counsel endpoint with tier-aware parameters.
+     *
+     * @param textKo      User's message in Korean
+     * @param historyKo   Prior conversation turns (empty list for FREE/GRACE users)
+     * @param tier        User's subscription tier
+     * @param settings    Per-tier limits (max_verses, history_enabled, max_history_turns)
+     */
+    public Mono<String> counsel(String textKo, List<String> historyKo,
+                                UserTier tier, TierSettings settings) {
         Map<String, Object> body = new HashMap<>();
         body.put("text_ko", textKo);
         body.put("history_ko", historyKo != null ? historyKo : List.of());
-        body.put("limit_verses", limitVerses);
+        body.put("tier", tier.name());
+        body.put("max_verses", settings.getMaxVerses());
+        body.put("history_enabled", settings.isHistoryEnabled());
+        body.put("max_history_turns", settings.getMaxHistoryTurns());
 
         return bibleAiWebClient.post()
                 .uri("/counsel")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(body)
-                // 추가로 “operator 수준” 타임아웃도 걸어두면 이중 안전장치
                 .retrieve()
                 .bodyToMono(String.class)
                 .timeout(Duration.ofSeconds(25))

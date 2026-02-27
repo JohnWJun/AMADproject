@@ -48,6 +48,18 @@ public class AiChatPersistenceService {
     }
 
     /**
+     * Loads the Member entity for the given email.
+     * Used by the new tier-based flow which does NOT check the old token quota.
+     *
+     * @throws BusinessLogicException (MEMBER_NOT_FOUND) if member missing
+     */
+    @Transactional(readOnly = true)
+    public Member findMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    /**
      * Phase 1 — Called BEFORE the AI network request.
      * Loads the member, resets daily tokens if needed, and verifies quota.
      *
@@ -105,17 +117,16 @@ public class AiChatPersistenceService {
 
     /**
      * Returns the last HISTORY_SIZE messages for the member, ordered oldest-first.
+     * Quota fields are provided by the caller (AiChatService) from AiUsageService.
      */
     @Transactional(readOnly = true)
-    public AiChatDto.HistoryResponse getHistory(String email) {
+    public AiChatDto.HistoryResponse getHistory(String email,
+                                                 String tier,
+                                                 int usedToday,
+                                                 int remainingUsageToday,
+                                                 int dailyLimit) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
-        // Reset check for accurate remaining count
-        LocalDate today = LocalDate.now();
-        int usedToday = today.equals(member.getAiTokensResetDate())
-                ? member.getAiTokensUsedToday()
-                : 0;
 
         List<AiChatMessage> recent = aiChatMessageRepository
                 .findRecentByMemberId(member.getId(), PageRequest.of(0, HISTORY_SIZE));
@@ -134,9 +145,10 @@ public class AiChatPersistenceService {
 
         return AiChatDto.HistoryResponse.builder()
                 .messages(messages)
-                .tokensUsedToday(usedToday)
-                .remainingTokens(Math.max(0, DAILY_TOKEN_LIMIT - usedToday))
-                .dailyLimit(DAILY_TOKEN_LIMIT)
+                .tier(tier)
+                .usedToday(usedToday)
+                .remainingUsageToday(remainingUsageToday)
+                .dailyLimit(dailyLimit)
                 .build();
     }
 }

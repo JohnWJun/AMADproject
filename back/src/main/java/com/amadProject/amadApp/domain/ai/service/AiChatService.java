@@ -2,6 +2,11 @@ package com.amadProject.amadApp.domain.ai.service;
 
 import com.amadProject.amadApp.common.webClient.service.BibleAiClient;
 import com.amadProject.amadApp.domain.ai.dto.AiChatDto;
+import com.amadProject.amadApp.domain.billing.config.TierProperties;
+import com.amadProject.amadApp.domain.billing.config.TierSettings;
+import com.amadProject.amadApp.domain.billing.enums.UserTier;
+import com.amadProject.amadApp.domain.billing.service.SubscriptionService;
+import com.amadProject.amadApp.domain.member.entity.Member;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -17,10 +23,12 @@ import java.util.regex.Pattern;
  * Orchestrates the AI counseling chat flow:
  *   1. Input validation and sanitization
  *   2. Rate limiting (in-memory, per user)
- *   3. Daily token quota check  (delegated to AiChatPersistenceService)
- *   4. AI network call         (BibleAiClient — no DB connection held)
- *   5. Persist exchange + token usage (delegated to AiChatPersistenceService)
- *   6. Build structured response
+ *   3. Member lookup + subscription tier resolution
+ *   4. Daily request-count quota check (AiUsageService)
+ *   5. Build tier-aware history
+ *   6. AI network call (BibleAiClient — no DB connection held)
+ *   7. Record usage + persist exchange (AiChatPersistenceService)
+ *   8. Build structured response with tier metadata
  *
  * This class is intentionally NOT @Transactional so the DB connection
  * is freed between the "prepare" and "persist" phases.
@@ -38,11 +46,13 @@ public class AiChatService {
 
     // ── Dependencies ───────────────────────────────────────────────────────
     private final AiChatPersistenceService persistenceService;
+    private final AiUsageService aiUsageService;
+    private final SubscriptionService subscriptionService;
+    private final TierProperties tierProperties;
     private final BibleAiClient bibleAiClient;
-    private final ObjectMapper objectMapper;   // Spring Boot auto-configures this bean
+    private final ObjectMapper objectMapper;
 
-    // ── In-memory rate limiter: email → time of last accepted request ────────
-    // Using email (String) as key avoids an extra DB lookup just for member ID.
+    // ── In-memory rate limiter: email → time of last accepted request ──────
     private final ConcurrentHashMap<String, Instant> lastRequestMap = new ConcurrentHashMap<>();
 
     // ══════════════════════════════════════════════════════════════════════
@@ -50,122 +60,151 @@ public class AiChatService {
     // ══════════════════════════════════════════════════════════════════════
 
     /**
-     * Main entry point: validate → rate limit → quota check → AI call → persist.
+     * Main entry point: validate → rate limit → tier check → quota check → AI call → persist.
      */
     public AiChatDto.ChatResponse chat(String email, String rawMessage,
-                                       java.util.List<String> history, int limitVerses) {
+                                       List<String> history) {
 
         // ── 1. Sanitize & validate ────────────────────────────────────────
         String message = sanitize(rawMessage);
         if (message.isEmpty()) {
-            return errorResponse("메시지를 입력해주세요.", -1);
+            return errorResponse("메시지를 입력해주세요.", null, -1, -1, false);
         }
         if (message.length() > MAX_INPUT_LENGTH) {
             return errorResponse(
-                    "메시지는 최대 " + MAX_INPUT_LENGTH + "자까지 입력할 수 있습니다.", -1);
+                    "메시지는 최대 " + MAX_INPUT_LENGTH + "자까지 입력할 수 있습니다.",
+                    null, -1, -1, false);
         }
 
         // ── 2. Rate limit ────────────────────────────────────────────────
-        // We need the member ID for the rate-limiter key but want to avoid
-        // a DB call just for this. Use email string as the map key instead.
         Instant now = Instant.now();
         Instant last = lastRequestMap.get(email);
         if (last != null && Duration.between(last, now).getSeconds() < MIN_INTERVAL_SECONDS) {
             long waitSec = MIN_INTERVAL_SECONDS - Duration.between(last, now).getSeconds();
             return rateLimitedResponse(
-                    "메시지를 너무 빠르게 전송하고 있습니다. " + waitSec + "초 후 다시 시도해주세요.", -1);
+                    "메시지를 너무 빠르게 전송하고 있습니다. " + waitSec + "초 후 다시 시도해주세요.",
+                    null, -1, -1, false);
         }
         lastRequestMap.put(email, now);
 
-        // ── 3. Quota check (DB, transactional) ───────────────────────────
-        AiChatPersistenceService.TokenCheckResult prep;
-        try {
-            prep = persistenceService.checkAndReserve(email);
-        } catch (IllegalStateException ex) {
-            if ("limit_exceeded".equals(ex.getMessage())) {
-                return limitExceededResponse(
-                        "오늘의 AI 상담 한도(" + AiChatPersistenceService.DAILY_TOKEN_LIMIT
-                                + " 토큰)를 초과했습니다. 내일 다시 시도해주세요.", 0);
-            }
-            log.error("Unexpected quota check error for {}: {}", email, ex.getMessage());
-            return errorResponse("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.", 0);
+        // ── 3. Member lookup + tier resolution ────────────────────────────
+        Member member = persistenceService.findMember(email);
+        UserTier tier = subscriptionService.getUserTier(member.getId());
+        TierSettings settings = tierProperties.getSettings(tier);
+
+        // ── 4. Daily request-count quota check ────────────────────────────
+        int remaining = aiUsageService.getRemainingToday(member.getId(), tier);
+        if (remaining <= 0) {
+            return limitExceededResponse(
+                    "오늘의 AI 상담 한도(" + settings.getDailyRequests()
+                            + "회)를 초과했습니다. 내일 다시 시도해주세요.",
+                    tier, 0, settings.getDailyRequests(),
+                    isPremiumFeaturesLocked(tier));
         }
 
-        // ── 4. Call AI microservice (no DB connection held here) ──────────
+        // ── 5. Build tier-aware history ───────────────────────────────────
+        List<String> effectiveHistory = buildHistory(history, settings);
+
+        // ── 6. Call AI microservice (no DB connection held here) ──────────
         String rawAiResponse;
         try {
-            rawAiResponse = bibleAiClient.counsel(message, history, limitVerses)
+            rawAiResponse = bibleAiClient.counsel(message, effectiveHistory, tier, settings)
                     .timeout(AI_TIMEOUT)
                     .block();
         } catch (Exception ex) {
             log.error("AI service call failed for {}: {}", email, ex.getMessage());
-            // Undo rate-limit slot on AI failure so the user can retry sooner
             lastRequestMap.remove(email);
             return errorResponse(
-                    "AI 서비스에 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.", prep.getRemaining());
+                    "AI 서비스에 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+                    tier, remaining, settings.getDailyRequests(),
+                    isPremiumFeaturesLocked(tier));
         }
 
         if (rawAiResponse == null || rawAiResponse.isBlank()) {
             lastRequestMap.remove(email);
             return errorResponse(
-                    "AI 서비스에서 응답을 받지 못했습니다. 잠시 후 다시 시도해주세요.", prep.getRemaining());
+                    "AI 서비스에서 응답을 받지 못했습니다. 잠시 후 다시 시도해주세요.",
+                    tier, remaining, settings.getDailyRequests(),
+                    isPremiumFeaturesLocked(tier));
         }
 
-        // ── 5. Parse AI response ──────────────────────────────────────────
+        // ── 7. Parse AI response ──────────────────────────────────────────
         String aiText = extractCounselingText(rawAiResponse);
 
-        // ── 6. Estimate tokens & persist (DB, transactional) ─────────────
-        int tokensUsed = estimateTokens(message, aiText);
+        // ── 8. Record usage + persist exchange ────────────────────────────
         try {
-            persistenceService.persistExchange(prep.getMemberId(), message, aiText, tokensUsed);
+            aiUsageService.recordUsage(member.getId());
         } catch (Exception ex) {
-            // Messages still shown to the user even if persistence fails;
-            // next quota check will be off by tokensUsed — acceptable trade-off.
-            log.error("Failed to persist AI exchange for memberId={}: {}", prep.getMemberId(), ex.getMessage());
+            log.error("Failed to record AI usage for memberId={}: {}", member.getId(), ex.getMessage());
         }
 
-        int newRemaining = Math.max(0, prep.getRemaining() - tokensUsed);
+        try {
+            int dummyTokens = estimateTokens(message, aiText);
+            persistenceService.persistExchange(member.getId(), message, aiText, dummyTokens);
+        } catch (Exception ex) {
+            log.error("Failed to persist AI exchange for memberId={}: {}", member.getId(), ex.getMessage());
+        }
+
+        int newRemaining = Math.max(0, remaining - 1);
         return AiChatDto.ChatResponse.builder()
                 .status("ok")
                 .message(aiText)
-                .remainingTokens(newRemaining)
-                .dailyLimit(AiChatPersistenceService.DAILY_TOKEN_LIMIT)
+                .tier(tier.name())
+                .remainingUsageToday(newRemaining)
+                .limitReached(newRemaining == 0)
+                .premiumFeaturesLocked(isPremiumFeaturesLocked(tier))
+                .dailyLimit(settings.getDailyRequests())
                 .build();
     }
 
     /** Delegates history fetch to persistence layer. */
     public AiChatDto.HistoryResponse getHistory(String email) {
-        return persistenceService.getHistory(email);
+        Member member = persistenceService.findMember(email);
+        UserTier tier = subscriptionService.getUserTier(member.getId());
+        TierSettings settings = tierProperties.getSettings(tier);
+        int used = aiUsageService.getUsedToday(member.getId());
+        int remaining = Math.max(0, settings.getDailyRequests() - used);
+
+        return persistenceService.getHistory(email, tier.name(), used, remaining, settings.getDailyRequests());
     }
 
     // ══════════════════════════════════════════════════════════════════════
-    //  Token estimation
+    //  Helpers
     // ══════════════════════════════════════════════════════════════════════
 
     /**
-     * Estimates token consumption for the user + assistant turn.
-     *
-     * Rationale:
-     *  - OpenAI tokenizes Korean text at roughly 1.5–2 tokens per character
-     *    (each Korean syllable is one UTF-16 code unit but 2–3 BPE tokens).
-     *  - We use (total characters / 2) as a conservative overestimate.
-     *  - A minimum of 10 tokens is enforced to cover fixed prompt overhead.
-     *
-     * Future: swap this with a real tiktoken call if tighter billing accuracy
-     * is required, or use the actual usage field from the OpenAI API response.
+     * Returns true when the tier does not get full premium AI features.
+     * PREMIUM and CANCELING have full access until their period ends.
+     */
+    private boolean isPremiumFeaturesLocked(UserTier tier) {
+        return tier == UserTier.FREE || tier == UserTier.GRACE;
+    }
+
+    /**
+     * Trims or empties history based on tier settings.
+     * FREE/GRACE tiers get no history context (saves tokens, matches their limit).
+     */
+    private List<String> buildHistory(List<String> raw, TierSettings settings) {
+        if (!settings.isHistoryEnabled() || raw == null || raw.isEmpty()) {
+            return List.of();
+        }
+        int maxTurns = settings.getMaxHistoryTurns();
+        if (maxTurns <= 0 || raw.size() <= maxTurns) {
+            return raw;
+        }
+        // Keep only the most recent maxTurns entries
+        return raw.subList(raw.size() - maxTurns, raw.size());
+    }
+
+    /**
+     * Estimates token count for persistence compatibility (legacy field on Member).
+     * No longer used for quota enforcement.
      */
     static int estimateTokens(String prompt, String response) {
         int totalChars = prompt.length() + response.length();
         return Math.max(10, totalChars / 2);
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    //  Private helpers
-    // ══════════════════════════════════════════════════════════════════════
-
-    /**
-     * Strips HTML tags and trims whitespace.
-     */
     private String sanitize(String raw) {
         if (raw == null) return "";
         return HTML_PATTERN.matcher(raw.trim()).replaceAll("").trim();
@@ -173,9 +212,7 @@ public class AiChatService {
 
     /**
      * Parses the JSON envelope returned by the FastAPI /counsel endpoint.
-     *
-     * Expected format: { "counsel": "...", "verses": [...] }
-     * Falls back to returning the raw string on parse failure.
+     * Expected format: { "answer_ko": "..." }
      */
     private String extractCounselingText(String json) {
         try {
@@ -187,38 +224,51 @@ public class AiChatService {
                 log.warn("AI service returned error field: {}", root.get("error").asText());
                 return "AI 서비스에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
             }
-            // Unknown structure — return the raw JSON as text
             return json;
         } catch (Exception ex) {
-            // Not JSON (plain text response) — return as-is
             return json.trim();
         }
     }
 
-    private AiChatDto.ChatResponse errorResponse(String message, int remaining) {
+    private AiChatDto.ChatResponse errorResponse(String message, UserTier tier,
+                                                  int remaining, int dailyLimit,
+                                                  boolean premiumLocked) {
         return AiChatDto.ChatResponse.builder()
                 .status("error")
                 .message(message)
-                .remainingTokens(remaining)
-                .dailyLimit(AiChatPersistenceService.DAILY_TOKEN_LIMIT)
+                .tier(tier != null ? tier.name() : null)
+                .remainingUsageToday(Math.max(0, remaining))
+                .limitReached(false)
+                .premiumFeaturesLocked(premiumLocked)
+                .dailyLimit(dailyLimit)
                 .build();
     }
 
-    private AiChatDto.ChatResponse limitExceededResponse(String message, int remaining) {
+    private AiChatDto.ChatResponse limitExceededResponse(String message, UserTier tier,
+                                                          int remaining, int dailyLimit,
+                                                          boolean premiumLocked) {
         return AiChatDto.ChatResponse.builder()
                 .status("limit_exceeded")
                 .message(message)
-                .remainingTokens(remaining)
-                .dailyLimit(AiChatPersistenceService.DAILY_TOKEN_LIMIT)
+                .tier(tier != null ? tier.name() : null)
+                .remainingUsageToday(0)
+                .limitReached(true)
+                .premiumFeaturesLocked(premiumLocked)
+                .dailyLimit(dailyLimit)
                 .build();
     }
 
-    private AiChatDto.ChatResponse rateLimitedResponse(String message, int remaining) {
+    private AiChatDto.ChatResponse rateLimitedResponse(String message, UserTier tier,
+                                                        int remaining, int dailyLimit,
+                                                        boolean premiumLocked) {
         return AiChatDto.ChatResponse.builder()
                 .status("rate_limited")
                 .message(message)
-                .remainingTokens(remaining)
-                .dailyLimit(AiChatPersistenceService.DAILY_TOKEN_LIMIT)
+                .tier(tier != null ? tier.name() : null)
+                .remainingUsageToday(Math.max(0, remaining))
+                .limitReached(false)
+                .premiumFeaturesLocked(premiumLocked)
+                .dailyLimit(dailyLimit)
                 .build();
     }
 }

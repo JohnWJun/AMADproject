@@ -59,6 +59,14 @@ public class BillingController {
         return ResponseEntity.noContent().build();
     }
 
+    /** POST /billing/reactivate — undoes a pending cancellation (cancelAtPeriodEnd → false) */
+    @PostMapping("/reactivate")
+    public ResponseEntity<Void> reactivateSubscription() {
+        String email = getAuthenticatedEmail();
+        billingService.reactivateSubscription(email);
+        return ResponseEntity.noContent().build();
+    }
+
     /** DELETE /billing/subscription — sets cancelAtPeriodEnd=true; user keeps access until period ends */
     @DeleteMapping("/subscription")
     public ResponseEntity<Void> cancelSubscription() {

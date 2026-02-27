@@ -22,9 +22,9 @@ public class AiChatController {
 
     /**
      * POST /ai-chat
-     * Body: { "text_ko": "...", "history_ko": [...], "limit_verses": 5 }
+     * Body: { "text_ko": "...", "history_ko": [...] }
      *
-     * Returns a structured ChatResponse with status, AI reply, and remaining tokens.
+     * Returns a structured ChatResponse with status, AI reply, and tier quota metadata.
      */
     @PostMapping
     public ResponseEntity<AiChatDto.ChatResponse> chat(
@@ -34,7 +34,7 @@ public class AiChatController {
         log.debug("AI chat request from {}", email);
 
         AiChatDto.ChatResponse response = aiChatService.chat(
-                email, request.getTextKo(), request.getHistoryKo(), request.getLimitVerses());
+                email, request.getTextKo(), request.getHistoryKo());
         return ResponseEntity.ok(response);
     }
 

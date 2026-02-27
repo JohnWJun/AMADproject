@@ -18,14 +18,18 @@ interface ChatMessage {
 interface ChatResponse {
     status: "ok" | "error" | "limit_exceeded" | "rate_limited";
     message: string;
-    remainingTokens: number;
+    tier: string;
+    remainingUsageToday: number;
+    limitReached: boolean;
+    premiumFeaturesLocked: boolean;
     dailyLimit: number;
 }
 
 interface HistoryResponse {
     messages: ChatMessage[];
-    tokensUsedToday: number;
-    remainingTokens: number;
+    tier: string;
+    usedToday: number;
+    remainingUsageToday: number;
     dailyLimit: number;
 }
 
@@ -57,15 +61,15 @@ async function sendMessage(
             Refresh: refreshToken ? `Bearer ${refreshToken}` : "",
         },
         credentials: "include",
-        body: JSON.stringify({ text_ko: message, history_ko: history, limit_verses: 5 }),
+        body: JSON.stringify({ text_ko: message, history_ko: history }),
     });
 
     if (!res.ok) {
         const status = res.status;
         if (status === 401 || status === 403) {
-            return { status: "error", message: "로그인이 필요합니다.", remainingTokens: 0, dailyLimit: 20000 };
+            return { status: "error", message: "로그인이 필요합니다.", tier: "FREE", remainingUsageToday: 0, limitReached: false, premiumFeaturesLocked: true, dailyLimit: 3 };
         }
-        return { status: "error", message: "서버 오류가 발생했습니다.", remainingTokens: 0, dailyLimit: 20000 };
+        return { status: "error", message: "서버 오류가 발생했습니다.", tier: "FREE", remainingUsageToday: 0, limitReached: false, premiumFeaturesLocked: true, dailyLimit: 3 };
     }
     return res.json();
 }
@@ -79,8 +83,8 @@ export default function AiChatWidget() {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [historyLoaded, setHistoryLoaded] = useState(false);
-    const [remainingTokens, setRemainingTokens] = useState<number | null>(null);
-    const [dailyLimit, setDailyLimit] = useState(20000);
+    const [remainingUsageToday, setRemainingUsageToday] = useState<number | null>(null);
+    const [dailyLimit, setDailyLimit] = useState(3);
     const [errorBanner, setErrorBanner] = useState<string | null>(null);
     const [userHistory, setUserHistory] = useState<string[]>([]);
 
@@ -96,7 +100,7 @@ export default function AiChatWidget() {
             const data = await fetchHistory(accessToken, refreshToken);
             if (data) {
                 setMessages(data.messages);
-                setRemainingTokens(data.remainingTokens);
+                setRemainingUsageToday(data.remainingUsageToday);
                 setDailyLimit(data.dailyLimit);
             }
             setHistoryLoaded(true);
@@ -142,7 +146,8 @@ export default function AiChatWidget() {
 
         if (res.status === "ok") {
             setMessages((prev) => [...prev, { role: "assistant", content: res.message }]);
-            setRemainingTokens(res.remainingTokens);
+            setRemainingUsageToday(res.remainingUsageToday);
+            setDailyLimit(res.dailyLimit);
         } else {
             // Remove optimistic message on failure
             setMessages((prev) => prev.slice(0, -1));
@@ -159,7 +164,9 @@ export default function AiChatWidget() {
     };
 
     const tokenPercent =
-        remainingTokens !== null ? Math.round((remainingTokens / dailyLimit) * 100) : null;
+        remainingUsageToday !== null && dailyLimit > 0
+            ? Math.round((remainingUsageToday / dailyLimit) * 100)
+            : null;
 
     if (!memberInfo.email) return null; // hidden for unauthenticated users
 
@@ -191,13 +198,13 @@ export default function AiChatWidget() {
                 {/* Header */}
                 <div className={style.header}>
                     <div className={style.headerTitle}>
-                        <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 6, color: "#6b7280" }}>
+                        <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 6 }}>
                             <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                         </svg>
                         PathFinder
                     </div>
                     {tokenPercent !== null && (
-                        <div className={style.tokenBadge} title={`오늘 남은 토큰: ${remainingTokens?.toLocaleString()}`}>
+                        <div className={style.tokenBadge} title={`오늘 남은 상담: ${remainingUsageToday}회 / ${dailyLimit}회`}>
                             <span
                                 className={style.tokenDot}
                                 style={{
