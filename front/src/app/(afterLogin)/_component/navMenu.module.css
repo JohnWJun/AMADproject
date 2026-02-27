@@ -45,14 +45,14 @@
     }
 }
 
-@media screen and (max-width: 540px){
+@media screen and (max-width: 912px) {
     .navPill {
-        display: inline-flex;
+        display: flex;
         height: 50px;
-        padding: 12px;
+        padding: 6px;
         align-items: center;
+        justify-content: center;
     }
-
 }
 @media screen and (max-width: 280px){
     .navPill {

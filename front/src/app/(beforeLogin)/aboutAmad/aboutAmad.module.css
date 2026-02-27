@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
 }
 .titleSection{
     flex: 0.7;
@@ -24,7 +24,7 @@
 .titleSection h2{
     color: aliceblue;
     text-align: center;
-    font-size: 50px;  
+    font-size: 50px;
 }
 
 
@@ -78,7 +78,7 @@
     align-items: center;
 }
 .tutorialLink:hover {
-    
+
     background-color: #e7eaf6;
     cursor: pointer;
 }
@@ -94,10 +94,10 @@
         flex: 0.7;
         align-items: center;
         justify-content: center;
-        background-color: #9fd3c7; 
+        background-color: #9fd3c7;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-    
+
     }
     .bodySection{
         font-size: 82%;
@@ -105,7 +105,7 @@
         flex: 1;
         width: 90%;
     }
-    
+
 }
 
 
@@ -115,14 +115,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        
+
     }
     .titleSection{
         width: 100%;
     }
     .bodySection{
         margin-top: 70px;
-        width: 80%;
+        /*width: 80%;*/
     }
 }
 @media screen and (max-width: 850px){
