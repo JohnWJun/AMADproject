@@ -23,12 +23,20 @@ export default function Main() {
                 {/*<h3>Already signed up?</h3>*/}
                 {/*<Link href='/login' className={styles.login}>log in</Link>*/}
 
+                    <Link href='/aboutAmad' className={styles.login}>How to use AMAD</Link>
+
                     <Link href="/api/oauth2/authorization/google"
                       className={styles.login}>
                     <GoogleLogo width={'20px'} height={'20px'}/>
                     Login with Google</Link>
 
-                    <Link href='/aboutAmad' className={styles.login}>How to use AMAD</Link>
+                    <p style={{ fontSize: '0.78rem', color: '#9ca3af', margin: '8px 0 0', textAlign: 'center', width: '300px' }}>
+                        로그인 시{' '}
+                        <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'underline' }}>이용약관</a>
+                        {' '}및{' '}
+                        <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'underline' }}>개인정보처리방침</a>
+                        에 동의하는 것으로 간주됩니다.
+                    </p>
             </div>
         </>
     )

@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useRecoilValue } from "recoil";
 import { Member } from "@/app/_component/MemberRecoilState";
 import style from "./aiChatWidget.module.css";
+import PathFinderConsentModal from "./PathFinderConsentModal";
+
+const LambModel = dynamic(() => import("./LambModel"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -87,6 +91,8 @@ export default function AiChatWidget() {
     const [dailyLimit, setDailyLimit] = useState(3);
     const [errorBanner, setErrorBanner] = useState<string | null>(null);
     const [userHistory, setUserHistory] = useState<string[]>([]);
+    const [fabHovered, setFabHovered] = useState(false);
+    const [showConsentModal, setShowConsentModal] = useState(false);
 
     const bottomRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -117,7 +123,19 @@ export default function AiChatWidget() {
         if (open) inputRef.current?.focus();
     }, [open]);
 
-    const handleToggle = () => setOpen((v) => !v);
+    const handleToggle = () => {
+        if (!open && localStorage.getItem("pathfinder_consented") !== "true") {
+            setShowConsentModal(true);
+            return;
+        }
+        setOpen((v) => !v);
+    };
+
+    const handleConsentConfirm = () => {
+        localStorage.setItem("pathfinder_consented", "true");
+        setShowConsentModal(false);
+        setOpen(true);
+    };
 
     const handleSend = async () => {
         const text = input.trim();
@@ -172,23 +190,35 @@ export default function AiChatWidget() {
 
     return (
         <>
+            {showConsentModal && (
+                <PathFinderConsentModal
+                    onConfirm={handleConsentConfirm}
+                    onClose={() => setShowConsentModal(false)}
+                />
+            )}
+
+            {/* ── Speech bubble ───────────────────────────────────────────── */}
+            {!open && (
+                <div className={`${style.speechBubble} ${fabHovered ? style.speechBubbleVisible : ""}`}>
+                    안녕 나는 너의 고민 신앙 AI 상담사 패스파인더야. 오늘 함께 나누고 싶은 이야기가 있니?
+                </div>
+            )}
+
             {/* ── Floating trigger button ─────────────────────────────────── */}
             <button
-                className={style.fab}
+                className={`${style.fab} ${open ? style.fabOpen : ""}`}
                 onClick={handleToggle}
+                onMouseEnter={() => setFabHovered(true)}
+                onMouseLeave={() => setFabHovered(false)}
                 aria-label="PathFinder"
                 title="PathFinder"
             >
                 {open ? (
-                    // Close icon
                     <svg width={22} height={22} viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12 5.7 16.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.4z" />
                     </svg>
                 ) : (
-                    // Cross icon
-                    <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4l4 4 4-4h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-8 13H8v-2h4v2zm4-4H8v-2h8v2zm0-4H8V5h8v2z" />
-                    </svg>
+                    <LambModel hovered={fabHovered} />
                 )}
             </button>
 

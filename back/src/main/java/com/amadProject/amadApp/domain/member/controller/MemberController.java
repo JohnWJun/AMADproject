@@ -91,6 +91,14 @@ public class MemberController {
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
+    @DeleteMapping("/me")
+    public ResponseEntity deleteMe(){
+        String email = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Member member = memberService.findMember(email);
+        memberService.deleteMember(member.getId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id")long memberId){
         memberService.deleteMember(memberId);
