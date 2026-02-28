@@ -93,6 +93,7 @@ export default function AiChatWidget() {
     const [userHistory, setUserHistory] = useState<string[]>([]);
     const [fabHovered, setFabHovered] = useState(false);
     const [showConsentModal, setShowConsentModal] = useState(false);
+    const [bubbleClosed, setBubbleClosed] = useState(false);
 
     const bottomRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -198,9 +199,14 @@ export default function AiChatWidget() {
             )}
 
             {/* ── Speech bubble ───────────────────────────────────────────── */}
-            {!open && (
+            {!open && !bubbleClosed && (
                 <div className={`${style.speechBubble} ${fabHovered ? style.speechBubbleVisible : ""}`}>
                     안녕 나는 너의 고민 신앙 AI 상담사 패스파인더야. 오늘 함께 나누고 싶은 이야기가 있니?
+                    <button
+                        className={style.bubbleCloseBtn}
+                        onClick={() => setBubbleClosed(true)}
+                        aria-label="닫기"
+                    >✕</button>
                 </div>
             )}
 

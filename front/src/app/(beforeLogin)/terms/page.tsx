@@ -11,7 +11,7 @@ export default function TermsPage() {
             <p style={{ color: "#6b7280", marginBottom: 32 }}>최종 업데이트: 2026년 2월</p>
 
             <p>
-                이 이용약관(이하 "약관")은 AMAD(이하 "회사")가 제공하는 서비스(이하 "서비스")의 이용에 관한 조건 및 절차,
+                이 이용약관(이하 &ldquo;약관&rdquo;)은 AMAD(이하 &ldquo;회사&rdquo;)가 제공하는 서비스(이하 &ldquo;서비스&rdquo;)의 이용에 관한 조건 및 절차,
                 회사와 이용자 간의 권리·의무 관계를 규정합니다.
             </p>
 
@@ -22,7 +22,7 @@ export default function TermsPage() {
                     제1조 (서비스 소개 및 목적)
                 </h2>
                 <p>
-                    AMAD는 "A Mission A Day — Your Daily Log with God"를 모토로 운영되는 말씀 묵상 저널링 웹 서비스입니다.
+                    AMAD는 &ldquo;A Mission A Day — Your Daily Log with God&rdquo;를 모토로 운영되는 말씀 묵상 저널링 웹 서비스입니다.
                     이용자는 매일의 성경 묵상을 기록하고, 그룹으로 나누며, AI 상담(PathFinder)을 통해 신앙 성장을 돕는 서비스를
                     이용할 수 있습니다.
                 </p>
